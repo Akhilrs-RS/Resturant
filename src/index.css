@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-indigo-500/30 selection:text-indigo-200;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Custom Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-950/20 backdrop-blur-md;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+  }
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  @apply bg-slate-900/60 backdrop-blur-md border border-slate-800/60 shadow-xl shadow-black/30;
+}
+
+.glass-panel-hover {
+  @apply transition-all duration-300 hover:bg-slate-900/80 hover:border-slate-700/80 hover:shadow-indigo-500/5 hover:shadow-2xl;
+}
+
+.glass-input {
+  @apply bg-slate-950/50 border border-slate-800/80 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200 backdrop-blur-sm;
+}
+
+.glass-btn {
+  @apply relative overflow-hidden transition-all duration-300 font-medium px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 active:scale-95;
+}
+
+.glass-btn-primary {
+  @apply glass-btn bg-indigo-600/90 text-white hover:bg-indigo-500 border border-indigo-400/30 hover:shadow-lg hover:shadow-indigo-500/20;
+}
+
+.glass-btn-secondary {
+  @apply glass-btn bg-slate-800/60 text-slate-200 hover:bg-slate-800 border border-slate-700/60 hover:text-white;
+}
+
+.glass-btn-danger {
+  @apply glass-btn bg-rose-600/80 text-white hover:bg-rose-500 border border-rose-400/30 hover:shadow-lg hover:shadow-rose-500/20;
+}
+
+.glass-btn-success {
+  @apply glass-btn bg-emerald-600/80 text-white hover:bg-emerald-500 border border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-500/20;
+}
+
+.glow-card {
+  position: relative;
+}
+
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(35deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow-card:hover::after {
+  opacity: 1;
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.pulse-glow-indigo {
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.pulse-glow-emerald {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.pulse-glow-amber {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.pulse-glow-rose {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
