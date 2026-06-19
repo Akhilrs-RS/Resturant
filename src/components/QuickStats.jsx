@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, BedDouble, Utensils, ChefHat } from 'lucide-react';
+import { IndianRupee, BedDouble, Utensils, ChefHat } from 'lucide-react';
 
 export default function QuickStats({ rooms, tables, kds, billingHistory }) {
   // 1. Calculate Revenue
@@ -38,9 +38,9 @@ export default function QuickStats({ rooms, tables, kds, billingHistory }) {
   const statsList = [
     {
       name: 'Total Revenue',
-      value: `$${totalEstimatedRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      subtext: `Includes $${settledRevenue.toFixed(0)} settled bills`,
-      icon: DollarSign,
+      value: `₹${totalEstimatedRevenue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      subtext: `Includes ₹${settledRevenue.toLocaleString('en-IN', { maximumFractionDigits: 0 })} settled bills`,
+      icon: IndianRupee,
       color: 'from-emerald-500/20 to-teal-500/20',
       iconColor: 'text-emerald-400 border-emerald-500/30',
       glow: 'group-hover:shadow-emerald-500/10',

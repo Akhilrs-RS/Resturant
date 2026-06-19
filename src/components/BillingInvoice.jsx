@@ -7,7 +7,7 @@ import {
   Utensils, 
   Printer, 
   CreditCard, 
-  DollarSign, 
+  IndianRupee, 
   Calendar,
   X,
   CheckCircle,
@@ -156,10 +156,10 @@ export default function BillingInvoice({
                         <BedDouble className="w-4 h-4 text-indigo-400" />
                         <div>
                           <p className="text-xs font-bold text-slate-200">Room Accommodation ({activeCheckoutRoom.type})</p>
-                          <p className="text-[10px] text-slate-500">${activeCheckoutRoom.price} / night x {activeCheckoutRoom.currentGuest.nights} nights</p>
+                          <p className="text-[10px] text-slate-500">₹{activeCheckoutRoom.price} / night x {activeCheckoutRoom.currentGuest.nights} nights</p>
                         </div>
                       </div>
-                      <span className="text-xs font-bold text-slate-200">${roomStayCost.toFixed(2)}</span>
+                      <span className="text-xs font-bold text-slate-200">₹{roomStayCost.toFixed(2)}</span>
                     </div>
 
                     {/* Food & Bistro Charges */}
@@ -171,7 +171,7 @@ export default function BillingInvoice({
                           <p className="text-[10px] text-slate-500">Consolidated restaurant tickets charged to room</p>
                         </div>
                       </div>
-                      <span className="text-xs font-bold text-slate-200">${restaurantCost.toFixed(2)}</span>
+                      <span className="text-xs font-bold text-slate-200">₹{restaurantCost.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export default function BillingInvoice({
                   {/* Controls */}
                   <div className="space-y-3">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Discount ($)</label>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Discount (₹)</label>
                       <input 
                         type="number"
                         min="0"
@@ -216,19 +216,19 @@ export default function BillingInvoice({
                   <div className="bg-slate-950/30 p-4 rounded-xl border border-slate-850 flex flex-col justify-between space-y-2 text-xs">
                     <div className="flex justify-between text-slate-400">
                       <span>Subtotal</span>
-                      <span className="font-semibold text-slate-200">${subtotal.toFixed(2)}</span>
+                      <span className="font-semibold text-slate-200">₹{subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>Discount</span>
-                      <span className="font-semibold text-rose-400">-${discount.toFixed(2)}</span>
+                      <span className="font-semibold text-rose-400">-₹{discount.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>12% VAT / Taxes</span>
-                      <span className="font-semibold text-slate-200">${tax.toFixed(2)}</span>
+                      <span className="font-semibold text-slate-200">₹{tax.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between border-t border-slate-800 pt-2 text-sm font-bold">
                       <span className="text-slate-200">Amount Due</span>
-                      <span className="text-emerald-400">${finalBillAmount.toFixed(2)}</span>
+                      <span className="text-emerald-400">₹{finalBillAmount.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function BillingInvoice({
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="font-bold text-slate-200">${invoice.total.toFixed(2)}</p>
+                    <p className="font-bold text-slate-200">₹{invoice.total.toFixed(2)}</p>
                     <button
                       onClick={() => handlePrintHistorical(invoice)}
                       className="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 mt-1 flex items-center gap-1 ml-auto"
@@ -368,32 +368,32 @@ export default function BillingInvoice({
                 {printInvoiceData.roomAmount > 0 && (
                   <div className="flex justify-between">
                     <span>Room Accommodation</span>
-                    <span>${printInvoiceData.roomAmount.toFixed(2)}</span>
+                    <span>₹{printInvoiceData.roomAmount.toFixed(2)}</span>
                   </div>
                 )}
                 
                 {printInvoiceData.restaurantAmount > 0 && (
                   <div className="flex justify-between">
                     <span>Bistro & Room Food</span>
-                    <span>${printInvoiceData.restaurantAmount.toFixed(2)}</span>
+                    <span>₹{printInvoiceData.restaurantAmount.toFixed(2)}</span>
                   </div>
                 )}
 
                 {printInvoiceData.discount > 0 && (
                   <div className="flex justify-between text-rose-400">
                     <span>Staff Discount Deduction</span>
-                    <span>-${printInvoiceData.discount.toFixed(2)}</span>
+                    <span>-₹{printInvoiceData.discount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between border-t border-slate-900 pt-1">
                   <span>Taxes (12% VAT)</span>
-                  <span>${printInvoiceData.tax.toFixed(2)}</span>
+                  <span>₹{printInvoiceData.tax.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between border-t border-dashed border-slate-800 pt-2 font-bold text-sm text-slate-100">
                   <span>Invoice Total</span>
-                  <span className="text-emerald-400">${printInvoiceData.total.toFixed(2)}</span>
+                  <span className="text-emerald-400">₹{printInvoiceData.total.toFixed(2)}</span>
                 </div>
               </div>
 

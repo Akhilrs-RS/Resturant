@@ -68,7 +68,7 @@ export default function TableMap({ tables, activeTableId, onSelectTable, onToggl
               ) : (
                 <Check className="w-3 h-3 text-emerald-400" />
               )}
-              <span>${table.activeOrder.total.toFixed(0)}</span>
+              <span>₹{table.activeOrder.total.toFixed(0)}</span>
             </div>
           )}
         </div>

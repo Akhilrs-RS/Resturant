@@ -98,7 +98,7 @@ export default function POSSimulator({
               <div>
                 <div className="flex justify-between items-start gap-2">
                   <h4 className="text-sm font-bold text-slate-200 leading-tight">{dish.name}</h4>
-                  <span className="text-xs font-bold text-indigo-400 shrink-0">${dish.price.toFixed(2)}</span>
+                  <span className="text-xs font-bold text-indigo-400 shrink-0">₹{dish.price.toFixed(2)}</span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1 leading-relaxed line-clamp-2">{dish.description}</p>
               </div>
@@ -214,7 +214,7 @@ export default function POSSimulator({
                           </span>
                         )}
                       </div>
-                      <p className="text-[10px] text-slate-500">${(item.price * item.quantity).toFixed(2)} (${item.price.toFixed(2)} each)</p>
+                      <p className="text-[10px] text-slate-500">₹{(item.price * item.quantity).toFixed(2)} (₹{item.price.toFixed(2)} each)</p>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -252,15 +252,15 @@ export default function POSSimulator({
             <div className="border-t border-slate-800/60 pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-slate-400">
                 <span>Subtotal</span>
-                <span className="font-semibold text-slate-200">${subtotal.toFixed(2)}</span>
+                <span className="font-semibold text-slate-200">₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Tax (12% VAT)</span>
-                <span className="font-semibold text-slate-200">${tax.toFixed(2)}</span>
+                <span className="font-semibold text-slate-200">₹{tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between border-t border-slate-800/40 pt-2 text-sm font-bold">
                 <span className="text-slate-100">Ticket Total</span>
-                <span className="text-indigo-400">${grandTotal.toFixed(2)}</span>
+                <span className="text-indigo-400">₹{grandTotal.toFixed(2)}</span>
               </div>
             </div>
 

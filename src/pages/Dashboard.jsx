@@ -89,7 +89,7 @@ export default function Dashboard({ rooms, tables, kds, billingHistory, setActiv
 
   // Activity Feed logs
   const activities = [
-    { text: 'Room 201 guest charged $160 for a dinner ticket (VIP Booth A).', time: '10 mins ago', type: 'restaurant' },
+    { text: 'Room 201 guest charged ₹160 for a dinner ticket (VIP Booth A).', time: '10 mins ago', type: 'restaurant' },
     { text: 'Checked in guest Elena Rostova in Room 103.', time: '40 mins ago', type: 'rooms' },
     { text: 'Housekeeping marked Room 104 as Dirty/Cleaning.', time: '1 hour ago', type: 'rooms' },
     { text: 'Settled invoice INV-2026-002 for walk-in guest Robert Vance.', time: '2 hours ago', type: 'billing' },

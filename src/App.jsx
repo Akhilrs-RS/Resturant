@@ -288,7 +288,7 @@ export default function App() {
 
     // Filter KDS tickets
     setKds(prevKDS => prevKDS.filter(kot => kot.tableId !== tableId));
-    alert(`Bill of $${table.activeOrder.total.toFixed(2)} charged to Room ${roomId} (${targetRoom.currentGuest.name}).`);
+    alert(`Bill of ₹${table.activeOrder.total.toFixed(2)} charged to Room ${roomId} (${targetRoom.currentGuest.name}).`);
   };
 
   // --- KITCHEN (KDS) ACTION HANDLERS ---

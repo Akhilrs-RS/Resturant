@@ -179,7 +179,7 @@ export default function RoomGrid({ rooms, onCheckIn, onCleanRoom, onMaintenanceR
 
                 <div className="mt-3 flex items-center justify-between">
                   <span className="text-xs text-slate-400 font-medium">Rate / Night</span>
-                  <span className="text-sm font-bold text-slate-100">${room.price}</span>
+                  <span className="text-sm font-bold text-slate-100">₹{room.price}</span>
                 </div>
 
                 {/* Status Indicator */}
@@ -324,16 +324,16 @@ export default function RoomGrid({ rooms, onCheckIn, onCleanRoom, onMaintenanceR
                     <div className="space-y-1.5 text-xs">
                       <div className="flex justify-between">
                         <span className="text-slate-400">Room Stay ({selectedRoom.currentGuest.nights} nights)</span>
-                        <span className="font-semibold text-slate-200">${selectedRoom.currentGuest.roomCharges.toFixed(2)}</span>
+                        <span className="font-semibold text-slate-200">₹{selectedRoom.currentGuest.roomCharges.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-400">Dining Charges (Charged to Room)</span>
-                        <span className="font-semibold text-amber-400">${selectedRoom.currentGuest.foodCharges.toFixed(2)}</span>
+                        <span className="font-semibold text-amber-400">₹{selectedRoom.currentGuest.foodCharges.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between border-t border-slate-800/40 pt-2 font-bold text-sm">
                         <span className="text-slate-200">Total Accumulation</span>
                         <span className="text-indigo-400">
-                          ${(selectedRoom.currentGuest.roomCharges + selectedRoom.currentGuest.foodCharges).toFixed(2)}
+                          ₹{(selectedRoom.currentGuest.roomCharges + selectedRoom.currentGuest.foodCharges).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -452,7 +452,7 @@ export default function RoomGrid({ rooms, onCheckIn, onCleanRoom, onMaintenanceR
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-400">Est. Price</label>
                   <div className="text-sm font-bold text-emerald-400 py-2.5 pl-1">
-                    ${(selectedRoom.price * nights).toFixed(2)}
+                    ₹{(selectedRoom.price * nights).toFixed(2)}
                   </div>
                 </div>
               </div>
