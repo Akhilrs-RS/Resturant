@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-resort-gold/30 selection:text-white;
+  }
+
+  /* Custom Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-950;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-resort-gold/60 transition-colors duration-300;
+  }
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  @apply bg-slate-950/60 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50;
+}
+
+.glass-card {
+  @apply bg-white/[0.02] backdrop-blur-md border border-white/5 shadow-xl transition-all duration-500 hover:border-resort-gold/30 hover:bg-white/[0.04];
+}
+
+.glass-input {
+  @apply bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-resort-gold focus:ring-1 focus:ring-resort-gold transition-all duration-300 backdrop-blur-sm placeholder:text-white/30;
+}
+
+/* Luxury gold text & accents */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #dfbe82 0%, #c49b55 50%, #9e7a3b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #dfbe82 0%, #c49b55 50%, #b89047 100%);
+}
+
+.bg-gold-gradient-hover {
+  background: linear-gradient(135deg, #ebd09c 0%, #d4ac66 50%, #c49b55 100%);
+}
+
+/* Smooth transitions */
+.transition-luxury {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
