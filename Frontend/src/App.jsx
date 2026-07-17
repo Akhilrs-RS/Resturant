@@ -6,10 +6,16 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedSuiteId, setSelectedSuiteId] = useState('oasis');
+  
+  // Lifted stay states for syncing
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState('2');
 
   // Shared booking controller
   const handleOpenBooking = (suiteId = 'oasis') => {
-    setSelectedSuiteId(suiteId);
+    // If suiteId is "any", default to first suite
+    setSelectedSuiteId(suiteId === 'any' ? 'oasis' : suiteId);
     setBookingOpen(true);
   };
 
@@ -54,6 +60,12 @@ export default function App() {
         setBookingOpen={setBookingOpen}
         selectedSuiteId={selectedSuiteId}
         setSelectedSuiteId={setSelectedSuiteId}
+        checkIn={checkIn}
+        setCheckIn={setCheckIn}
+        checkOut={checkOut}
+        setCheckOut={setCheckOut}
+        guests={guests}
+        setGuests={setGuests}
       />
     </div>
   );
