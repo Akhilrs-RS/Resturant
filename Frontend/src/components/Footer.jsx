@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
-export default function Footer({ handleScrollTo }) {
+export default function Footer({ handleScrollTo, setCurrentPage }) {
   return (
     <>
       {/* Top Accent Transition Line */}
@@ -9,11 +9,11 @@ export default function Footer({ handleScrollTo }) {
       
       {/* Footer Container */}
       <footer className="bg-[#050b16] py-16 md:py-20 px-6 md:px-12 text-white relative">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
           
           {/* Column 1: Logo & Socials */}
           <div className="lg:col-span-4 flex flex-col space-y-6">
-            <div className="flex flex-col select-none">
+            <div className="flex flex-col select-none cursor-pointer" onClick={() => handleScrollTo('home')}>
               <span className="font-cinzel text-3xl font-light tracking-[0.05em] text-white">
                 Etheria
               </span>
@@ -52,9 +52,9 @@ export default function Footer({ handleScrollTo }) {
                 { name: 'Home', id: 'home' },
                 { name: 'Rooms & Suites', id: 'accommodation' },
                 { name: 'Dining', id: 'dining' },
-                { name: 'The Pool', id: 'about' },
+                { name: 'The Pool', id: 'pool' },
                 { name: 'Activities & Packages', id: 'experiences' },
-                { name: 'Weddings & Events', id: 'experiences' }
+                { name: 'Weddings & Events', id: 'events' }
               ].map((item, idx) => (
                 <button
                   key={idx}
@@ -74,10 +74,9 @@ export default function Footer({ handleScrollTo }) {
             </span>
             <div className="flex flex-col space-y-3.5 text-xs text-white/70 font-medium">
               {[
-                { name: 'Gallery', id: 'about' },
-                { name: 'Offers', id: 'accommodation' },
-                { name: 'About', id: 'about' },
-                { name: 'Contact', id: 'contact' }
+                { name: 'Gallery', id: 'gallery' },
+                { name: 'Offers', id: 'offers' },
+                { name: 'About', id: 'about' }
               ].map((item, idx) => (
                 <button
                   key={idx}

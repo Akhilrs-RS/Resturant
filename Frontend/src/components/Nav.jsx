@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, X, Menu } from 'lucide-react';
 
-export default function Nav({ activeSection, handleScrollTo, handleOpenBooking }) {
+export default function Nav({ currentPage, setCurrentPage, activeSection, handleScrollTo, handleOpenBooking }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expDropdownOpen, setExpDropdownOpen] = useState(false);
@@ -75,7 +75,7 @@ export default function Nav({ activeSection, handleScrollTo, handleOpenBooking }
                 <button
                   onClick={() => handleNavClick(link.id)}
                   className={`flex items-center gap-1.5 text-[11px] xl:text-[12px] font-semibold tracking-[0.16em] uppercase transition-all duration-300 ${
-                    activeSection === link.id 
+                    (currentPage === link.id || (currentPage === 'home' && activeSection === link.id)) 
                       ? 'text-resort-gold' 
                       : 'text-white/80 hover:text-white'
                   }`}
@@ -180,7 +180,7 @@ export default function Nav({ activeSection, handleScrollTo, handleOpenBooking }
                       key={link.id}
                       onClick={() => handleNavClick(link.id)}
                       className={`text-left text-xs font-semibold tracking-widest uppercase transition-colors py-1 ${
-                        activeSection === link.id ? 'text-resort-gold' : 'text-white/70 hover:text-white'
+                        (currentPage === link.id || (currentPage === 'home' && activeSection === link.id)) ? 'text-resort-gold' : 'text-white/70 hover:text-white'
                       }`}
                     >
                       {link.label}
