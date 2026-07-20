@@ -9,6 +9,7 @@ import Events from './components/Events';
 import Gallery from './components/Gallery';
 import Offers from './components/Offers';
 import Contact from './components/Contact';
+import Lounge from './components/Lounge';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -34,6 +35,11 @@ export default function App() {
     }
     if (id === 'dining') {
       setCurrentPage('dining');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'lounge') {
+      setCurrentPage('lounge');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -168,6 +174,13 @@ export default function App() {
 
       {currentPage === 'events' && (
         <Events 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'lounge' && (
+        <Lounge 
           handleScrollTo={handleScrollTo}
           setCurrentPage={setCurrentPage}
         />

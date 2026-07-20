@@ -52,6 +52,7 @@ export default function Footer({ handleScrollTo, setCurrentPage }) {
                 { name: 'Home', id: 'home' },
                 { name: 'Rooms & Suites', id: 'accommodation' },
                 { name: 'Dining', id: 'dining' },
+                { name: 'Lounge & Bar', id: 'lounge' },
                 { name: 'The Pool', id: 'pool' },
                 { name: 'Activities & Packages', id: 'experiences' },
                 { name: 'Weddings & Events', id: 'events' }

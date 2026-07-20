@@ -62,6 +62,7 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
             {[
               { id: 'accommodation', label: 'ACCOMMODATION' },
               { id: 'dining', label: 'DINING' },
+              { id: 'lounge', label: 'LOUNGE/BAR' },
               { id: 'experiences', label: 'EXPERIENCES', hasDropdown: true },
               { id: 'events', label: 'EVENTS' },
               { id: 'offers', label: 'OFFERS' },
@@ -174,6 +175,7 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                   {[
                     { id: 'accommodation', label: 'ACCOMMODATION' },
                     { id: 'dining', label: 'DINING' },
+                    { id: 'lounge', label: 'LOUNGE/BAR' },
                     { id: 'experiences', label: 'EXPERIENCES' },
                     { id: 'events', label: 'EVENTS' },
                     { id: 'offers', label: 'OFFERS' },
