@@ -241,7 +241,7 @@ export default function Home({
 
         {/* Scroll Indicator */}
         <div 
-          onClick={() => handleScrollTo('accommodation')}
+          onClick={() => handleScrollTo('about')}
           className="w-full flex justify-center pb-8 relative z-20 cursor-pointer text-white/50 hover:text-resort-gold transition-colors duration-300"
         >
           <div className="flex flex-col items-center gap-2">
@@ -254,6 +254,68 @@ export default function Home({
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 2. INTRODUCTION FOLD */}
+      <section id="about" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Header Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-16 text-left">
+            <div className="lg:col-span-6 space-y-3">
+              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
+                WELCOME TO ETHERIA
+              </span>
+              <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight mt-3">
+                A Sanctuary Where The <br className="hidden md:inline" /> Horizon Meets Serenity
+              </h2>
+            </div>
+            
+            <div className="lg:col-span-6">
+              <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed pt-2 lg:pt-8">
+                Nestled Between Lush Forest And The Endless Ocean, Etheria Is A Place To Slow Down And Breathe. 
+                Every Villa, Every Meal, And Every Moment Is Crafted To Restore Your Sense Of Wonder — An Architecture 
+                Of Calm Designed For Those Who Seek The Extraordinary.
+              </p>
+            </div>
+          </div>
+
+          {/* Arched Image Row */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-6xl mx-auto mt-12">
+            
+            {/* Left Image: narrow vertical slice */}
+            <div className="w-full md:w-3/12 h-80 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
+              <img 
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" 
+                alt="Villa lounger pool deck" 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+            </div>
+
+            {/* Center Image: wide prominent card */}
+            <div className="w-full md:w-6/12 h-[380px] rounded-3xl overflow-hidden shadow-lg group relative">
+              <img 
+                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
+                alt="Etheria resort pool area at night" 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+            </div>
+
+            {/* Right Image: narrow vertical slice */}
+            <div className="w-full md:w-3/12 h-80 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
+              <img 
+                src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80" 
+                alt="Beach walkway and cabanas at night" 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+            </div>
+
+          </div>
+
         </div>
       </section>
 
