@@ -6,6 +6,9 @@ import Dining from './components/Dining';
 import Pool from './components/Pool';
 import Experiences from './components/Experiences';
 import Events from './components/Events';
+import Gallery from './components/Gallery';
+import Offers from './components/Offers';
+import Contact from './components/Contact';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -46,6 +49,21 @@ export default function App() {
     }
     if (id === 'events') {
       setCurrentPage('events');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'gallery') {
+      setCurrentPage('gallery');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'offers') {
+      setCurrentPage('offers');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'contact') {
+      setCurrentPage('contact');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -150,6 +168,27 @@ export default function App() {
 
       {currentPage === 'events' && (
         <Events 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'gallery' && (
+        <Gallery 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'offers' && (
+        <Offers 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'contact' && (
+        <Contact 
           handleScrollTo={handleScrollTo}
           setCurrentPage={setCurrentPage}
         />

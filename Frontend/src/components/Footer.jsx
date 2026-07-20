@@ -76,7 +76,8 @@ export default function Footer({ handleScrollTo, setCurrentPage }) {
               {[
                 { name: 'Gallery', id: 'gallery' },
                 { name: 'Offers', id: 'offers' },
-                { name: 'About', id: 'about' }
+                { name: 'About', id: 'about' },
+                { name: 'Contact', id: 'contact' }
               ].map((item, idx) => (
                 <button
                   key={idx}

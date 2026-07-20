@@ -64,7 +64,9 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
               { id: 'dining', label: 'DINING' },
               { id: 'experiences', label: 'EXPERIENCES', hasDropdown: true },
               { id: 'events', label: 'EVENTS' },
-              { id: 'offers', label: 'OFFERS' }
+              { id: 'offers', label: 'OFFERS' },
+              { id: 'gallery', label: 'GALLERY' },
+              { id: 'contact', label: 'CONTACT' }
             ].map((link) => (
               <div 
                 key={link.id} 
@@ -174,7 +176,9 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                     { id: 'dining', label: 'DINING' },
                     { id: 'experiences', label: 'EXPERIENCES' },
                     { id: 'events', label: 'EVENTS' },
-                    { id: 'offers', label: 'OFFERS' }
+                    { id: 'offers', label: 'OFFERS' },
+                    { id: 'gallery', label: 'GALLERY' },
+                    { id: 'contact', label: 'CONTACT' }
                   ].map((link) => (
                     <button
                       key={link.id}
