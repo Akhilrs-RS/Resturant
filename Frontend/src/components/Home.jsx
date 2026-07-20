@@ -319,6 +319,91 @@ export default function Home({
         </div>
       </section>
 
+      {/* 2.5. SPECIAL OFFERS SECTION */}
+      <section id="offers" className="py-24 md:py-32 bg-[#050b16] px-6 md:px-12 select-none">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Header Row */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 select-none text-left">
+            <div className="space-y-3">
+              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">LIMITED TIME</span>
+              <h2 className="font-serif text-3xl md:text-[40px] font-light text-white leading-tight mt-3">
+                Special Offers & Escapes
+              </h2>
+            </div>
+            
+            <button 
+              onClick={() => handleOpenBooking()}
+              className="text-xs md:text-sm font-semibold tracking-wider text-resort-gold hover:text-resort-gold-hover transition-colors duration-300 flex items-center gap-2 group cursor-pointer mt-4 md:mt-0"
+            >
+              View all Offers
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+            </button>
+          </div>
+
+          {/* Grid of 4 vertical cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: 'Weekend Escape',
+                desc: 'Save on 2-night weekend stay with complimentary breakfast',
+                discount: '25% OFF',
+                image: 'https://images.unsplash.com/photo-1540553016722-983e48a2cd10?auto=format&fit=crop&w=400&q=80'
+              },
+              {
+                title: 'Honeymoon Bliss',
+                desc: 'Romantic suite, couples spa and private candlelit dinner',
+                discount: '20% OFF',
+                image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80'
+              },
+              {
+                title: 'Family Holiday',
+                desc: 'Kids stay free plus complimentary pool access and activities',
+                discount: '30% OFF',
+                image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80'
+              },
+              {
+                title: 'Moon Retreat',
+                desc: 'Save on 2-night stays with complimentary drinks and stargazing session',
+                discount: '15% OFF',
+                image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80'
+              }
+            ].map((offer, idx) => (
+              <div 
+                key={idx}
+                className="relative h-96 rounded-2xl overflow-hidden group shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer"
+              >
+                {/* Discount Badge */}
+                <div className="absolute top-4 left-4 bg-resort-gold text-stone-950 font-sans text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-lg z-20 shadow-md">
+                  {offer.discount}
+                </div>
+
+                {/* Image */}
+                <img 
+                  src={offer.image} 
+                  alt={offer.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+
+                {/* Content Overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end text-left">
+                  <h3 className="text-white font-serif text-lg font-light leading-tight">
+                    {offer.title}
+                  </h3>
+                  <p className="text-white/70 text-xs font-light leading-relaxed mt-2.5">
+                    {offer.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
       {/* 3. ROOMS & SUITES SECTION */}
       <section id="accommodation" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none">
         <div className="max-w-7xl mx-auto">
