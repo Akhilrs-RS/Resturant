@@ -3,6 +3,9 @@ import Nav from './components/Nav';
 import Home from './components/Home';
 import Accommodation from './components/Accommodation';
 import Dining from './components/Dining';
+import Pool from './components/Pool';
+import Experiences from './components/Experiences';
+import Events from './components/Events';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -28,6 +31,21 @@ export default function App() {
     }
     if (id === 'dining') {
       setCurrentPage('dining');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'pool') {
+      setCurrentPage('pool');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'experiences') {
+      setCurrentPage('experiences');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'events') {
+      setCurrentPage('events');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -111,6 +129,27 @@ export default function App() {
 
       {currentPage === 'dining' && (
         <Dining 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'pool' && (
+        <Pool 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'experiences' && (
+        <Experiences 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'events' && (
+        <Events 
           handleScrollTo={handleScrollTo}
           setCurrentPage={setCurrentPage}
         />
