@@ -1,6 +1,6 @@
-# Implementation Plan - .NET Web API Backend & MySQL Database
+# Implementation Plan - .NET Backend, MySQL Database, and Dockerization
 
-This plan details the design and setup of the enterprise-ready **.NET Web API** backend and **MySQL Database** inside the `backend/` folder to persist bookings, table reservations, pool slots, lounge seats, and event inquiries from our frontend.
+This plan details the design, setup, and **Dockerization** of the full application stack (React Frontend, .NET Web API Backend, and MySQL Database). The configuration is optimized for Docker Desktop orchestration, and exposes the database port to allow direct queries via DBeaver.
 
 ---
 
@@ -67,65 +67,50 @@ Stores custom wedding and conference banquet quotations requests.
 
 ---
 
-## Proposed API Endpoints
+## Proposed Docker Topology & Services
 
-### 1. Suite Bookings
-- `POST /api/bookings/suites` -> Create a new suite reservation.
-- `GET /api/bookings/suites` -> List all suite reservations (for resort concierge).
+- **Orchestration**: A `docker-compose.yml` file will sit at the project root, linking the three services (`frontend`, `backend`, and `database`).
+- **DBeaver Database Connection**: The MySQL database container will expose port `3306:3306` to localhost, enabling external database clients (like **DBeaver**) to connect using:
+  - **Host**: `localhost`
+  - **Port**: `3306`
+  - **Database**: `etheria_resort_db`
+  - **User**: `root`
+  - **Password**: `rootpassword`
+- **Frontend Access**: The React frontend container will bind to host port `80:80`.
+- **Backend Access**: The .NET Web API container will bind to host port `5000:80`.
 
-### 2. Reservations
-- `POST /api/reservations/tables` -> Reserve a dining table.
-- `POST /api/reservations/pools` -> Book pool access slot.
-- `POST /api/reservations/lounges` -> Reserve lounge seating.
+### 1. Database Service (`database`)
+- **Image**: `mysql:8.0`
+- **Ports**: Exposes `3306` to allow DBeaver clients to connect.
+- **Environment**:
+  - `MYSQL_DATABASE=etheria_resort_db`
+  - `MYSQL_ROOT_PASSWORD=rootpassword`
+- **Volume**: `db_data` volume is mounted to preserve data across container restarts.
 
-### 3. Event Inquiries
-- `POST /api/inquiries/events` -> Submit custom event/wedding quotation inquiry.
+### 2. Backend Service (`backend`)
+- **Base Image**: `.NET 8.0 SDK` (build) & `ASP.NET 8.0 Runtime` (run).
+- **Ports**: Exposes `5000` to the host.
+- **Environment**:
+  - `ConnectionStrings__DefaultConnection=Server=database;Port=3306;Database=etheria_resort_db;Uid=root;Pwd=rootpassword;`
+- **Dependencies**: Wait for `database` container healthcheck.
 
----
-
-## Project Structure & Files
-
-We will initialize a standard .NET Web API template inside `backend/` with the following files:
-
-### [NEW] [backend/App.csproj](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/App.csproj)
-- Contains EF Core package references:
-  - `Microsoft.EntityFrameworkCore`
-  - `Microsoft.EntityFrameworkCore.Design`
-  - `Pomelo.EntityFrameworkCore.MySql` (MySQL provider)
-
-### [NEW] [backend/appsettings.json](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/appsettings.json)
-- Configures connection string to MySQL:
-  ```json
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=etheria_resort_db;User=root;Password=your_password;"
-  }
-  ```
-
-### [NEW] [backend/Data/AppDbContext.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Data/AppDbContext.cs)
-- Coordinates EF Core contexts, linking models to DB tables.
-
-### [NEW] [backend/Models/Entities.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Models/Entities.cs)
-- Defines C# classes for `SuiteBooking`, `TableReservation`, `PoolBooking`, `LoungeReservation`, and `EventInquiry`.
-
-### [NEW] [backend/Controllers/...](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Controllers)
-- `BookingsController.cs`
-- `ReservationsController.cs`
-- `InquiriesController.cs`
-
-### [NEW] [backend/Program.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Program.cs)
-- Configures services, CORS policies, Dependency Injections, DB context pipelines, and mounts controllers.
+### 3. Frontend Service (`frontend`)
+- **Base Image**: `node:20` (build) & `nginx:alpine` (serve).
+- **Ports**: Exposes `80` to the host.
+- **Nginx Config**: Setup proxy rules to forward `/api` routes from the frontend to `http://backend:80/api` seamlessly.
 
 ---
 
 ## Verification Plan
 
 ### Automated Verification
-- Verify compilation by running:
+- Verify Docker compose builds cleanly:
   ```bash
-  cd backend
-  dotnet build
+  docker compose build
   ```
-- Run DB migration creation and check status:
+- Start the entire stack:
   ```bash
-  dotnet ef migrations add InitialCreate
+  docker compose up -d
   ```
+- Check service health status inside **Docker Desktop**.
+- Establish a connection from **DBeaver** to `localhost:3306` and query the schema tables.
