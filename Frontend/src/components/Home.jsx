@@ -241,7 +241,7 @@ export default function Home({
 
         {/* Scroll Indicator */}
         <div 
-          onClick={() => handleScrollTo('about')}
+          onClick={() => handleScrollTo('accommodation')}
           className="w-full flex justify-center pb-8 relative z-20 cursor-pointer text-white/50 hover:text-resort-gold transition-colors duration-300"
         >
           <div className="flex flex-col items-center gap-2">
@@ -254,89 +254,6 @@ export default function Home({
               />
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 2. INTRODUCTION FOLD */}
-      <section id="about" className="py-24 md:py-32 relative bg-resort-dark px-6 md:px-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          <div className="lg:col-span-6 space-y-6">
-            <span className="text-[11px] font-bold tracking-[0.4em] text-resort-gold uppercase block">THE THABASIYA EXPERIENCE</span>
-            <h2 className="font-serif text-3xl md:text-5xl font-light text-white leading-tight">
-              A Sanctuary Crafted <br />
-              <span className="italic font-normal text-resort-gold">for Infinite Memories</span>
-            </h2>
-            <div className="w-20 h-[1px] bg-resort-gold/60 my-4" />
-            <p className="text-white/60 leading-relaxed text-sm md:text-base font-light">
-              Nestled at the edge of quiet ocean cliffs, Thabasiya Resorts welcomes you to a world of absolute seclusion. Our paradise merges striking tropical architectures with quiet modern luxury, offering curated spaces that embrace the sea breeze and host your most cherished chapters.
-            </p>
-            <p className="text-white/60 leading-relaxed text-sm font-light">
-              From our infinity pool merging into the twilight horizon to personal butlers orchestrating tailor-made lagoon expeditions, your stay is designed as a masterpiece of comfort and discovery.
-            </p>
-            <div className="pt-4">
-              <button 
-                onClick={() => handleScrollTo('accommodation')}
-                className="flex items-center gap-3 text-xs font-semibold tracking-widest uppercase text-resort-gold hover:text-white transition-colors duration-300 group"
-              >
-                Explore Suites <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
-              </button>
-            </div>
-          </div>
-
-          {/* Showcase visual card grid */}
-          <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group aspect-[3/4]">
-                <img 
-                  src={IMAGES.villaOasis} 
-                  alt="Resort sanctuary" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-5">
-                  <span className="text-[9px] tracking-widest text-resort-gold uppercase font-bold">LIVING</span>
-                  <span className="text-sm font-serif font-light text-white mt-1">Ocean Villas</span>
-                </div>
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group aspect-square">
-                <img 
-                  src={IMAGES.diningBeach} 
-                  alt="Beach dining" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-5">
-                  <span className="text-[9px] tracking-widest text-resort-gold uppercase font-bold">CUISINE</span>
-                  <span className="text-sm font-serif font-light text-white mt-1">Sunset Gastronomy</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4 pt-8">
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group aspect-square">
-                <img 
-                  src={IMAGES.spaRelax} 
-                  alt="Ayurvedic spa" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-5">
-                  <span className="text-[9px] tracking-widest text-resort-gold uppercase font-bold">WELLNESS</span>
-                  <span className="text-sm font-serif font-light text-white mt-1">Soma Spa Rituals</span>
-                </div>
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group aspect-[3/4]">
-                <img 
-                  src={IMAGES.yachtCharter} 
-                  alt="Ocean cruising" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-5">
-                  <span className="text-[9px] tracking-widest text-resort-gold uppercase font-bold">ESCAPE</span>
-                  <span className="text-sm font-serif font-light text-white mt-1">Yacht Charters</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -466,7 +383,7 @@ export default function Home({
               Ocean-To-Table Cuisine Crafted By Award-Winning Chefs Across Three Signature Restaurants.
             </p>
             <button 
-              onClick={() => handleScrollTo('contact')}
+              onClick={() => handleOpenBooking()}
               className="bg-stone-950 hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-3 rounded-full text-xs tracking-widest uppercase flex items-center gap-2 group transition-all duration-300"
             >
               Reserve A Table
@@ -493,7 +410,7 @@ export default function Home({
               Two Infinity Pools, A Serene Lagoon And Dedicated Kids Pool — Book Your Private Slot.
             </p>
             <button 
-              onClick={() => handleScrollTo('contact')}
+              onClick={() => handleOpenBooking()}
               className="bg-stone-950 hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-3 rounded-full text-xs tracking-widest uppercase flex items-center gap-2 group transition-all duration-300 mt-2"
             >
               Book Pool Access
@@ -591,84 +508,6 @@ export default function Home({
         </div>
       </section>
 
-      {/* 6. CONTACT & LOCATION SECTION */}
-      <section id="contact" className="py-24 bg-resort-dark border-t border-white/5 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div className="lg:col-span-5 space-y-6">
-            <span className="text-[11px] font-bold tracking-[0.4em] text-resort-gold uppercase">YOUR SANCTUARY AWAITS</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-light text-white">Get in Touch</h2>
-            <div className="w-16 h-[1px] bg-resort-gold/60" />
-            <p className="text-white/50 text-xs md:text-sm font-light leading-relaxed">
-              Have special booking requirements, private group dining request, or island transport inquiries? Reach out to our concierge, and we will craft details to perfection.
-            </p>
-            
-            <div className="space-y-4 pt-2">
-              <div className="flex items-center gap-4 text-white/70">
-                <div className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center text-resort-gold">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/40 tracking-wider font-semibold uppercase">Reservations Line</p>
-                  <p className="text-sm font-medium">+91 80 4455 2200</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 text-white/70">
-                <div className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center text-resort-gold">
-                  <Mail className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/40 tracking-wider font-semibold uppercase">Concierge Desk</p>
-                  <p className="text-sm font-medium">concierge@thabasiyaresorts.com</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 text-white/70">
-                <div className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center text-resort-gold">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/40 tracking-wider font-semibold uppercase">Resort Sanctuary</p>
-                  <p className="text-sm font-medium">Ocean Cliff Road, South Island, Andaman</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Concierge Contact Box */}
-          <div className="lg:col-span-7">
-            <div className="glass-panel p-8 rounded-2xl border border-white/10 shadow-2xl relative">
-              <h3 className="font-serif text-lg font-light text-white mb-6">Concierge Inquiry</h3>
-              <form onSubmit={(e) => { e.preventDefault(); alert("Concierge request sent. Our team will contact you shortly."); }} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[9px] tracking-wider uppercase text-white/40 font-bold block mb-1.5">Full Name</label>
-                    <input required type="text" placeholder="John Doe" className="w-full glass-input text-xs" />
-                  </div>
-                  <div>
-                    <label className="text-[9px] tracking-wider uppercase text-white/40 font-bold block mb-1.5">Email Address</label>
-                    <input required type="email" placeholder="john@example.com" className="w-full glass-input text-xs" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-white/40 font-bold block mb-1.5">Subject</label>
-                  <input required type="text" placeholder="Special Occasion Planning" className="w-full glass-input text-xs" />
-                </div>
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-white/40 font-bold block mb-1.5">Inquiry Details</label>
-                  <textarea rows={4} placeholder="Tell us how we can personalize your stay..." className="w-full glass-input text-xs resize-none"></textarea>
-                </div>
-                <button 
-                  type="submit" 
-                  className="w-full bg-resort-gold text-stone-950 text-[11px] font-bold tracking-widest uppercase py-4 rounded-xl hover:bg-resort-gold-hover transition-colors"
-                >
-                  Send Concierge Request
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* THINGS TO DO (WEDDINGS & EVENTS) SECTION */}
       <section id="events" className="w-full min-h-[70vh] flex items-center bg-[url('/wedding_bg.png')] bg-cover bg-center relative py-24 md:py-32 px-6 md:px-12">
         {/* Dark Overlay for Typography Readability */}
@@ -688,7 +527,7 @@ export default function Home({
               Entirely To You.
             </p>
             <button 
-              onClick={() => handleScrollTo('contact')}
+              onClick={() => handleOpenBooking()}
               className="bg-resort-gold hover:bg-resort-gold-hover text-stone-900 font-bold px-8 py-3.5 rounded-full text-xs tracking-widest uppercase transition-all duration-300 active:scale-95 inline-block"
             >
               Plan Your Events

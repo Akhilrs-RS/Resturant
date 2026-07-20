@@ -30,7 +30,7 @@ export default function App() {
   // Scroll spy to highlight active nav links
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'accommodation', 'dining', 'experiences', 'contact'];
+      const sections = ['home', 'accommodation', 'dining', 'pool', 'experiences', 'events', 'gallery'];
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el) {
