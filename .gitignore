@@ -1,0 +1,10 @@
+# C# Build Output
+backend/bin/
+backend/obj/
+
+# Node Package Modules & Bundles
+Frontend/node_modules/
+Frontend/dist/
+
+# OS Files
+.DS_Store
