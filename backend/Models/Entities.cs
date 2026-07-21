@@ -72,4 +72,14 @@ namespace backend.Models
         public string? Message { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
+
+    public class CatalogPrice
+    {
+        public int Id { get; set; }
+        public string ItemKey { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string? Description { get; set; }
+    }
 }

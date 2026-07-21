@@ -78,6 +78,30 @@ export default function Home({
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
+  const [suitesList, setSuitesList] = useState(SUITES);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setSuitesList(prev => prev.map(suite => {
+            let dbKey = '';
+            if (suite.id === 'oasis') dbKey = 'suite_ocean';
+            else if (suite.id === 'overwater') dbKey = 'suite_honeymoon';
+            else if (suite.id === 'penthouse') dbKey = 'suite_presidential';
+
+            const match = prices.find(p => p.itemKey === dbKey);
+            return match ? { ...suite, price: Number(match.price) } : suite;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch catalog prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
@@ -119,7 +143,7 @@ export default function Home({
 
   // Pricing calculator
   const calculateTotal = () => {
-    const suite = SUITES.find(s => s.id === selectedSuiteId);
+    const suite = suitesList.find(s => s.id === selectedSuiteId);
     if (!suite || !checkIn || !checkOut) return 0;
     const d1 = new Date(checkIn);
     const d2 = new Date(checkOut);
@@ -756,17 +780,17 @@ export default function Home({
                 <div>
                   <span className="text-[8px] font-bold tracking-[0.35em] text-resort-gold uppercase">YOUR SELECTION</span>
                   <h3 className="font-serif text-xl font-light text-white mt-1 mb-4">
-                    {SUITES.find(s => s.id === selectedSuiteId)?.name}
+                    {suitesList.find(s => s.id === selectedSuiteId)?.name}
                   </h3>
-                  <div className="rounded-xl overflow-hidden aspect-[4/3] mb-4">
+                  <div className="rounded-xl overflow-hidden aspect-[16/9] mb-4 bg-slate-950/20">
                     <img 
-                      src={SUITES.find(s => s.id === selectedSuiteId)?.image} 
+                      src={suitesList.find(s => s.id === selectedSuiteId)?.image} 
                       alt="Selected Room" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="space-y-1.5 text-xs text-white/60 font-light">
-                    <p className="flex justify-between"><span>Rate per Night:</span> <span className="font-semibold text-white">₹{SUITES.find(s => s.id === selectedSuiteId)?.price.toLocaleString('en-IN')}</span></p>
+                  <div className="space-y-2.5 text-xs text-white/70 font-light">
+                    <p className="flex justify-between"><span>Rate per Night:</span> <span className="font-semibold text-white">₹{suitesList.find(s => s.id === selectedSuiteId)?.price.toLocaleString('en-IN')}</span></p>
                     <p className="flex justify-between"><span>Inclusions:</span> <span className="text-resort-gold">Luxury breakfast, airport pickup</span></p>
                   </div>
                 </div>
@@ -823,7 +847,7 @@ export default function Home({
                             className="w-full glass-input text-xs cursor-pointer text-white"
                             style={{ colorScheme: 'dark' }}
                           >
-                            {SUITES.map((suite) => (
+                            {suitesList.map((suite) => (
                               <option key={suite.id} value={suite.id} className="bg-resort-navy text-white text-xs py-2">{suite.name}</option>
                             ))}
                           </select>
@@ -933,7 +957,7 @@ export default function Home({
                       </div>
                       <h4 className="font-serif text-2xl font-light text-white mb-2">Sanctuary Reserved</h4>
                       <p className="text-xs text-white/60 max-w-sm mb-6 leading-relaxed">
-                        Thank you, {guestName}. We have secured your stay at the **{SUITES.find(s => s.id === selectedSuiteId)?.name}**. A luxury booking receipt has been sent to **{guestEmail}**.
+                        Thank you, {guestName}. We have secured your stay at the **{suitesList.find(s => s.id === selectedSuiteId)?.name}**. A luxury booking receipt has been sent to **{guestEmail}**.
                       </p>
                       <div className="bg-white/[0.03] border border-white/5 rounded-xl px-6 py-3.5 mb-8">
                         <span className="text-[10px] uppercase tracking-wider text-white/40 font-semibold block">Booking Reference</span>

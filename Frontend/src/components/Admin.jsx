@@ -14,6 +14,9 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   const [poolBookings, setPoolBookings] = useState([]);
   const [loungeReservations, setLoungeReservations] = useState([]);
   const [inquiries, setInquiries] = useState([]);
+  const [catalogPrices, setCatalogPrices] = useState([]);
+  const [editingKey, setEditingKey] = useState(null);
+  const [editPriceValue, setEditPriceValue] = useState('');
 
   // Fetch real-time data from .NET backend
   const fetchAllData = async () => {
@@ -66,6 +69,14 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
       }
 
       setInquiries(combinedInquiries);
+
+      // 6. Fetch Catalog Prices
+      const resPrices = await fetch(`${API_BASE_URL}/catalog/prices`);
+      if (resPrices.ok) {
+        const data = await resPrices.json();
+        setCatalogPrices(data || []);
+      }
+
       setDbConnected(true);
 
     } catch (err) {
@@ -81,6 +92,32 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   }, []);
 
   // Action Handlers
+  const handleSavePrice = async (itemKey) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/catalog/prices/${itemKey}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          price: parseFloat(editPriceValue)
+        })
+      });
+      if (response.ok) {
+        setCatalogPrices(prev =>
+          prev.map(p => p.itemKey === itemKey ? { ...p, price: parseFloat(editPriceValue) } : p)
+        );
+        setEditingKey(null);
+        alert("Price details updated successfully!");
+      } else {
+        alert("Failed to update price details.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
+  };
+
   const handleApproveSuite = (id) => {
     setSuiteBookings(prev => 
       prev.map(item => item.id === id ? { ...item, status: 'Approved' } : item)
@@ -195,6 +232,20 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               <Send className="w-4 h-4" /> Inquiries & Queries
             </button>
           </div>
+
+          <div className="pt-6">
+            <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4 font-sans">SETTINGS</p>
+            <button
+              onClick={() => setActiveTab('prices')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
+                activeTab === 'prices' 
+                  ? 'bg-resort-gold text-stone-950 font-bold' 
+                  : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+              }`}
+            >
+              <RefreshCw className="w-4 h-4" /> Manage Catalog Prices
+            </button>
+          </div>
         </aside>
 
         {/* DETAILS LIST GRID */}
@@ -241,6 +292,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                 {activeTab === 'pools' && 'Pool Access Passes'}
                 {activeTab === 'lounges' && 'Lounge Seating Catalog'}
                 {activeTab === 'inquiries' && 'Quotation Request Inquiries'}
+                {activeTab === 'prices' && 'Manage Catalog Rates'}
               </h2>
             </div>
 
@@ -449,6 +501,72 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+
+              {/* 6. CATALOG PRICES TABLE */}
+              {activeTab === 'prices' && (
+                <table className="w-full text-xs text-left min-w-[600px]">
+                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                    <tr>
+                      <th className="px-6 py-4">Category</th>
+                      <th className="px-6 py-4">Item Name</th>
+                      <th className="px-6 py-4">Rate (INR)</th>
+                      <th className="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {catalogPrices.map((item) => (
+                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
+                        <td className="px-6 py-4">
+                          <span className="bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase">
+                            {item.category}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 font-semibold text-white">{item.displayName}</td>
+                        <td className="px-6 py-4">
+                          {editingKey === item.itemKey ? (
+                            <input 
+                              type="number"
+                              value={editPriceValue}
+                              onChange={(e) => setEditPriceValue(e.target.value)}
+                              className="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-resort-gold"
+                            />
+                          ) : (
+                            <span className="font-mono text-resort-gold font-bold">₹{item.price.toLocaleString()}</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-right space-x-2">
+                          {editingKey === item.itemKey ? (
+                            <>
+                              <button 
+                                onClick={() => handleSavePrice(item.itemKey)}
+                                className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-lg hover:bg-emerald-500 hover:text-white transition-colors"
+                              >
+                                Save
+                              </button>
+                              <button 
+                                onClick={() => setEditingKey(null)}
+                                className="bg-slate-700 border border-slate-600 text-slate-300 px-3 py-1 rounded-lg hover:bg-slate-600 hover:text-white transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <button 
+                              onClick={() => {
+                                setEditingKey(item.itemKey);
+                                setEditPriceValue(item.price);
+                              }}
+                              className="bg-resort-gold/10 border border-resort-gold/30 text-resort-gold px-3 py-1 rounded-lg hover:bg-resort-gold hover:text-stone-950 transition-colors"
+                            >
+                              Edit Rate
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

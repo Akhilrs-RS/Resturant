@@ -55,6 +55,31 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
     email: '',
     msg: ''
   });
+  const [weddingsList, setWeddingsList] = useState(WEDDINGS);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setWeddingsList(prev => prev.map(item => {
+            let dbKey = '';
+            if (item.name === 'Traditional Wedding') dbKey = 'wedding_traditional';
+            else if (item.name === 'Beachfront Wedding') dbKey = 'wedding_beachfront';
+            else if (item.name === 'Rainforest Wedding') dbKey = 'wedding_rainforest';
+            else if (item.name === 'Luxury Wedding') dbKey = 'wedding_luxury';
+
+            const match = prices.find(p => p.itemKey === dbKey);
+            return match ? { ...item, price: `From ₹${Number(match.price).toLocaleString('en-IN')}` } : item;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch event prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
@@ -127,7 +152,7 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {WEDDINGS.map((wedding, idx) => (
+          {weddingsList.map((wedding, idx) => (
             <div 
               key={idx}
               className="bg-white rounded-2xl p-6 border border-stone-200/40 shadow-[0_10px_30px_rgba(0,0,0,0.02)] flex flex-col justify-between h-80 hover:shadow-lg transition-shadow duration-300"

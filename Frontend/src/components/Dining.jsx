@@ -33,6 +33,31 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
     name: '',
     email: ''
   });
+  const [menuItemsList, setMenuItemsList] = useState(MENU_ITEMS);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setMenuItemsList(prev => prev.map(item => {
+            let dbKey = '';
+            if (item.name === 'Cherish Pizza Catch') dbKey = 'dining_pizza';
+            else if (item.name === 'Fresh Truffle Entree') dbKey = 'dining_truffle';
+            else if (item.name === 'Coconut Mousse on Pastry') dbKey = 'dining_mousse';
+            else if (item.name === 'Spiced Fruit Tea Cup') dbKey = 'dining_tea';
+
+            const match = prices.find(p => p.itemKey === dbKey);
+            return match ? { ...item, price: `₹${Number(match.price).toLocaleString('en-IN')}` } : item;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch dining prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
@@ -110,7 +135,7 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
               <span className="text-[11px] font-bold tracking-[0.2em] text-resort-gold uppercase block mb-8">Today Special</span>
               
               <div className="space-y-8">
-                {MENU_ITEMS.map((item, idx) => (
+                {menuItemsList.map((item, idx) => (
                   <div key={idx} className="space-y-2">
                     <div className="flex items-end justify-between gap-4 font-serif">
                       <span className="text-stone-900 font-medium text-base md:text-lg whitespace-nowrap">

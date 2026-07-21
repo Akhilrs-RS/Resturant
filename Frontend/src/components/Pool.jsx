@@ -33,6 +33,31 @@ export default function Pool({ handleScrollTo, setCurrentPage }) {
     name: '',
     email: ''
   });
+  const [poolPackagesList, setPoolPackagesList] = useState(POOL_PACKAGES);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setPoolPackagesList(prev => prev.map(item => {
+            let dbKey = '';
+            if (item.name === 'Hour Pass') dbKey = 'pool_hour';
+            else if (item.name === 'Day Pass') dbKey = 'pool_day';
+            else if (item.name === 'Cabana Reserve') dbKey = 'pool_cabana';
+            else if (item.name === 'Sunset Pool Party') dbKey = 'pool_sunset';
+
+            const match = prices.find(p => p.itemKey === dbKey);
+            return match ? { ...item, price: `₹${Number(match.price).toLocaleString('en-IN')}` } : item;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch pool prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
@@ -107,7 +132,7 @@ export default function Pool({ handleScrollTo, setCurrentPage }) {
             </div>
 
             <div className="space-y-8 pt-4">
-              {POOL_PACKAGES.map((item, idx) => (
+              {poolPackagesList.map((item, idx) => (
                 <div key={idx} className="space-y-2">
                   <div className="flex items-end justify-between gap-4 font-serif">
                     <span className="text-stone-900 font-medium text-base md:text-lg whitespace-nowrap">

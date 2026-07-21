@@ -70,10 +70,37 @@ const CATEGORIES = ['All', 'Deluxe', 'Premium', 'Family Villa', 'Villas', 'Honey
 
 export default function Accommodation({ handleOpenBooking, handleScrollTo, setCurrentPage }) {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [roomsList, setRoomsList] = useState(ROOMS_DATA);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setRoomsList(prev => prev.map(room => {
+            let dbKey = '';
+            if (room.id === 'ocean-premium') dbKey = 'suite_deluxe';
+            else if (room.id === 'canopy-family') dbKey = 'suite_ocean';
+            else if (room.id === 'exotic-forest') dbKey = 'suite_ocean';
+            else if (room.id === 'private-pool') dbKey = 'suite_presidential';
+            else if (room.id === 'honeymoon-ocean') dbKey = 'suite_honeymoon';
+            else if (room.id === 'overwater-bungalow') dbKey = 'suite_presidential';
+
+            const match = prices.find(p => p.itemKey === dbKey);
+            return match ? { ...room, price: `₹${Number(match.price).toLocaleString('en-IN')}` } : room;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch room prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
 
   const filteredRooms = activeCategory === 'All'
-    ? ROOMS_DATA
-    : ROOMS_DATA.filter(room => room.category === activeCategory);
+    ? roomsList
+    : roomsList.filter(room => room.category === activeCategory);
 
   return (
     <div className="bg-[#f7f4eb] min-h-screen text-stone-900 select-none">
