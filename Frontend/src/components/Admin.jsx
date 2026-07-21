@@ -3,42 +3,19 @@ import { Shield, BookOpen, Utensils, RefreshCw, Trash2, Check, Send, AlertTriang
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-const MOCK_SUITES = [
-  { id: 1, fullName: 'John Doe', email: 'john@example.com', phone: '+91 98765 43210', suiteId: 'honeymoon_suite', checkInDate: '2026-07-25', checkOutDate: '2026-07-30', guests: '2 Guests', status: 'Approved' },
-  { id: 2, fullName: 'Sarah Smith', email: 'sarah@example.com', phone: '+1 415 555 2671', suiteId: 'ocean_pool_villa', checkInDate: '2026-08-01', checkOutDate: '2026-08-05', guests: '4 Guests', status: 'Pending' }
-];
-
-const MOCK_TABLES = [
-  { id: 1, fullName: 'David Lee', email: 'david@example.com', date: '2026-07-22', time: '19:30', guests: '4 Guests' },
-  { id: 2, fullName: 'Emma Watson', email: 'emma@example.com', date: '2026-07-23', time: '20:00', guests: '2 Guests' }
-];
-
-const MOCK_POOLS = [
-  { id: 1, fullName: 'Michael Chang', email: 'michael@example.com', package: 'Day Pass', date: '2026-07-22', timeSlot: '2:00 PM - 5:00 PM' }
-];
-
-const MOCK_LOUNGES = [
-  { id: 1, fullName: 'Sophia Loren', email: 'sophia@example.com', phone: '+39 06 123456', date: '2026-07-24', time: '21:00', guests: 2, seatingPreference: 'Poolside', occasion: 'Anniversary', specialRequest: 'A bottle of chilled Champagne on arrival please.' }
-];
-
-const MOCK_INQUIRIES = [
-  { id: 1, eventType: 'Beachfront Wedding', guests: '150 Guests', date: '2026-12-12', fullName: 'Emily Clark', email: 'emily@clarkevents.com', message: 'Interested in the beachfront package with custom floral design setup.' },
-  { id: 2, eventType: 'General Inquiry', guests: 'N/A', date: '2026-07-21', fullName: 'Alex Rivera', email: 'alex@riveramail.com', message: 'Do you offer private luxury airport transfer services from Dabolim Airport?' }
-];
-
 export default function Admin({ handleScrollTo, setCurrentPage }) {
   const [activeTab, setActiveTab] = useState('suites');
   const [dbConnected, setDbConnected] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Lists states
-  const [suiteBookings, setSuiteBookings] = useState(MOCK_SUITES);
-  const [tableReservations, setTableReservations] = useState(MOCK_TABLES);
-  const [poolBookings, setPoolBookings] = useState(MOCK_POOLS);
-  const [loungeReservations, setLoungeReservations] = useState(MOCK_LOUNGES);
-  const [inquiries, setInquiries] = useState(MOCK_INQUIRIES);
+  const [suiteBookings, setSuiteBookings] = useState([]);
+  const [tableReservations, setTableReservations] = useState([]);
+  const [poolBookings, setPoolBookings] = useState([]);
+  const [loungeReservations, setLoungeReservations] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
 
-  // Fetch real-time data from .NET backend if online
+  // Fetch real-time data from .NET backend
   const fetchAllData = async () => {
     setLoading(true);
     try {
@@ -46,29 +23,28 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
       const resSuites = await fetch(`${API_BASE_URL}/bookings/suites`);
       if (resSuites.ok) {
         const data = await resSuites.json();
-        if (data && data.length > 0) setSuiteBookings(data);
-        setDbConnected(true);
+        setSuiteBookings(data || []);
       }
 
       // 2. Check Table Reservations
       const resTables = await fetch(`${API_BASE_URL}/reservations/tables`);
       if (resTables.ok) {
         const data = await resTables.json();
-        if (data && data.length > 0) setTableReservations(data);
+        setTableReservations(data || []);
       }
 
       // 3. Check Pool Bookings
       const resPools = await fetch(`${API_BASE_URL}/reservations/pools`);
       if (resPools.ok) {
         const data = await resPools.json();
-        if (data && data.length > 0) setPoolBookings(data);
+        setPoolBookings(data || []);
       }
 
       // 4. Check Lounge Reservations
       const resLounges = await fetch(`${API_BASE_URL}/reservations/lounges`);
       if (resLounges.ok) {
         const data = await resLounges.json();
-        if (data && data.length > 0) setLoungeReservations(data);
+        setLoungeReservations(data || []);
       }
 
       // 5. Check Inquiries & Contacts
@@ -89,12 +65,11 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
         }))];
       }
 
-      if (combinedInquiries.length > 0) {
-        setInquiries(combinedInquiries);
-      }
+      setInquiries(combinedInquiries);
+      setDbConnected(true);
 
     } catch (err) {
-      console.warn("API Server offline, falling back to simulated local database data.");
+      console.error("API Server connection error:", err);
       setDbConnected(false);
     } finally {
       setLoading(false);
@@ -148,10 +123,10 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
             dbConnected 
               ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400' 
-              : 'bg-amber-500/10 border border-amber-500/30 text-amber-400'
+              : 'bg-rose-500/10 border border-rose-500/30 text-rose-400'
           }`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${dbConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-            {dbConnected ? 'Database Connected' : 'Simulated Offline Mode'}
+            <span className={`w-1.5 h-1.5 rounded-full ${dbConnected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+            {dbConnected ? 'Database Connected' : 'Database Offline'}
           </div>
         </div>
       </header>
@@ -245,12 +220,12 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             </div>
           </div>
 
-          {/* Fallback Offline Banner Notice */}
+          {/* Offline Server Notice */}
           {!dbConnected && (
-            <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3 text-amber-400">
+            <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-400">
               <AlertTriangle className="w-5 h-5 flex-shrink-0" />
               <p className="text-xs font-light">
-                <strong>Offline Mock Database mode:</strong> We were unable to reach the API server on <code>{API_BASE_URL}</code>. Displaying simulated resort data. Switch database containers online to retrieve real-time bookings.
+                <strong>API Server Offline:</strong> We are currently unable to reach the backend API server on <code>{API_BASE_URL}</code>. Please check your docker containers and ensure the server is active.
               </p>
             </div>
           )}
