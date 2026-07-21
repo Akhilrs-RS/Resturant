@@ -56,17 +56,40 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
     msg: ''
   });
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
-    alert(`Quotation request sent successfully! We will contact you at ${formData.email} within 24 hours.`);
-    setFormData({
-      eventType: 'Wedding Ceremony',
-      guests: '100 guests',
-      date: '',
-      name: '',
-      email: '',
-      msg: ''
-    });
+    try {
+      const response = await fetch('http://localhost:5210/api/inquiries/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          eventType: formData.eventType,
+          guests: formData.guests,
+          date: new Date(formData.date).toISOString(),
+          fullName: formData.name,
+          email: formData.email,
+          message: formData.msg
+        })
+      });
+      if (response.ok) {
+        alert(`Quotation request sent successfully! We will contact you at ${formData.email} within 24 hours.`);
+        setFormData({
+          eventType: 'Wedding Ceremony',
+          guests: '100 guests',
+          date: '',
+          name: '',
+          email: '',
+          msg: ''
+        });
+      } else {
+        alert("Quotation request failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
   };
 
   return (

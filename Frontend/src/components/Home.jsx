@@ -82,16 +82,39 @@ export default function Home({
   const [bookingLoading, setBookingLoading] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
     if (!guestName || !guestEmail || !checkIn || !checkOut) return;
 
     setBookingLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5210/api/bookings/suites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          suiteId: selectedSuiteId || 'deluxe_room',
+          checkInDate: new Date(checkIn).toISOString(),
+          checkOutDate: new Date(checkOut).toISOString(),
+          guests: guests,
+          fullName: guestName,
+          email: guestEmail,
+          phone: ""
+        })
+      });
+      if (response.ok) {
+        setBookingSubmitted(true);
+        setBookingRef(`TBS-${Math.floor(100000 + Math.random() * 900000)}`);
+      } else {
+        alert("Booking submission failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    } finally {
       setBookingLoading(false);
-      setBookingSubmitted(true);
-      setBookingRef(`TBS-${Math.floor(100000 + Math.random() * 900000)}`);
-    }, 1800);
+    }
   };
 
   // Pricing calculator

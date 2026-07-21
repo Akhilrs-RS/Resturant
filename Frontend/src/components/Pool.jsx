@@ -34,16 +34,38 @@ export default function Pool({ handleScrollTo, setCurrentPage }) {
     email: ''
   });
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
-    alert(`Pool access booked! package: ${formData.pkg} on ${formData.date} during slot: ${formData.timeSlot}. Enjoy the water!`);
-    setFormData({
-      pkg: 'Hour Pass',
-      date: '',
-      timeSlot: 'Morning 08:00 - 12:00',
-      name: '',
-      email: ''
-    });
+    try {
+      const response = await fetch('http://localhost:5210/api/reservations/pools', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          package: formData.pkg,
+          date: new Date(formData.date).toISOString(),
+          timeSlot: formData.timeSlot,
+          fullName: formData.name,
+          email: formData.email
+        })
+      });
+      if (response.ok) {
+        alert(`Pool access booked! package: ${formData.pkg} on ${formData.date} during slot: ${formData.timeSlot}. Enjoy the water!`);
+        setFormData({
+          pkg: 'Hour Pass',
+          date: '',
+          timeSlot: 'Morning 08:00 - 12:00',
+          name: '',
+          email: ''
+        });
+      } else {
+        alert("Pool booking failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
   };
 
   return (

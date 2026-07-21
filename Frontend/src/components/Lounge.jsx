@@ -55,19 +55,45 @@ export default function Lounge({ handleScrollTo, setCurrentPage }) {
     msg: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Lounge table reservation confirmed for ${formData.name}! Seating Preference: ${seatingPreference}, Date: ${formData.date}, Time: ${formData.time}, Guests: ${formData.guests}. See you at the lounge!`);
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      date: '',
-      time: '',
-      guests: '2',
-      occasion: 'Select Occasion',
-      msg: ''
-    });
+    try {
+      const response = await fetch('http://localhost:5210/api/reservations/lounges', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fullName: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          date: new Date(formData.date).toISOString(),
+          time: formData.time,
+          guests: parseInt(formData.guests) || 2,
+          seatingPreference: seatingPreference,
+          occasion: formData.occasion,
+          specialRequest: formData.msg
+        })
+      });
+      if (response.ok) {
+        alert(`Lounge table reservation confirmed for ${formData.name}! Seating Preference: ${seatingPreference}, Date: ${formData.date}, Time: ${formData.time}, Guests: ${formData.guests}. See you at the lounge!`);
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          date: '',
+          time: '',
+          guests: '2',
+          occasion: 'Select Occasion',
+          msg: ''
+        });
+      } else {
+        alert("Lounge reservation failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
   };
 
   return (

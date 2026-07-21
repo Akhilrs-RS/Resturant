@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, BookOpen, Utensils, RefreshCw, Trash2, Check, Send, AlertTriangle } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:5210/api';
 
 export default function Admin({ handleScrollTo, setCurrentPage }) {
   const [activeTab, setActiveTab] = useState('suites');

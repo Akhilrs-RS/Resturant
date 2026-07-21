@@ -34,16 +34,38 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
     email: ''
   });
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
-    alert(`Table reservation confirmed for ${formData.name} on ${formData.date} at ${formData.time} for ${formData.guests}. We look forward to hosting you!`);
-    setFormData({
-      date: '',
-      time: '',
-      guests: '2 Guests',
-      name: '',
-      email: ''
-    });
+    try {
+      const response = await fetch('http://localhost:5210/api/reservations/tables', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          date: new Date(formData.date).toISOString(),
+          time: formData.time,
+          guests: formData.guests,
+          fullName: formData.name,
+          email: formData.email
+        })
+      });
+      if (response.ok) {
+        alert(`Table reservation confirmed for ${formData.name} on ${formData.date} at ${formData.time} for ${formData.guests}. We look forward to hosting you!`);
+        setFormData({
+          date: '',
+          time: '',
+          guests: '2 Guests',
+          name: '',
+          email: ''
+        });
+      } else {
+        alert("Table reservation failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
   };
 
   return (

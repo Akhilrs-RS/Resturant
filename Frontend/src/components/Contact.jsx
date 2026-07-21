@@ -9,14 +9,34 @@ export default function Contact({ handleScrollTo, setCurrentPage }) {
     msg: ''
   });
 
-  const handleInquirySubmit = (e) => {
+  const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you for reaching out, ${formData.name}! Your message has been sent to our concierge team. We will get back to you shortly.`);
-    setFormData({
-      name: '',
-      email: '',
-      msg: ''
-    });
+    try {
+      const response = await fetch('http://localhost:5210/api/inquiries/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          message: formData.msg
+        })
+      });
+      if (response.ok) {
+        alert(`Thank you for reaching out, ${formData.name}! Your message has been sent to our concierge team. We will get back to you shortly.`);
+        setFormData({
+          name: '',
+          email: '',
+          msg: ''
+        });
+      } else {
+        alert("Inquiry submission failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
   };
 
   return (
