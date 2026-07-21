@@ -34,6 +34,9 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
     email: ''
   });
   const [menuItemsList, setMenuItemsList] = useState(MENU_ITEMS);
+  const [reservationSubmitted, setReservationSubmitted] = useState(false);
+  const [reservationLoading, setReservationLoading] = useState(false);
+  const [reservationRef, setReservationRef] = useState('');
 
   React.useEffect(() => {
     const fetchPrices = async () => {
@@ -61,6 +64,7 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
+    setReservationLoading(true);
     try {
       const response = await fetch('http://localhost:5210/api/reservations/tables', {
         method: 'POST',
@@ -76,20 +80,16 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
         })
       });
       if (response.ok) {
-        alert(`Table reservation confirmed for ${formData.name} on ${formData.date} at ${formData.time} for ${formData.guests}. We look forward to hosting you!`);
-        setFormData({
-          date: '',
-          time: '',
-          guests: '2 Guests',
-          name: '',
-          email: ''
-        });
+        setReservationRef(`DINE-${Math.floor(100000 + Math.random() * 900000)}`);
+        setReservationSubmitted(true);
       } else {
         alert("Table reservation failed. Please try again.");
       }
     } catch (err) {
       console.error(err);
       alert("Error connecting to backend database server.");
+    } finally {
+      setReservationLoading(false);
     }
   };
 
@@ -159,88 +159,134 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
           {/* Right: Reserve A Table Widget */}
           <div className="lg:col-span-5">
             <div className="bg-white rounded-3xl p-8 border border-stone-200/40 shadow-[0_10px_35px_rgba(0,0,0,0.02)] relative text-left">
-              <h3 className="font-serif text-xl font-light text-stone-900 mb-6 flex items-center gap-2">
-                Reserve a Table
-              </h3>
-              
-              <form onSubmit={handleBookingSubmit} className="space-y-4">
-                {/* Date Input */}
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Select Date</label>
-                  <div className="relative">
-                    <input 
-                      required 
-                      type="date" 
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700" 
-                    />
-                  </div>
-                </div>
+              {!reservationSubmitted ? (
+                <>
+                  <h3 className="font-serif text-xl font-light text-stone-900 mb-6 flex items-center gap-2">
+                    Reserve a Table
+                  </h3>
+                  
+                  <form onSubmit={handleBookingSubmit} className="space-y-4">
+                    {/* Date Input */}
+                    <div>
+                      <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Select Date</label>
+                      <div className="relative">
+                        <input 
+                          required 
+                          type="date" 
+                          value={formData.date}
+                          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                          className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700" 
+                        />
+                      </div>
+                    </div>
 
-                {/* Time Input */}
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Select Time</label>
-                  <div className="relative">
-                    <input 
-                      required 
-                      type="time" 
-                      value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700" 
-                    />
-                  </div>
-                </div>
+                    {/* Time Input */}
+                    <div>
+                      <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Select Time</label>
+                      <div className="relative">
+                        <input 
+                          required 
+                          type="time" 
+                          value={formData.time}
+                          onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                          className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700" 
+                        />
+                      </div>
+                    </div>
 
-                {/* Guest Count */}
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Guests count</label>
-                  <select 
-                    value={formData.guests}
-                    onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
-                    className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700 appearance-none cursor-pointer"
+                    {/* Guest Count */}
+                    <div>
+                      <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Guests count</label>
+                      <select 
+                        value={formData.guests}
+                        onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors text-stone-700 appearance-none cursor-pointer"
+                      >
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                        <option>5+ Guests</option>
+                      </select>
+                    </div>
+
+                    {/* Full Name */}
+                    <div>
+                      <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Full Name</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="John Doe" 
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors placeholder-stone-400" 
+                      />
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Email Address</label>
+                      <input 
+                        required 
+                        type="email" 
+                        placeholder="john@example.com" 
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors placeholder-stone-400" 
+                      />
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      disabled={reservationLoading}
+                      className="w-full bg-stone-950 text-white text-[11px] font-bold tracking-widest uppercase py-4 rounded-xl hover:bg-resort-gold hover:text-stone-950 transition-all duration-300 mt-4 active:scale-95 shadow-md flex items-center justify-center gap-3"
+                    >
+                      {reservationLoading ? (
+                        <>
+                          <svg className="animate-spin h-4.5 w-4.5 text-white" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Securing Table...
+                        </>
+                      ) : (
+                        'Confirm Reservation'
+                      )}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center text-center py-6">
+                  <div className="w-16 h-16 rounded-full bg-resort-gold/15 border border-resort-gold/30 flex items-center justify-center text-resort-gold mb-6 animate-pulse">
+                    <svg className="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                  </div>
+                  <h4 className="font-serif text-2xl font-light text-stone-900 mb-2">Table Reserved</h4>
+                  <p className="text-xs text-stone-500 max-w-sm mb-6 leading-relaxed">
+                    Thank you, <strong>{formData.name}</strong>. We have secured your table reservation for <strong>{formData.guests}</strong> on <strong>{formData.date}</strong> at <strong>{formData.time}</strong>.
+                  </p>
+                  <div className="bg-stone-50 border border-stone-200/60 rounded-xl px-6 py-3.5 mb-8 w-full text-center">
+                    <span className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block">Reservation Reference</span>
+                    <span className="font-mono text-base font-bold text-stone-800 tracking-wider mt-1 block uppercase">{reservationRef}</span>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setReservationSubmitted(false);
+                      setFormData({
+                        date: '',
+                        time: '',
+                        guests: '2 Guests',
+                        name: '',
+                        email: ''
+                      });
+                    }}
+                    className="w-full bg-stone-950 text-white text-[11px] font-bold tracking-widest uppercase py-4 rounded-xl hover:bg-resort-gold hover:text-stone-950 transition-all duration-300 active:scale-95 shadow-md"
                   >
-                    <option>1 Guest</option>
-                    <option>2 Guests</option>
-                    <option>3 Guests</option>
-                    <option>4 Guests</option>
-                    <option>5+ Guests</option>
-                  </select>
+                    Book Another Table
+                  </button>
                 </div>
-
-                {/* Full Name */}
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Full Name</label>
-                  <input 
-                    required 
-                    type="text" 
-                    placeholder="John Doe" 
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors placeholder-stone-400" 
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="text-[9px] tracking-wider uppercase text-stone-400 font-bold block mb-1.5">Email Address</label>
-                  <input 
-                    required 
-                    type="email" 
-                    placeholder="john@example.com" 
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-resort-gold transition-colors placeholder-stone-400" 
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="w-full bg-stone-950 text-white text-[11px] font-bold tracking-widest uppercase py-4 rounded-xl hover:bg-resort-gold hover:text-stone-950 transition-all duration-300 mt-4 active:scale-95 shadow-md"
-                >
-                  Confirm Reservation
-                </button>
-              </form>
+              )}
             </div>
           </div>
 
