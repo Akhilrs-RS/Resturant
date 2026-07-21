@@ -33,5 +33,21 @@ namespace backend.Controllers
         {
             return await _context.EventInquiries.ToListAsync();
         }
+
+        [HttpPost("contact")]
+        public async Task<IActionResult> CreateContactInquiry([FromBody] ContactInquiry inquiry)
+        {
+            if (inquiry == null) return BadRequest("Invalid inquiry data");
+
+            _context.ContactInquiries.Add(inquiry);
+            await _context.SaveChangesAsync();
+            return Ok(inquiry);
+        }
+
+        [HttpGet("contact")]
+        public async Task<ActionResult<IEnumerable<ContactInquiry>>> GetContactInquiries()
+        {
+            return await _context.ContactInquiries.ToListAsync();
+        }
     }
 }
