@@ -1,54 +1,50 @@
-# Implementation Plan - Backend Verification & Completing Contact Inquiries
+# Implementation Plan - Admin Dashboard Integration
 
-This plan verifies backend coverage for all frontend pages and implements the missing **ContactInquiry** entity to fully complete all backend endpoints matching the frontend forms.
-
----
-
-## Verification & Gap Analysis
-
-Upon reviewing the frontend pages and corresponding C# backend models:
-- **Suite Bookings (Rooms)** -> Supported by `SuiteBookings` table (`BookingsController.cs`). [PASSED]
-- **Dining Reservations (Dining)** -> Supported by `TableReservations` table (`ReservationsController.cs`). [PASSED]
-- **Pool Bookings (Pool)** -> Supported by `PoolBookings` table (`ReservationsController.cs`). [PASSED]
-- **Lounge Reservations (Lounge/Bar)** -> Supported by `LoungeReservations` table (`ReservationsController.cs`). [PASSED]
-- **Event Quotation Request (Events)** -> Supported by `EventInquiries` table (`InquiriesController.cs`). [PASSED]
-- **General Contact Inquiry (Contact Page)** -> **[GAP FOUND]** No C# entity, DbContext mapping, or controller endpoints exist to save messages sent from the Contact page inquiry form!
+This plan implements a premium **Admin Dashboard** page (`Admin.jsx`) to manage all bookings, table reservations, pool passes, lounge seating, and customer inquiries. The admin panel will be accessible by appending `/admin` (or `#admin` fallback) to the URL.
 
 ---
 
-## Proposed Changes to Resolve the Gap
+## Proposed Changes
 
-### [Component Name] backend
+### [New Components]
 
-#### [MODIFY] [Entities.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Models/Entities.cs)
-Add a new `ContactInquiry` class:
-```csharp
-public class ContactInquiry
-{
-    public int Id { get; set; }
-    public string? FullName { get; set; }
-    public string? Email { get; set; }
-    public string? Message { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-}
-```
+#### [NEW] [Admin.jsx](file:///Users/akhilrs/Desktop/Galletrix/Resturant/Frontend/src/components/Admin.jsx)
+- **Visuals**:
+  - Premium dark dashboard header with title `"Etheria Resort Admin Dashboard"`.
+  - Stats row with metrics: Total Bookings, Active Inquiries, Pool passes sold, and Lounge seating reservations.
+  - Interactive tab toggles to inspect different categories.
+  - Table grid with scroll containers, action buttons (Approve, Delete), and search filters.
+  - Connection status badge showing whether the client is successfully connected to the backend API.
 
-#### [MODIFY] [AppDbContext.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Data/AppDbContext.cs)
-Add `DbSet<ContactInquiry> ContactInquiries { get; set; }`.
+---
 
-#### [MODIFY] [InquiriesController.cs](file:///Users/akhilrs/Desktop/Galletrix/Resturant/backend/Controllers/InquiriesController.cs)
-Add endpoints:
-- `POST api/inquiries/contact` -> Save a general inquiry message.
-- `GET api/inquiries/contact` -> Retrieve all general inquiries.
+### [Component Modifications]
+
+#### [MODIFY] [App.jsx](file:///Users/akhilrs/Desktop/Galletrix/Resturant/Frontend/src/App.jsx)
+- Import `Admin` component.
+- Add path-detection routing block in a `useEffect` hook:
+  ```javascript
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === '/admin' || window.location.hash === '#admin') {
+      setCurrentPage('admin');
+    }
+  }, []);
+  ```
+- Conditionally render `<Admin />` when `currentPage === 'admin'`.
 
 ---
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `dotnet ef migrations add AddContactInquiry` to verify migration scripts generation.
-- Build checking:
+- Run `npm run build` in the `Frontend/` folder to check for compilation errors.
+
+### Manual Verification
+- Start the development server locally:
   ```bash
-  cd backend
-  dotnet build
+  cd Frontend
+  npm run dev
   ```
+- Navigate to `http://localhost:5173/admin` or `http://localhost:5173/#admin` and verify that the Admin Dashboard loads.
+- Toggle between tabs (Suite Bookings, Table Reservations, etc.) to inspect data.

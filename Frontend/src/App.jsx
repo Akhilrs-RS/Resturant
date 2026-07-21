@@ -10,6 +10,7 @@ import Gallery from './components/Gallery';
 import Offers from './components/Offers';
 import Contact from './components/Contact';
 import Lounge from './components/Lounge';
+import Admin from './components/Admin';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -115,15 +116,29 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentPage]);
 
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const path = window.location.pathname;
+      if (path === '/admin' || window.location.hash === '#admin') {
+        setCurrentPage('admin');
+      }
+    };
+    handleUrlChange();
+    window.addEventListener('popstate', handleUrlChange);
+    return () => window.removeEventListener('popstate', handleUrlChange);
+  }, []);
+
   return (
     <div className="bg-resort-dark min-h-screen text-slate-100 font-sans selection:bg-resort-gold/30 selection:text-white">
-      <Nav 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        activeSection={activeSection} 
-        handleScrollTo={handleScrollTo} 
-        handleOpenBooking={handleOpenBooking} 
-      />
+      {currentPage !== 'admin' && (
+        <Nav 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          activeSection={activeSection} 
+          handleScrollTo={handleScrollTo} 
+          handleOpenBooking={handleOpenBooking} 
+        />
+      )}
       
       {currentPage === 'home' && (
         <Home 
@@ -202,6 +217,13 @@ export default function App() {
 
       {currentPage === 'contact' && (
         <Contact 
+          handleScrollTo={handleScrollTo}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'admin' && (
+        <Admin 
           handleScrollTo={handleScrollTo}
           setCurrentPage={setCurrentPage}
         />
