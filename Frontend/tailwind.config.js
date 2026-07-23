@@ -7,9 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', '"Outfit"', 'sans-serif'],
-        serif: ['"Playfair Display"', '"Cinzel"', 'serif'],
-        cinzel: ['"Cinzel"', 'serif'],
+        sans: ['"Inter"', 'sans-serif'],
+        serif: ['"DM Serif Display"', 'serif'],
       },
       colors: {
         resort: {

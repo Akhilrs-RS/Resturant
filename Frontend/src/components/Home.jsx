@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Footer from './Footer';
+import m1 from '../assets/m1.jpg';
+import m2 from '../assets/m2.png';
+import m3 from '../assets/m3.png';
+import m4 from '../assets/m4.png';
+import m5 from '../assets/m5.png';
+import m6 from '../assets/m6.jpg';
+import m7 from '../assets/m7.jpg';
+import m8 from '../assets/m8.jpg';
+import m9 from '../assets/m9.jpg';
+import m10 from '../assets/m10.jpg';
+import m11 from '../assets/m11.jpg';
+import g1 from '../assets/g1.jpg';
+import g2 from '../assets/g2.jpg';
+import g3 from '../assets/g3.jpg';
+import img23 from '../assets/23.jpg';
+import img24 from '../assets/24.webp';
 import { 
   Calendar, 
   Users, 
@@ -178,13 +194,13 @@ export default function Home({
         <div className="h-24"></div>
 
         {/* Hero Central Title */}
-        <div className="flex flex-col items-center justify-center px-4 relative z-20 text-center select-none">
+        <div className="flex flex-col items-center justify-center px-4 relative z-20 text-center select-none w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="font-serif tracking-[0.18em] text-[8.5vw] md:text-[9.5vw] font-light text-white leading-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)] uppercase">
+            <h1 className="font-serif tracking-[0.1em] text-[8vw] md:text-[9.vw] font-normal text-white leading-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.55)] uppercase">
               THABASIYA
             </h1>
           </motion.div>
@@ -194,11 +210,11 @@ export default function Home({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 md:mt-10"
+            className="mt-6 md:mt-8"
           >
             <button 
               onClick={() => handleScrollTo('about')}
-              className="bg-black/35 backdrop-blur-[4px] border border-white/60 text-white hover:bg-white hover:text-stone-950 font-sans text-[10px] md:text-[11px] font-bold tracking-[0.25em] px-9 py-4 rounded-full shadow-lg shadow-black/10 hover:shadow-white/5 active:scale-95 transition-all duration-500 uppercase"
+              className="bg-black border border-white/20 text-white hover:bg-white hover:text-stone-950 font-sans text-[10px] md:text-[11px] font-bold tracking-[0.25em] px-9 py-3.5 rounded-md shadow-lg shadow-black/30 hover:shadow-white/5 active:scale-95 transition-all duration-500 uppercase"
             >
               DISCOVER MORE
             </button>
@@ -331,31 +347,31 @@ export default function Home({
           {/* Arched Image Row */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-6xl mx-auto mt-12">
             
-            {/* Left Image: narrow vertical slice */}
+            {/* Left Image: narrow vertical slice (m2) */}
             <div className="w-full md:w-3/12 h-80 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" 
-                alt="Villa lounger pool deck" 
+                src={m2} 
+                alt="Left gallery image" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
             </div>
 
-            {/* Center Image: wide prominent card */}
+            {/* Center Image: wide prominent card (m1) */}
             <div className="w-full md:w-6/12 h-[380px] rounded-3xl overflow-hidden shadow-lg group relative">
               <img 
-                src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" 
-                alt="Etheria resort pool area at night" 
+                src={m1} 
+                alt="Center gallery image" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
             </div>
 
-            {/* Right Image: narrow vertical slice */}
+            {/* Right Image: narrow vertical slice (m3) */}
             <div className="w-full md:w-3/12 h-80 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80" 
-                alt="Beach walkway and cabanas at night" 
+                src={m3} 
+                alt="Right gallery image" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
@@ -395,25 +411,25 @@ export default function Home({
                 title: 'Weekend Escape',
                 desc: 'Save on 2-night weekend stay with complimentary breakfast',
                 discount: '25% OFF',
-                image: 'https://images.unsplash.com/photo-1540553016722-983e48a2cd10?auto=format&fit=crop&w=400&q=80'
+                image: m3
               },
               {
                 title: 'Honeymoon Bliss',
                 desc: 'Romantic suite, couples spa and private candlelit dinner',
                 discount: '20% OFF',
-                image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80'
+                image: m1
               },
               {
                 title: 'Family Holiday',
                 desc: 'Kids stay free plus complimentary pool access and activities',
                 discount: '30% OFF',
-                image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80'
+                image: m4
               },
               {
                 title: 'Moon Retreat',
                 desc: 'Save on 2-night stays with complimentary drinks and stargazing session',
                 discount: '15% OFF',
-                image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80'
+                image: m5
               }
             ].map((offer, idx) => (
               <div 
@@ -453,38 +469,176 @@ export default function Home({
 
 
 
-      {/* 5. THE POOL SECTION */}
-      <section id="pool" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      {/* 5. ROOMS & SUITES SECTION */}
+      <section id="accommodation" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none text-left">
+        <div className="max-w-7xl mx-auto">
           
-          {/* Left text (Right-aligned layout on desktop) */}
-          <div className="space-y-6 text-left lg:text-right flex flex-col lg:items-end">
+          <div className="mb-16">
             <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
-              THE POOL
+              ROOMS & SUITES
             </span>
-            <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight">
-              Where The Water Meets The Sky
+            <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight mt-3">
+              Rest In Refined Comfort
             </h2>
-            <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed max-w-md lg:text-right">
-              Two Infinity Pools, A Serene Lagoon And Dedicated Kids Pool — Book Your Private Slot.
-            </p>
-            <button 
-              onClick={() => handleOpenBooking()}
-              className="bg-stone-950 hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-3 rounded-full text-xs tracking-widest uppercase flex items-center gap-2 group transition-all duration-300 mt-2"
-            >
-              Book Pool Access
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
           </div>
 
-          {/* Right image */}
-          <div className="relative">
-            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-lg group relative">
-              <img 
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" 
-                alt="Infinity pool night view" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Honeymoon Ocean Suite',
+                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
+                guests: '2 Guests',
+                image: m1,
+                price: '$720',
+                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
+              },
+              {
+                title: 'Private Pool Villa',
+                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
+                guests: '2 Guests',
+                image: m6,
+                price: '$890',
+                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
+              },
+              {
+                title: 'Ocean Premium Room',
+                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
+                guests: '2 Guests',
+                image: m7,
+                price: '$340',
+                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
+              }
+            ].map((room, idx) => (
+              <div 
+                key={idx}
+                className="rounded-2xl overflow-hidden bg-white border border-stone-200/40 shadow-xl flex flex-col justify-between"
+              >
+                <div>
+                  <div className="h-64 overflow-hidden relative">
+                    <img 
+                      src={room.image} 
+                      alt={room.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-6 md:p-8 space-y-4">
+                    <h3 className="font-serif text-xl font-light text-stone-900 leading-snug">
+                      {room.title}
+                    </h3>
+                    <p className="text-stone-500 text-xs md:text-sm font-light leading-relaxed">
+                      {room.desc}
+                    </p>
+                    
+                    {/* Metadata tags */}
+                    <div className="flex flex-wrap gap-4 text-[10px] text-stone-400 font-medium pt-2">
+                      <span className="flex items-center gap-1.5">
+                        <Users className="w-3.5 h-3.5 text-resort-gold" />
+                        {room.guests}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5 text-resort-gold" />
+                        Available
+                      </span>
+                    </div>
+
+                    {/* Badge tags */}
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {room.tags.map((tag, i) => (
+                        <span key={i} className="text-[9px] bg-[#f7f4eb] text-stone-600 px-2.5 py-1 rounded-md font-medium tracking-wide">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 md:p-8 pt-0 flex items-center justify-between mt-auto">
+                  <span className="text-stone-950 font-semibold text-lg">
+                    {room.price} <span className="text-[10px] text-stone-400 font-light font-sans">/Night</span>
+                  </span>
+                  <button 
+                    onClick={() => handleOpenBooking()}
+                    className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-6 py-2.5 rounded-full transition-all duration-300 active:scale-95"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. DINING & POOL SECTION */}
+      <section id="dining" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none text-left">
+        <div className="max-w-7xl mx-auto flex flex-col gap-24">
+          
+          {/* Row 1: Dining */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Image */}
+            <div className="relative">
+              <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-lg group relative">
+                <img 
+                  src={m8} 
+                  alt="Culinary Journeys At Sunset" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            </div>
+
+            {/* Right Text */}
+            <div className="space-y-6 flex flex-col items-start">
+              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
+                DINING
+              </span>
+              <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight">
+                Culinary Journeys At Sunset
+              </h2>
+              <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed max-w-md">
+                Ocean-To-Table Cuisine Crafted By Award-Winning Chefs Across Three Signature Restaurants.
+              </p>
+              <button 
+                onClick={() => handleScrollTo('dining')}
+                className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
+              >
+                Reserve A Table
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </div>
+          </div>
+
+          {/* Row 2: The Pool */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Text */}
+            <div className="space-y-6 flex flex-col items-start order-2 lg:order-1">
+              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
+                THE POOL
+              </span>
+              <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight">
+                Where The Water Meets The Sky
+              </h2>
+              <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed max-w-md">
+                Two Infinity Pools, A Serene Lagoon And Dedicated Kids Pool — Book Your Private Slot.
+              </p>
+              <button 
+                onClick={() => handleOpenBooking()}
+                className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
+              >
+                Book Pool Access
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </div>
+
+            {/* Right Image */}
+            <div className="relative order-1 lg:order-2">
+              <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-lg group relative border-4 border-indigo-500/0">
+                <img 
+                  src={m9} 
+                  alt="Where The Water Meets The Sky" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
             </div>
           </div>
 
@@ -492,10 +646,10 @@ export default function Home({
       </section>
 
       {/* 6. THINGS TO DO (GRID) SECTION */}
-      <section id="experiences" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none">
+      <section id="experiences" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none text-left">
         <div className="max-w-7xl mx-auto">
           
-          <div className="max-w-2xl mb-16 text-left">
+          <div className="max-w-2xl mb-16">
             <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">THINGS TO DO</span>
             <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 mt-3 leading-tight">
               Adventure & Wellness Await
@@ -506,32 +660,32 @@ export default function Home({
             {[
               {
                 title: 'Kayaking',
-                image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-                time: '1.0 hrs.',
-                price: '$40'
+                image: m11,
+                time: '1.5 Hrs',
+                price: '$45'
               },
               {
-                title: 'Spa & Ayurveda',
-                image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-                time: '1.5 hrs.',
+                title: 'Spa & Ayurvedha',
+                image: img23,
+                time: '1.5 Hrs',
                 price: '$45'
               },
               {
                 title: 'Zip Line Adventure',
-                image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
-                time: '1.0 hrs.',
+                image: img24,
+                time: '1.5 Hrs',
                 price: '$45'
               },
               {
                 title: 'Sunrise Yoga',
-                image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80',
-                time: '1.0 hrs.',
-                price: '$25'
+                image: m10,
+                time: '1.5 Hrs',
+                price: '$45'
               }
             ].map((activity, idx) => (
               <div 
                 key={idx}
-                className="relative h-80 rounded-2xl overflow-hidden group shadow-md shadow-stone-900/5 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 cursor-pointer"
+                className="relative h-80 rounded-3xl overflow-hidden group shadow-md shadow-stone-900/5 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 cursor-pointer"
               >
                 {/* Image */}
                 <img 
@@ -544,20 +698,14 @@ export default function Home({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10" />
 
                 {/* Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-5 z-20 flex flex-col justify-end text-left">
-                  <h3 className="text-white font-serif text-lg font-light">
+                <div className="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end text-left">
+                  <h3 className="text-white font-serif text-xl font-light">
                     {activity.title}
                   </h3>
                   
-                  <div className="flex items-center gap-3 text-white/70 text-[10px] font-medium tracking-wide mt-2">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-resort-gold" />
-                      {activity.time}
-                    </span>
-                    <span>•</span>
-                    <span className="text-resort-gold">
-                      {activity.price}
-                    </span>
+                  <div className="flex items-center gap-1.5 text-white/70 text-[10px] font-medium tracking-wide mt-2">
+                    <Clock className="w-3.5 h-3.5 text-resort-gold" />
+                    <span>{activity.time} . {activity.price}</span>
                   </div>
                 </div>
               </div>
@@ -623,7 +771,7 @@ export default function Home({
             {/* Image 1: Pool sunset (Width: 5/12) */}
             <div className="md:col-span-5 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="/1.png" 
+                src={g1} 
                 alt="Infinity pool sunset" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -633,7 +781,7 @@ export default function Home({
             {/* Image 2: Island resort aerial (Width: 3/12) */}
             <div className="md:col-span-3 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?auto=format&fit=crop&w=800&q=80" 
+                src={g2} 
                 alt="Resort island view" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -643,7 +791,7 @@ export default function Home({
             {/* Image 3: Luxury bedroom suite (Width: 4/12) */}
             <div className="md:col-span-4 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" 
+                src={g3} 
                 alt="Resort suite" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -653,7 +801,7 @@ export default function Home({
             {/* Image 4: Private pool villa night (Width: 3/12) */}
             <div className="md:col-span-3 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" 
+                src={m1} 
                 alt="Pool villa night" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -663,7 +811,7 @@ export default function Home({
             {/* Image 5: Gastronomy table sunset (Width: 4/12) */}
             <div className="md:col-span-4 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" 
+                src={m8} 
                 alt="Gourmet dish at sunset" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -673,7 +821,7 @@ export default function Home({
             {/* Image 6: Large infinity pool night view (Width: 5/12) */}
             <div className="md:col-span-5 h-72 rounded-2xl overflow-hidden shadow-md shadow-stone-900/5 group relative">
               <img 
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" 
+                src={m9} 
                 alt="Resort infinity pool night view" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />

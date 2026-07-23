@@ -18,9 +18,19 @@ export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedSuiteId, setSelectedSuiteId] = useState(null);
   
+  // Date helper to get formatted date string (YYYY-MM-DD)
+  const getTodayString = (daysOffset = 0) => {
+    const date = new Date();
+    date.setDate(date.getDate() + daysOffset);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   // Date states
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
+  const [checkIn, setCheckIn] = useState(getTodayString(0));
+  const [checkOut, setCheckOut] = useState(getTodayString(1));
   const [guests, setGuests] = useState('2 Guests');
 
   const handleOpenBooking = (suiteId = null) => {
@@ -39,6 +49,11 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    if (id === 'experiences') {
+      setCurrentPage('experiences');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     if (id === 'lounge') {
       setCurrentPage('lounge');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,11 +61,6 @@ export default function App() {
     }
     if (id === 'pool') {
       setCurrentPage('pool');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    if (id === 'experiences') {
-      setCurrentPage('experiences');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -100,7 +110,7 @@ export default function App() {
     if (currentPage !== 'home') return;
 
     const handleScroll = () => {
-      const sections = ['home', 'about', 'offers', 'pool', 'experiences', 'events', 'gallery'];
+      const sections = ['home', 'about', 'offers', 'accommodation', 'dining', 'experiences', 'events', 'gallery'];
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el) {

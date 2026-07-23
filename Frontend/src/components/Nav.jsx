@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, X, Menu } from 'lucide-react';
+import logoBlack from '../assets/logo-black 3.png';
 
 export default function Nav({ currentPage, setCurrentPage, activeSection, handleScrollTo, handleOpenBooking }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,7 +20,11 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
   const handleNavClick = (id) => {
     setMobileMenuOpen(false);
     setExpDropdownOpen(false);
-    handleScrollTo(id);
+    if (id === 'conferences') {
+      handleScrollTo('events');
+    } else {
+      handleScrollTo(id);
+    }
   };
 
   const handleMobileBookClick = () => {
@@ -30,31 +35,17 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-resort-dark/95 backdrop-blur-md border-b border-white/5 py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-stone-200/60 shadow-md py-4' : 'bg-transparent py-6'
       }`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           
           {/* Logo (left) */}
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => handleNavClick('home')}>
-            {/* SVG Emblem */}
-            <div className="w-10 h-10 rounded-full border border-resort-gold/50 flex items-center justify-center bg-resort-navy/40 relative overflow-hidden shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-tr from-resort-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <svg className="w-6 h-6 text-resort-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1" />
-                <path d="M12 5v14M5 12h14" strokeWidth="0.5" strokeOpacity="0.3" />
-                <path d="M12 6c1.5 2 3.5 3 5 5-2 1-3 3-5 5-1.5-2-3.5-3-5-5 2-1 3-3 5-5z" fill="currentColor" fillOpacity="0.15" />
-                <circle cx="12" cy="11" r="2.5" fill="currentColor" />
-              </svg>
-            </div>
-            {/* Logo Text */}
-            <div className="flex flex-col select-none">
-              <span className="font-cinzel text-base md:text-lg font-bold tracking-[0.18em] leading-none text-white transition-colors duration-300 group-hover:text-resort-gold">
-                THABASIYA
-              </span>
-              <span className="text-[8px] md:text-[9px] font-sans tracking-[0.35em] text-resort-gold/90 mt-0.5 leading-none">
-                RESORTS
-              </span>
-            </div>
+            <img 
+              src={logoBlack} 
+              alt="Thabasiya Resorts" 
+              className="h-10 w-auto object-contain transition-opacity duration-300"
+            />
           </div>
 
           {/* Desktop Navigation Links (center) */}
@@ -62,11 +53,9 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
             {[
               { id: 'accommodation', label: 'ACCOMMODATION' },
               { id: 'dining', label: 'DINING' },
-              { id: 'lounge', label: 'LOUNGE/BAR' },
               { id: 'experiences', label: 'EXPERIENCES', hasDropdown: true },
               { id: 'events', label: 'EVENTS' },
               { id: 'offers', label: 'OFFERS' },
-              { id: 'gallery', label: 'GALLERY' },
               { id: 'contact', label: 'CONTACT' }
             ].map((link) => (
               <div 
@@ -80,7 +69,7 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                   className={`flex items-center gap-1.5 text-[11px] xl:text-[12px] font-semibold tracking-[0.16em] uppercase transition-all duration-300 ${
                     (currentPage === link.id || (currentPage === 'home' && activeSection === link.id)) 
                       ? 'text-resort-gold' 
-                      : 'text-white/80 hover:text-white'
+                      : isScrolled ? 'text-stone-700 hover:text-stone-950' : 'text-white/80 hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -96,22 +85,22 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.25 }}
-                        className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-52"
+                        className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-56"
                       >
-                        <div className="glass-panel rounded-xl overflow-hidden shadow-2xl p-2 border border-white/10">
+                        <div className="bg-white rounded-xl overflow-hidden shadow-2xl py-2 border border-stone-100 flex flex-col items-center">
                           {[
-                            { name: 'Soma Ayurvedic Spa', id: 'spa' },
-                            { name: 'Sunset Yacht Escapes', id: 'yacht' },
-                            { name: 'Private Lagoon Dining', id: 'dining' },
-                            { name: 'Island Expeditions', id: 'island' }
+                            { name: 'The Pool', id: 'pool' },
+                            { name: 'Activities & packages', id: 'experiences' },
+                            { name: 'Gallery', id: 'gallery' },
+                            { name: 'Bar', id: 'lounge' }
                           ].map((item, idx) => (
                             <button
                               key={idx}
                               onClick={() => {
-                                handleNavClick('experiences');
+                                handleNavClick(item.id);
                                 setExpDropdownOpen(false);
                               }}
-                              className="w-full text-left px-4 py-2.5 text-[11px] tracking-wider text-white/70 hover:text-resort-gold hover:bg-white/[0.03] rounded-lg transition-all duration-200"
+                              className="w-full text-center px-4 py-3 text-xs tracking-wider text-stone-700 hover:text-resort-gold hover:bg-stone-50 transition-all duration-205 font-medium"
                             >
                               {item.name}
                             </button>
@@ -138,7 +127,9 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
           {/* Mobile Menu Icon */}
           <button 
             onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden text-white hover:text-resort-gold transition-colors duration-200"
+            className={`lg:hidden transition-colors duration-200 ${
+              isScrolled ? 'text-stone-800 hover:text-resort-gold' : 'text-white hover:text-resort-gold'
+            }`}
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -166,7 +157,11 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
             >
               <div>
                 <div className="flex justify-between items-center mb-10">
-                  <span className="font-cinzel tracking-widest text-lg font-bold">THABASIYA</span>
+                  <img 
+                    src={logoBlack} 
+                    alt="Thabasiya Resorts" 
+                    className="h-8 w-auto object-contain"
+                  />
                   <button onClick={() => setMobileMenuOpen(false)} className="text-white hover:text-resort-gold">
                     <X className="w-5 h-5" />
                   </button>
@@ -175,11 +170,9 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                   {[
                     { id: 'accommodation', label: 'ACCOMMODATION' },
                     { id: 'dining', label: 'DINING' },
-                    { id: 'lounge', label: 'LOUNGE/BAR' },
-                    { id: 'experiences', label: 'EXPERIENCES' },
+                    { id: 'conferences', label: 'CONFERENCES' },
                     { id: 'events', label: 'EVENTS' },
                     { id: 'offers', label: 'OFFERS' },
-                    { id: 'gallery', label: 'GALLERY' },
                     { id: 'contact', label: 'CONTACT' }
                   ].map((link) => (
                     <button
