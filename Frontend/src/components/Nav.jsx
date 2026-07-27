@@ -17,6 +17,15 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleDocumentClick = () => {
+      setExpDropdownOpen(false);
+    };
+    window.addEventListener('click', handleDocumentClick);
+    return () => window.removeEventListener('click', handleDocumentClick);
+  }, []);
+
   const handleNavClick = (id) => {
     setMobileMenuOpen(false);
     setExpDropdownOpen(false);
@@ -65,7 +74,15 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                 onMouseLeave={() => link.hasDropdown && setExpDropdownOpen(false)}
               >
                 <button
-                  onClick={() => handleNavClick(link.id)}
+                  onClick={(e) => {
+                    if (link.hasDropdown) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setExpDropdownOpen(!expDropdownOpen);
+                    } else {
+                      handleNavClick(link.id);
+                    }
+                  }}
                   className={`flex items-center gap-1.5 text-[11px] xl:text-[12px] font-semibold tracking-[0.16em] uppercase transition-all duration-300 ${
                     (currentPage === link.id || (currentPage === 'home' && activeSection === link.id)) 
                       ? 'text-resort-gold' 
@@ -117,7 +134,7 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
           {/* Book Your Story Button (right) */}
           <div className="hidden lg:block">
             <button 
-              onClick={() => handleOpenBooking()}
+              onClick={() => handleNavClick('contact')}
               className="bg-resort-gold text-stone-950 text-[11px] xl:text-[12px] font-bold tracking-[0.15em] uppercase px-7 py-3 rounded-full hover:bg-resort-gold-hover hover:shadow-lg hover:shadow-resort-gold/10 transition-all duration-300 active:scale-95"
             >
               Book Your Story
@@ -188,7 +205,10 @@ export default function Nav({ currentPage, setCurrentPage, activeSection, handle
                 </nav>
               </div>
               <button 
-                onClick={handleMobileBookClick}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleNavClick('contact');
+                }}
                 className="w-full bg-resort-gold text-stone-950 text-xs font-bold tracking-widest uppercase py-3.5 rounded-full text-center hover:bg-resort-gold-hover transition-colors"
               >
                 Book Your Story
