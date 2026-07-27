@@ -1,216 +1,325 @@
 import React from 'react';
-import { Calendar, Clock, MapPin, Shield } from 'lucide-react';
+import { Clock, Users, AlertCircle } from 'lucide-react';
 import Footer from './Footer';
+import heroBg from '../assets/m11.jpg';
+import pkg1 from '../assets/m1.jpg';
+import pkg2 from '../assets/m4.png';
+import pkg3 from '../assets/m2.png';
+import pkg4 from '../assets/m3.png';
+import pkg5 from '../assets/m11.jpg';
+import pkg6 from '../assets/m6.jpg';
 
 const ACTIVITIES = [
   {
     name: 'Kayaking',
-    price: '₹2,400',
-    duration: '2 Hours',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=400&q=80',
-    desc: 'Glide through quiet island mangroves and coral lagoons led by experienced naturalists.'
+    category: 'WATER',
+    price: '$47',
+    duration: '1.5 hrs',
+    people: '6 max',
+    note: 'Life jackets provided. Swimming policy recommended.',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80',
+    desc: 'Glide across calm turquoise water at sunrise.'
   },
   {
-    name: 'Spark Ayurveda',
-    price: '₹4,800',
-    duration: '90 Mins',
-    image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80',
-    desc: 'Traditional healing massages, herbal compresses, and steam baths tailored to your bio-type.'
+    name: 'Spa & Ayurveda',
+    category: 'WELLNESS',
+    price: '$120',
+    duration: '1.5 hrs',
+    people: '2 max',
+    note: 'Doctor clearance for health conditions',
+    image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=600&q=80',
+    desc: 'Restorative therapies rooted in ancient tradition.'
   },
   {
     name: 'Zip Line Adventure',
-    price: '₹7,200',
-    duration: '1 Hour',
-    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80',
-    desc: 'Fly across tropical ocean tree lines and enjoy a birds-eye view of Coral Bay.'
+    category: 'OUTDOOR',
+    price: '$60',
+    duration: '1.5 hrs',
+    people: '8 max',
+    note: 'Weight limit 120kg. Harness training mandatory.',
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=600&q=80',
+    desc: 'Soar above the jungle canopy on our thrilling zip line.'
   },
   {
     name: 'Sunrise Yoga',
-    price: '₹1,200',
-    duration: '60 Mins',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80',
-    desc: 'Gentle morning yoga flows on the quiet beach as the sun slowly rises over the horizon.'
+    category: 'NATURE',
+    price: '$30',
+    duration: '1.5 hrs',
+    people: '8 max',
+    note: 'Suitable for anyone.',
+    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80',
+    desc: 'Greet the day with guided yoga on the ocean terrace.'
   },
   {
-    name: 'Snorkeling',
-    price: '₹3,400',
-    duration: '3 Hours',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80',
-    desc: 'Discover colorful coral reefs, tropical reef fish, and sea turtles with safety escorts.'
+    name: 'Bonfire Evening',
+    category: 'SOCIAL',
+    price: '$25',
+    duration: '1.5 hrs',
+    people: '20 max',
+    note: 'Supervised at all times.',
+    image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=600&q=80',
+    desc: 'Gather under the stars around a warm beach bonfire.'
   },
   {
     name: 'Kids Water Games',
-    price: '₹1,600',
-    duration: '2 Hours',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80',
-    desc: 'Supervised splash play, pool treasure hunts, and friendly team games for children.'
+    category: 'FAMILY',
+    price: '$15',
+    duration: '1.5 hrs',
+    people: '8 max',
+    note: 'Lifeguard supervised. Ages 4-12.',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=600&q=80',
+    desc: 'Splashing fun and games in our dedicated kids pool.'
   }
 ];
+
+const CATEGORY_COLORS = {
+  WATER:   'bg-sky-100 text-sky-700',
+  WELLNESS:'bg-purple-100 text-purple-700',
+  OUTDOOR: 'bg-orange-100 text-orange-700',
+  NATURE:  'bg-green-100 text-green-700',
+  SOCIAL:  'bg-amber-100 text-amber-700',
+  FAMILY:  'bg-pink-100 text-pink-700',
+};
 
 const PACKAGES = [
   {
     name: 'Honeymoon Package',
-    price: '₹12,000 / Night',
-    desc: 'Includes romantic suite stay, couples spa massage, and a private sunset candlelit beach dinner.',
-    details: 'Min. 3 Nights stay'
+    category: 'ROMANCE & ESCAPES',
+    price: '$2400',
+    nights: '/ 3 nights',
+    image: pkg1,
+    desc: '3 nights in a honeymoon suite with couples spa, candlelit dinners and sunset cruise.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
   },
   {
     name: 'Family Package',
-    price: '₹18,000 / Night',
-    desc: 'Includes 2 interconnected bedrooms, free kids splash club access, and a guided garden tour.',
-    details: 'Min. 2 Nights stay'
+    category: 'FAMILIES & FRIENDS',
+    price: '$1800',
+    nights: '/ 3 nights',
+    image: pkg2,
+    desc: 'Family suite with kids activities, all-day dining and pool access.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
   },
   {
-    name: 'Adventure Package',
-    price: '₹15,000 / Night',
-    desc: 'Includes kayaking tours, zip line passes, and daily snorkeling excursions with equipment.',
-    details: 'Min. 3 Nights stay'
-  },
-  {
-    name: 'Wellness Package',
-    price: '₹14,000 / Night',
-    desc: 'Includes daily yoga therapy sessions, organic meal plans, and ayurvedic detox body treatments.',
-    details: 'Min. 5 Nights stay'
-  },
-  {
-    name: 'Corporate Package',
-    price: '₹16,000 / Night',
-    desc: 'Includes high-speed private WiFi hubs, standard meeting rooms, and mid-day tea breaks.',
-    details: 'Min. 10 Guests'
+    name: 'Wellness Retreat',
+    category: 'RESTORE & RENEW',
+    price: '$2100',
+    nights: '/ 4 nights',
+    image: pkg3,
+    desc: 'Daily spa, yoga, ayurveda and wholesome cuisine over 4 nights.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
   },
   {
     name: 'Weekend Getaway',
-    price: '₹11,000 / Night',
-    desc: 'Includes early morning check-in, late afternoon check-out, and premium sunset lounge drinks.',
-    details: 'Fri - Sun bookings'
+    category: 'QUICK ESCAPES',
+    price: '$800',
+    nights: '/ 2 nights',
+    image: pkg4,
+    desc: '2 nights of pure relaxation with breakfast and pool access.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
+  },
+  {
+    name: 'Adventure Package',
+    category: 'FOR THE THRILL SEEKERS',
+    price: '$1500',
+    nights: '/ 3 nights',
+    image: pkg5,
+    desc: 'Zip line, kayaking, trekking and bonfire nights over 3 days.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
+  },
+  {
+    name: 'Corporate Retreat',
+    category: 'WORK AND WELLNESS',
+    price: '$3200',
+    nights: '/ 3 nights',
+    image: pkg6,
+    desc: 'Conference facilities, team activities and premium accommodation.',
+    includes: ['Honeymoon Suite', 'Couples Spa', 'Candlelit Dinner', 'Sunset Cruise']
   }
 ];
 
 export default function Experiences({ handleScrollTo, setCurrentPage }) {
-  const handleInquiryClick = (pkgName) => {
-    alert(`Thank you for inquiring about the ${pkgName}. Our reservations manager will contact you shortly!`);
+  const handleBookNow = (activityName) => {
+    alert(`Booking request for "${activityName}" received. Our team will confirm your slot shortly!`);
   };
 
   return (
     <div className="bg-[#f7f4eb] min-h-screen text-stone-900 select-none">
-      
+
       {/* 1. HERO BANNER */}
-      <section className="relative h-[45vh] w-full flex items-end bg-[url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center">
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/40 z-10" />
-        
-        {/* Banner text */}
+      <section
+        className="relative h-[48vh] w-full flex items-end bg-cover bg-center"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      >
+        <div className="absolute inset-0 bg-black/45 z-10" />
         <div className="max-w-7xl mx-auto w-full px-6 md:px-12 pb-12 relative z-20 text-left">
           <div className="space-y-2">
-            <span className="text-[11px] font-bold tracking-[0.4em] text-resort-gold uppercase block">
-              ACTIVITIES & PACKAGES
+            <span className="text-[11px] font-semibold tracking-[0.35em] text-white/80 uppercase block">
+              Activities &amp; Packages
             </span>
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-white leading-tight">
               Adventure meets serenity
             </h1>
-            <p className="text-white/80 text-xs md:text-sm font-light max-w-md mt-2 leading-relaxed">
-              From adrenaline to deep calm — curated experiences for every kind of traveler.
+            <p className="text-white/75 text-xs md:text-sm font-light max-w-lg mt-2 leading-relaxed">
+              From adrenaline to deep calm — curated experiences for every kind of traveller.
             </p>
           </div>
         </div>
       </section>
 
       {/* 2. ACTIVITIES GRID */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto text-left">
-        <div className="space-y-3 mb-16">
-          <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">RESORT ACTIVITIES</span>
-          <h2 className="font-serif text-3xl md:text-4xl font-light text-stone-900 leading-tight">
-            Curated Experiences
+      <section className="py-14 px-6 md:px-12 max-w-7xl mx-auto text-left">
+
+        {/* Section header */}
+        <div className="mb-10">
+          <span className="text-[11px] font-semibold tracking-[0.35em] text-[#c5a253] uppercase block mb-1">
+            Experiences
+          </span>
+          <h2 className="font-serif text-3xl md:text-[2rem] font-light text-stone-900 leading-tight">
+            Resort activities
           </h2>
-          <div className="w-16 h-[1px] bg-resort-gold/60 pt-2" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {ACTIVITIES.map((activity, idx) => (
-            <div 
+            <div
               key={idx}
-              className="rounded-2xl overflow-hidden bg-white border border-stone-200/40 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_15px_40px_rgba(196,155,85,0.06)] hover:-translate-y-1 transition-all duration-500 flex flex-col group"
+              className="rounded-xl overflow-hidden bg-white border border-stone-200/60 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
             >
               {/* Image */}
-              <div className="h-60 overflow-hidden relative">
-                <img 
-                  src={activity.image} 
-                  alt={activity.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              <div className="h-48 overflow-hidden relative">
+                <img
+                  src={activity.image}
+                  alt={activity.name}
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
               </div>
 
-              {/* Details */}
-              <div className="p-6 md:p-8 flex-1 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <h3 className="font-serif text-lg font-semibold text-stone-900 group-hover:text-resort-gold transition-colors duration-300">
-                    {activity.name}
-                  </h3>
-                  <p className="text-stone-500 text-xs md:text-sm font-light leading-relaxed">
-                    {activity.desc}
-                  </p>
+              {/* Content */}
+              <div className="p-5 flex-1 flex flex-col">
+                {/* Category tag */}
+                <span className={`inline-block text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full mb-2 w-fit ${CATEGORY_COLORS[activity.category] || 'bg-stone-100 text-stone-600'}`}>
+                  {activity.category}
+                </span>
 
-                  <div className="flex items-center gap-4 text-[10px] text-stone-400 font-medium pt-2">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-resort-gold" />
-                      {activity.duration}
-                    </span>
-                  </div>
+                {/* Name */}
+                <h3 className="font-serif text-base font-medium text-stone-900 mb-1">
+                  {activity.name}
+                </h3>
+
+                {/* Short desc */}
+                <p className="text-stone-500 text-xs font-light leading-relaxed mb-3">
+                  {activity.desc}
+                </p>
+
+                {/* Meta: duration + people */}
+                <div className="flex items-center gap-4 text-[11px] text-stone-400 mb-2.5">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {activity.duration}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    {activity.people}
+                  </span>
                 </div>
 
-                <div className="flex items-center justify-between pt-8 border-t border-stone-100 mt-6">
-                  <span className="text-stone-900 font-semibold text-sm md:text-base">
+                {/* Note */}
+                <div className="flex items-start gap-1.5 mb-4">
+                  <AlertCircle className="w-3 h-3 text-stone-400 mt-0.5 shrink-0" />
+                  <span className="text-[10px] text-stone-400 leading-snug">{activity.note}</span>
+                </div>
+
+                {/* Price + CTA */}
+                <div className="flex items-center justify-between mt-auto pt-3 border-t border-stone-100">
+                  <span className="text-stone-900 font-semibold text-sm">
                     {activity.price}
                   </span>
-                  <button 
-                    onClick={() => handleInquiryClick(activity.name)}
-                    className="bg-stone-950 hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-2.5 rounded-full text-xs tracking-wider transition-all duration-300 uppercase"
+                  <button
+                    onClick={() => handleBookNow(activity.name)}
+                    className="bg-stone-950 text-white text-[10px] font-semibold tracking-widest uppercase px-4 py-2 rounded-lg hover:bg-stone-700 transition-all duration-200 active:scale-95"
                   >
-                    Inquire
+                    Book Now
                   </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
       </section>
 
-      {/* 3. RESORT PACKAGES (DARK NAVY BACKGROUND) */}
-      <section className="py-24 bg-[#050b16] px-6 md:px-12 text-white relative">
-        <div className="max-w-7xl mx-auto text-left">
-          
-          <div className="space-y-3 mb-16">
-            <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">CURATED STAYS</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-light text-white leading-tight">
+      {/* 3. RESORT PACKAGES — DARK NAVY */}
+      <section className="py-16 bg-[#0d1b2e] px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+
+          {/* Section header */}
+          <div className="mb-10 text-left">
+            <span className="text-[11px] font-semibold tracking-[0.35em] text-[#c5a253] uppercase block mb-1">
+              Curated Stays
+            </span>
+            <h2 className="font-serif text-3xl md:text-[2rem] font-light text-white leading-tight">
               Resort packages
             </h2>
-            <div className="w-16 h-[1px] bg-resort-gold/60 pt-2" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Package cards grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {PACKAGES.map((pkg, idx) => (
-              <div 
+              <div
                 key={idx}
-                className="bg-white/[0.02] border border-white/10 rounded-2xl p-8 hover:bg-white/[0.04] transition-all duration-300 flex flex-col justify-between h-72"
+                className="rounded-xl overflow-hidden bg-[#1a2d45] border border-white/10 hover:border-[#c5a253]/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
               >
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="font-serif text-lg font-light text-white">{pkg.name}</h3>
-                    <span className="text-xs text-resort-gold font-sans whitespace-nowrap">{pkg.details}</span>
-                  </div>
-                  <p className="text-white/60 text-xs font-light leading-relaxed">
-                    {pkg.desc}
-                  </p>
+                {/* Image */}
+                <div className="h-44 overflow-hidden">
+                  <img
+                    src={pkg.image}
+                    alt={pkg.name}
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
                 </div>
 
-                <div className="flex items-center justify-between pt-6 border-t border-white/5 mt-6">
-                  <span className="text-resort-gold text-sm font-semibold">{pkg.price}</span>
-                  <button 
-                    onClick={() => handleInquiryClick(pkg.name)}
-                    className="border border-resort-gold/30 hover:border-resort-gold text-resort-gold hover:text-stone-950 hover:bg-resort-gold font-bold px-5 py-2 rounded-full text-xs tracking-wider transition-all duration-300 uppercase"
-                  >
-                    Inquire
-                  </button>
+                {/* Content */}
+                <div className="p-5 flex-1 flex flex-col">
+                  {/* Category tag */}
+                  <span className="text-[8px] font-bold tracking-widest uppercase text-[#c5a253] mb-2 block">
+                    {pkg.category}
+                  </span>
+
+                  {/* Name */}
+                  <h3 className="font-serif text-base font-medium text-white mb-1.5">
+                    {pkg.name}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-white/55 text-[11px] font-light leading-relaxed mb-3">
+                    {pkg.desc}
+                  </p>
+
+                  {/* Includes bullet list */}
+                  <ul className="space-y-1 mb-5">
+                    {pkg.includes.map((item, i) => (
+                      <li key={i} className="text-white/50 text-[11px] flex items-start gap-1.5">
+                        <span className="text-[#c5a253] mt-0.5">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Price + CTA */}
+                  <div className="flex items-center justify-between mt-auto pt-3 border-t border-white/10">
+                    <div>
+                      <span className="text-white font-semibold text-sm">{pkg.price}</span>
+                      <span className="text-white/40 text-[10px] ml-1">{pkg.nights}</span>
+                    </div>
+                    <button
+                      onClick={() => alert(`Enquiry for ${pkg.name} received! Our team will reach out shortly.`)}
+                      className="bg-[#c5a253] hover:bg-[#d4b56a] text-stone-950 text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-lg transition-all duration-200 active:scale-95"
+                    >
+                      Enquire
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
