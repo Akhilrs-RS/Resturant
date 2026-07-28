@@ -99,8 +99,8 @@ export default function Contact({ handleScrollTo, setCurrentPage }) {
                 </div>
                 <div>
                   <p className="text-[9px] text-stone-400 font-bold uppercase tracking-wider">Email</p>
-                  <a href="mailto:reservations@etheria.com" className="text-sm font-medium text-stone-800 hover:text-resort-gold transition-colors mt-1 block">
-                    reservations@etheria.com
+                  <a href="mailto:reservations@thabasiya.com" className="text-sm font-medium text-stone-800 hover:text-resort-gold transition-colors mt-1 block">
+                    reservations@thabasiya.com
                   </a>
                 </div>
               </div>

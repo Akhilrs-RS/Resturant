@@ -4,6 +4,16 @@ import { Shield, BookOpen, Utensils, RefreshCw, Trash2, Check, Send, AlertTriang
 const API_BASE_URL = 'http://localhost:5210/api';
 
 export default function Admin({ handleScrollTo, setCurrentPage }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('admin_auth') === 'true';
+  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const [recoverySuccess, setRecoverySuccess] = useState(false);
+  const [authError, setAuthError] = useState('');
+
   const [activeTab, setActiveTab] = useState('suites');
   const [dbConnected, setDbConnected] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,6 +27,30 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   const [catalogPrices, setCatalogPrices] = useState([]);
   const [editingKey, setEditingKey] = useState(null);
   const [editPriceValue, setEditPriceValue] = useState('');
+  const [editPriceImage, setEditPriceImage] = useState('');
+  const [editRoomTitle, setEditRoomTitle] = useState('');
+  const [editRoomDesc, setEditRoomDesc] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username === 'admin' && password === 'thabasya2026') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_auth', 'true');
+      setAuthError('');
+    } else {
+      setAuthError('Invalid username or password.');
+    }
+  };
+
+  const handleRecoverySubmit = (e) => {
+    e.preventDefault();
+    if (recoveryEmail.trim()) {
+      setRecoverySuccess(true);
+      setAuthError('');
+    } else {
+      setAuthError('Please enter a valid email address.');
+    }
+  };
 
   // Fetch real-time data from .NET backend
   const fetchAllData = async () => {
@@ -88,8 +122,10 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   };
 
   useEffect(() => {
-    fetchAllData();
-  }, []);
+    if (isAuthenticated) {
+      fetchAllData();
+    }
+  }, [isAuthenticated]);
 
   // Action Handlers
   const handleSavePrice = async (itemKey) => {
@@ -100,17 +136,51 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          price: parseFloat(editPriceValue)
+          price: parseFloat(editPriceValue),
+          imageUrl: editPriceImage || undefined
         })
       });
       if (response.ok) {
+        const updatedItem = await response.json();
         setCatalogPrices(prev =>
-          prev.map(p => p.itemKey === itemKey ? { ...p, price: parseFloat(editPriceValue) } : p)
+          prev.map(p => p.itemKey === itemKey ? updatedItem : p)
         );
         setEditingKey(null);
+        setEditPriceImage('');
         alert("Price details updated successfully!");
       } else {
         alert("Failed to update price details.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to backend database server.");
+    }
+  };
+
+  const handleSaveRoomDetails = async (itemKey) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/catalog/prices/${itemKey}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          price: parseFloat(editPriceValue),
+          displayName: editRoomTitle,
+          description: editRoomDesc,
+          imageUrl: editPriceImage || undefined
+        })
+      });
+      if (response.ok) {
+        const updatedItem = await response.json();
+        setCatalogPrices(prev =>
+          prev.map(p => p.itemKey === itemKey ? updatedItem : p)
+        );
+        setEditingKey(null);
+        setEditPriceImage('');
+        alert("Suite details and image updated successfully!");
+      } else {
+        alert("Failed to update suite details.");
       }
     } catch (err) {
       console.error(err);
@@ -132,6 +202,136 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
     if (category === 'inquiries') setInquiries(prev => prev.filter(i => i.id !== id));
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-[#0b121f] min-h-screen text-slate-100 font-sans flex items-center justify-center p-6 select-none">
+        <div className="w-full max-w-md bg-[#121a28] border border-slate-800 rounded-3xl p-8 shadow-2xl relative">
+          
+          {/* Logo / Icon */}
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-12 h-12 bg-resort-gold rounded-2xl flex items-center justify-center text-stone-950 font-serif font-bold text-xl mb-3">
+              E
+            </div>
+            <h2 className="font-serif text-2xl font-light text-white tracking-wide">
+              {recoveryMode ? 'Reset Password' : 'Admin Login'}
+            </h2>
+            <p className="text-[10px] text-slate-500 tracking-wider uppercase font-semibold mt-1">
+              Thabasiya Resort Console
+            </p>
+          </div>
+
+          {authError && (
+            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl p-3 text-xs mb-6 text-center">
+              {authError}
+            </div>
+          )}
+
+          {recoveryMode ? (
+            /* Forgot Password / Recovery mode */
+            recoverySuccess ? (
+              <div className="text-center space-y-4">
+                <div className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-xs leading-relaxed">
+                  A password reset link has been sent to <strong>{recoveryEmail}</strong>. Please check your inbox.
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRecoveryMode(false);
+                    setRecoverySuccess(false);
+                    setRecoveryEmail('');
+                    setAuthError('');
+                  }}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition-all"
+                >
+                  Back to Login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleRecoverySubmit} className="space-y-4">
+                <div>
+                  <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold block mb-2">EMAIL ADDRESS</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="Enter your registered email"
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-resort-gold hover:bg-resort-gold/80 text-stone-950 text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-205 active:scale-98"
+                >
+                  Send Reset Link
+                </button>
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRecoveryMode(false);
+                      setAuthError('');
+                    }}
+                    className="text-xs text-slate-400 hover:text-white transition-colors"
+                  >
+                    Cancel &amp; Return to Login
+                  </button>
+                </div>
+              </form>
+            )
+          ) : (
+            /* Login Form */
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold block mb-2">USERNAME</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                />
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold">PASSWORD</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRecoveryMode(true);
+                      setAuthError('');
+                    }}
+                    className="text-[10px] text-resort-gold hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+                <input
+                  required
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-resort-gold hover:bg-resort-gold/80 text-stone-950 text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 active:scale-98 mt-2"
+              >
+                Log In
+              </button>
+            </form>
+          )}
+
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#121a28] min-h-screen text-slate-100 font-sans select-none flex flex-col">
       
@@ -142,7 +342,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             E
           </div>
           <div>
-            <h1 className="font-serif text-lg font-light tracking-wide text-white">Etheria Resort</h1>
+            <h1 className="font-serif text-lg font-light tracking-wide text-white">Thabasiya Resorts</h1>
             <span className="text-[9px] tracking-wider text-slate-500 font-bold uppercase">Admin Console</span>
           </div>
         </div>
@@ -165,6 +365,16 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             <span className={`w-1.5 h-1.5 rounded-full ${dbConnected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
             {dbConnected ? 'Database Connected' : 'Database Offline'}
           </div>
+
+          <button
+            onClick={() => {
+              setIsAuthenticated(false);
+              sessionStorage.removeItem('admin_auth');
+            }}
+            className="px-3.5 py-1.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-semibold transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </header>
 
@@ -244,6 +454,17 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               }`}
             >
               <RefreshCw className="w-4 h-4" /> Manage Catalog Prices
+            </button>
+
+            <button
+              onClick={() => setActiveTab('rooms')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 mt-2 ${
+                activeTab === 'rooms' 
+                  ? 'bg-resort-gold text-stone-950 font-bold' 
+                  : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+              }`}
+            >
+              <Shield className="w-4 h-4" /> Manage Rooms &amp; Suites
             </button>
           </div>
         </aside>
@@ -527,15 +748,64 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                             {item.category}
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-semibold text-white">{item.displayName}</td>
+                        <td className="px-6 py-4 font-semibold text-white">
+                          <div className="flex items-center gap-3">
+                            {item.imageUrl ? (
+                              <img
+                                src={item.imageUrl}
+                                alt={item.displayName}
+                                className="w-8 h-8 rounded-md object-cover border border-slate-700"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-500 text-[10px]" title="Default Asset Image">
+                                Img
+                              </div>
+                            )}
+                            <span>{item.displayName}</span>
+                          </div>
+                        </td>
                         <td className="px-6 py-4">
                           {editingKey === item.itemKey ? (
-                            <input 
-                              type="number"
-                              value={editPriceValue}
-                              onChange={(e) => setEditPriceValue(e.target.value)}
-                              className="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-resort-gold"
-                            />
+                            <div className="space-y-2">
+                              <input 
+                                type="number"
+                                value={editPriceValue}
+                                onChange={(e) => setEditPriceValue(e.target.value)}
+                                className="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-resort-gold"
+                              />
+                              {item.category === "Suites" && (
+                                <div className="space-y-1">
+                                  <label className="text-[9px] text-slate-400 block font-semibold uppercase tracking-wider">Upload Suite Image</label>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      const file = e.target.files[0];
+                                      if (file) {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                          setEditPriceImage(reader.result);
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }
+                                    }}
+                                    className="text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-850 file:text-slate-200 hover:file:bg-slate-750 cursor-pointer"
+                                  />
+                                  {editPriceImage && (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[9px] text-emerald-400 font-semibold">Selected</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => setEditPriceImage('')}
+                                        className="text-[9px] text-rose-400 hover:underline"
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           ) : (
                             <span className="font-mono text-resort-gold font-bold">₹{item.price.toLocaleString()}</span>
                           )}
@@ -550,7 +820,10 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                 Save
                               </button>
                               <button 
-                                onClick={() => setEditingKey(null)}
+                                onClick={() => {
+                                  setEditingKey(null);
+                                  setEditPriceImage('');
+                                }}
                                 className="bg-slate-700 border border-slate-600 text-slate-300 px-3 py-1 rounded-lg hover:bg-slate-600 hover:text-white transition-colors"
                               >
                                 Cancel
@@ -561,6 +834,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                               onClick={() => {
                                 setEditingKey(item.itemKey);
                                 setEditPriceValue(item.price);
+                                setEditPriceImage(item.imageUrl || '');
                               }}
                               className="bg-resort-gold/10 border border-resort-gold/30 text-resort-gold px-3 py-1 rounded-lg hover:bg-resort-gold hover:text-stone-950 transition-colors"
                             >
@@ -572,6 +846,144 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                     ))}
                   </tbody>
                 </table>
+              )}
+
+              {/* 7. MANAGE ROOMS & SUITES (GRID OF EDITABLE CARDS) */}
+              {activeTab === 'rooms' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                  {catalogPrices.filter(item => item.category === 'Suites').map((room) => {
+                    const isEditingThis = editingKey === room.itemKey;
+                    return (
+                      <div key={room.id} className="bg-[#121b2a] border border-slate-800 rounded-3xl p-6 flex flex-col justify-between space-y-6">
+                        
+                        {/* Image Preview */}
+                        <div className="relative h-48 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center">
+                          {(isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl) ? (
+                            <img 
+                              src={isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl} 
+                              alt={room.displayName} 
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="text-slate-500 text-xs text-center flex flex-col items-center gap-2">
+                              <Shield className="w-8 h-8 text-slate-650" />
+                              No custom image uploaded. Using default system asset.
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Form Fields */}
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Room Title</label>
+                            {isEditingThis ? (
+                              <input 
+                                type="text"
+                                value={editRoomTitle}
+                                onChange={(e) => setEditRoomTitle(e.target.value)}
+                                className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold"
+                              />
+                            ) : (
+                              <h3 className="font-serif text-lg font-light text-white">{room.displayName}</h3>
+                            )}
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Nightly Rate (INR)</label>
+                              {isEditingThis ? (
+                                <input 
+                                  type="number"
+                                  value={editPriceValue}
+                                  onChange={(e) => setEditPriceValue(e.target.value)}
+                                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold"
+                                />
+                              ) : (
+                                <span className="font-mono text-resort-gold font-bold text-sm">₹{room.price.toLocaleString()}</span>
+                              )}
+                            </div>
+                            <div>
+                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Category Key</label>
+                              <span className="font-mono text-xs text-slate-500 block py-2">{room.itemKey}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Description</label>
+                            {isEditingThis ? (
+                              <textarea
+                                rows={3}
+                                value={editRoomDesc}
+                                onChange={(e) => setEditRoomDesc(e.target.value)}
+                                className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold resize-none"
+                              />
+                            ) : (
+                              <p className="text-slate-400 text-xs font-light leading-relaxed">{room.description || 'No description configured.'}</p>
+                            )}
+                          </div>
+
+                          {isEditingThis && (
+                            <div>
+                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Upload Custom Image</label>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                      setEditPriceImage(reader.result);
+                                    };
+                                    reader.readAsDataURL(file);
+                                  }
+                                }}
+                                className="text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer w-full"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="pt-4 border-t border-slate-800/80 flex items-center justify-end gap-3">
+                          {isEditingThis ? (
+                            <>
+                              <button 
+                                onClick={() => handleSaveRoomDetails(room.itemKey)}
+                                className="bg-emerald-500 hover:bg-emerald-600 text-stone-950 font-bold px-4 py-2 rounded-xl text-xs transition-colors"
+                              >
+                                Save Changes
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  setEditingKey(null);
+                                  setEditPriceImage('');
+                                }}
+                                className="bg-slate-800 hover:bg-slate-750 text-slate-300 px-4 py-2 rounded-xl text-xs transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <button 
+                              onClick={() => {
+                                setEditingKey(room.itemKey);
+                                setEditPriceValue(room.price);
+                                setEditRoomTitle(room.displayName);
+                                setEditRoomDesc(room.description || '');
+                                setEditPriceImage(room.imageUrl || '');
+                              }}
+                              className="bg-resort-gold hover:bg-resort-gold/80 text-stone-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors"
+                            >
+                              Edit Suite Details
+                            </button>
+                          )}
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </div>
               )}
 
             </div>

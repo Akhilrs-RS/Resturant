@@ -110,8 +110,8 @@ export default function Footer({ handleScrollTo, setCurrentPage }) {
 
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-resort-gold flex-shrink-0" />
-                <a href="mailto:reservations@etheria.com" className="hover:text-resort-gold transition-colors">
-                  reservations@etheria.com
+                <a href="mailto:reservations@thabasiya.com" className="hover:text-resort-gold transition-colors">
+                  reservations@thabasiya.com
                 </a>
               </div>
 

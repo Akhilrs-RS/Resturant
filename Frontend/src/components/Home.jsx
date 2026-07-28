@@ -109,7 +109,11 @@ export default function Home({
             else if (suite.id === 'penthouse') dbKey = 'suite_presidential';
 
             const match = prices.find(p => p.itemKey === dbKey);
-            return match ? { ...suite, price: Number(match.price) } : suite;
+            return match ? { 
+              ...suite, 
+              price: Number(match.price),
+              image: match.imageUrl || suite.image
+            } : suite;
           }));
         }
       } catch (err) {
@@ -328,7 +332,7 @@ export default function Home({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-16 text-left">
             <div className="lg:col-span-6 space-y-3">
               <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
-                WELCOME TO ETHERIA
+                WELCOME TO THABASIYA
               </span>
               <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight mt-3">
                 A Sanctuary Where The <br className="hidden md:inline" /> Horizon Meets Serenity
@@ -337,7 +341,7 @@ export default function Home({
             
             <div className="lg:col-span-6">
               <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed pt-2 lg:pt-8">
-                Nestled Between Lush Forest And The Endless Ocean, Etheria Is A Place To Slow Down And Breathe. 
+                Nestled Between Lush Forest And The Endless Ocean, Thabasiya Is A Place To Slow Down And Breathe. 
                 Every Villa, Every Meal, And Every Moment Is Crafted To Restore Your Sense Of Wonder — An Architecture 
                 Of Calm Designed For Those Who Seek The Extraordinary.
               </p>

@@ -41,6 +41,10 @@ namespace backend.Controllers
             {
                 priceRecord.Description = updateData.Description;
             }
+            if (updateData.ImageUrl != null)
+            {
+                priceRecord.ImageUrl = updateData.ImageUrl;
+            }
 
             await _context.SaveChangesAsync();
             return Ok(priceRecord);
