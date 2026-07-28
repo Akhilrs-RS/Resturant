@@ -400,7 +400,7 @@ export default function Home({
             </div>
             
             <button 
-              onClick={() => handleOpenBooking()}
+              onClick={() => setCurrentPage('offers')}
               className="text-xs md:text-sm font-semibold tracking-wider text-resort-gold hover:text-resort-gold-hover transition-colors duration-300 flex items-center gap-2 group cursor-pointer mt-4 md:mt-0"
             >
               View all Offers
@@ -477,13 +477,23 @@ export default function Home({
       <section id="accommodation" className="py-24 md:py-32 bg-[#f7f4eb] px-6 md:px-12 select-none text-left">
         <div className="max-w-7xl mx-auto">
           
-          <div className="mb-16">
-            <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
-              ROOMS & SUITES
-            </span>
-            <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight mt-3">
-              Rest In Refined Comfort
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 select-none text-left">
+            <div className="space-y-3">
+              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">
+                ROOMS & SUITES
+              </span>
+              <h2 className="font-serif text-3xl md:text-[40px] font-light text-stone-900 leading-tight mt-3">
+                Rest In Refined Comfort
+              </h2>
+            </div>
+            
+            <button 
+              onClick={() => setCurrentPage('accommodation')}
+              className="text-xs md:text-sm font-semibold tracking-wider text-resort-gold hover:text-resort-gold-hover transition-colors duration-300 flex items-center gap-2 group cursor-pointer mt-4 md:mt-0"
+            >
+              View More Rooms
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -761,7 +771,7 @@ export default function Home({
             </div>
             
             <button 
-              onClick={() => handleScrollTo('accommodation')}
+              onClick={() => setCurrentPage('gallery')}
               className="text-xs md:text-sm font-semibold tracking-wider text-resort-gold hover:text-resort-gold-hover transition-colors duration-300 flex items-center gap-2 group cursor-pointer mt-4 md:mt-0"
             >
               See Full Gallery
