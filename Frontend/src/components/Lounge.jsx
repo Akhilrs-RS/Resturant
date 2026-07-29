@@ -265,7 +265,7 @@ export default function Lounge({ handleScrollTo, setCurrentPage }) {
           {menuPreviewsList.map((card, idx) => (
             <div
               key={idx}
-              onClick={() => setCurrentPage('dining')}
+              onClick={() => setCurrentPage('barmenu')}
               className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:-translate-y-0.5 transition-all duration-300"
             >
               <img

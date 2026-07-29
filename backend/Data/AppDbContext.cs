@@ -43,14 +43,18 @@ namespace backend.Data
                 new CatalogPrice { Id = 15, ItemKey = "wedding_rainforest", Category = "Events", DisplayName = "Rainforest Wedding", Price = 280000 },
                 new CatalogPrice { Id = 16, ItemKey = "wedding_luxury", Category = "Events", DisplayName = "Luxury Wedding", Price = 450000 },
 
-                new CatalogPrice { Id = 17, ItemKey = "bar_cocktail_1", Category = "Bar", DisplayName = "Signature Cocktails", Price = 450, Description = "Handcrafted drinks prepared by expert mixologists." },
-                new CatalogPrice { Id = 18, ItemKey = "bar_mocktail_1", Category = "Bar", DisplayName = "Premium Mocktails", Price = 300, Description = "Zero-proof creations bursting with flavor." },
-                new CatalogPrice { Id = 19, ItemKey = "bar_wine_1", Category = "Bar", DisplayName = "Wine Selection", Price = 950, Description = "Curated vintages from renowned vineyards." },
-                new CatalogPrice { Id = 20, ItemKey = "bar_spirits_1", Category = "Bar", DisplayName = "Spirits", Price = 1200, Description = "Rare whiskeys, cognacs, and fine liqueurs." },
-                new CatalogPrice { Id = 21, ItemKey = "bar_cocktail_2", Category = "Bar", DisplayName = "Craft Brews", Price = 380, Description = "Locally sourced artisanal craft beers." },
-                new CatalogPrice { Id = 22, ItemKey = "bar_mocktail_2", Category = "Bar", DisplayName = "Tropical Punch", Price = 280, Description = "A refreshing mix of pineapple, mango, and passionfruit." },
-                new CatalogPrice { Id = 23, ItemKey = "bar_wine_2", Category = "Bar", DisplayName = "Champagne Select", Price = 1850, Description = "Premium sparkling champagnes imported directly from France." },
-                new CatalogPrice { Id = 24, ItemKey = "bar_spirits_2", Category = "Bar", DisplayName = "Rare Vintage Malt", Price = 2400, Description = "A selection of fine and rare single malt whiskeys." }
+                new CatalogPrice { Id = 17, ItemKey = "bar_cocktail_1", Category = "Bar", DisplayName = "Golden Citrus Old Fashioned", Price = 850, Description = "Classic whiskey mixed with orange peel, aromatic bitters, and a touch of magic." },
+                new CatalogPrice { Id = 18, ItemKey = "bar_cocktail_2", Category = "Bar", DisplayName = "Tropical Sunset Martini", Price = 750, Description = "Vodka, pineapple, passion fruit, and lime with a golden sunset finish." },
+                new CatalogPrice { Id = 19, ItemKey = "bar_cocktail_3", Category = "Bar", DisplayName = "Ocean Breeze Mojito", Price = 700, Description = "White rum, dark lime, and sparkling soda with coastal freshness." },
+                new CatalogPrice { Id = 20, ItemKey = "bar_cocktail_4", Category = "Bar", DisplayName = "Spiced Island Mule", Price = 780, Description = "Rum, ginger beer, lime, and spices served ice cold classic." },
+                new CatalogPrice { Id = 21, ItemKey = "bar_cocktail_5", Category = "Bar", DisplayName = "Velvet Raspberry Sour", Price = 820, Description = "Gin, fresh raspberries, lemon juice, and a velvety smooth foam." },
+                new CatalogPrice { Id = 22, ItemKey = "bar_cocktail_6", Category = "Bar", DisplayName = "Midnight Espresso", Price = 900, Description = "Premium vodka, fresh espresso, and coffee liqueur for a bold night." },
+                new CatalogPrice { Id = 23, ItemKey = "bar_cocktail_7", Category = "Bar", DisplayName = "Smoked Maple Bourbon", Price = 950, Description = "Bourbon infused with applewood smoke and pure maple syrup." },
+                new CatalogPrice { Id = 24, ItemKey = "bar_cocktail_8", Category = "Bar", DisplayName = "Sapphire Gin Fizz", Price = 680, Description = "Botanical gin, fresh lemon, and a splash of sparkling water." },
+                new CatalogPrice { Id = 25, ItemKey = "bar_mocktail_1", Category = "Bar", DisplayName = "Virgin Mojito", Price = 350, Description = "Mint, lime, and soda without the alcohol." },
+                new CatalogPrice { Id = 26, ItemKey = "bar_mocktail_2", Category = "Bar", DisplayName = "Sunset Punch", Price = 400, Description = "Tropical blend of pineapple, orange, and grenadine." },
+                new CatalogPrice { Id = 27, ItemKey = "bar_wine_1", Category = "Bar", DisplayName = "House Red Wine", Price = 1200, Description = "A robust red wine from our private cellar." },
+                new CatalogPrice { Id = 28, ItemKey = "bar_spirits_1", Category = "Bar", DisplayName = "Aged Single Malt", Price = 1800, Description = "12-year aged scotch whiskey served neat." }
             );
         }
     }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, BookOpen, Utensils, RefreshCw, Trash2, Check, Send, AlertTriangle } from 'lucide-react';
+import { Shield, BookOpen, Utensils, RefreshCw, Trash2, Check, Send, AlertTriangle, Wine } from 'lucide-react';
+import logoBlack from '../assets/logo-black 3.png';
 
 const API_BASE_URL = 'http://localhost:5210/api';
 
@@ -212,24 +213,22 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-[#0b121f] min-h-screen text-slate-100 font-sans flex items-center justify-center p-6 select-none">
-        <div className="w-full max-w-md bg-[#121a28] border border-slate-800 rounded-3xl p-8 shadow-2xl relative">
+      <div className="bg-zinc-50 min-h-screen text-black font-sans flex items-center justify-center p-6 select-none">
+        <div className="w-full max-w-md bg-white border border-gray-200 rounded-3xl p-8 shadow-xl relative">
           
           {/* Logo / Icon */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-12 h-12 bg-resort-gold rounded-2xl flex items-center justify-center text-stone-950 font-serif font-bold text-xl mb-3">
-              E
-            </div>
-            <h2 className="font-serif text-2xl font-light text-white tracking-wide">
+            <img src={logoBlack} alt="Logo" className="h-10 mb-3 object-contain" />
+            <h2 className="font-serif text-2xl font-light text-black tracking-wide">
               {recoveryMode ? 'Reset Password' : 'Admin Login'}
             </h2>
-            <p className="text-[10px] text-slate-500 tracking-wider uppercase font-semibold mt-1">
+            <p className="text-[10px] text-gray-500 tracking-wider uppercase font-semibold mt-1">
               Thabasiya Resort Console
             </p>
           </div>
 
           {authError && (
-            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl p-3 text-xs mb-6 text-center">
+            <div className="bg-rose-50 border border-rose-200 text-rose-600 rounded-xl p-3 text-xs mb-6 text-center">
               {authError}
             </div>
           )}
@@ -238,7 +237,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             /* Forgot Password / Recovery mode */
             recoverySuccess ? (
               <div className="text-center space-y-4">
-                <div className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-xs leading-relaxed">
+                <div className="text-green-700 bg-green-50 border border-green-200 rounded-xl p-4 text-xs leading-relaxed">
                   A password reset link has been sent to <strong>{recoveryEmail}</strong>. Please check your inbox.
                 </div>
                 <button
@@ -249,7 +248,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                     setRecoveryEmail('');
                     setAuthError('');
                   }}
-                  className="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition-all"
+                  className="w-full bg-black hover:bg-zinc-800 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition-all"
                 >
                   Back to Login
                 </button>
@@ -257,19 +256,19 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             ) : (
               <form onSubmit={handleRecoverySubmit} className="space-y-4">
                 <div>
-                  <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold block mb-2">EMAIL ADDRESS</label>
+                  <label className="text-[10px] tracking-wider uppercase text-gray-500 font-semibold block mb-2">EMAIL ADDRESS</label>
                   <input
                     required
                     type="email"
                     placeholder="Enter your registered email"
                     value={recoveryEmail}
                     onChange={(e) => setRecoveryEmail(e.target.value)}
-                    className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3.5 text-xs text-black focus:outline-none focus:border-black placeholder-gray-400"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-resort-gold hover:bg-resort-gold/80 text-stone-950 text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-205 active:scale-98"
+                  className="w-full bg-black hover:bg-zinc-800 text-white text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 active:scale-95"
                 >
                   Send Reset Link
                 </button>
@@ -280,7 +279,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       setRecoveryMode(false);
                       setAuthError('');
                     }}
-                    className="text-xs text-slate-400 hover:text-white transition-colors"
+                    className="text-xs text-gray-500 hover:text-black transition-colors"
                   >
                     Cancel &amp; Return to Login
                   </button>
@@ -291,27 +290,27 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             /* Login Form */
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold block mb-2">USERNAME</label>
+                <label className="text-[10px] tracking-wider uppercase text-gray-500 font-semibold block mb-2">USERNAME</label>
                 <input
                   required
                   type="text"
                   placeholder="Enter username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3.5 text-xs text-black focus:outline-none focus:border-black placeholder-gray-400"
                 />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-[10px] tracking-wider uppercase text-slate-400 font-semibold">PASSWORD</label>
+                  <label className="text-[10px] tracking-wider uppercase text-gray-500 font-semibold">PASSWORD</label>
                   <button
                     type="button"
                     onClick={() => {
                       setRecoveryMode(true);
                       setAuthError('');
                     }}
-                    className="text-[10px] text-resort-gold hover:underline"
+                    className="text-[10px] text-gray-500 hover:text-black hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -322,13 +321,13 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-3.5 text-xs text-white focus:outline-none focus:border-resort-gold placeholder-slate-500"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3.5 text-xs text-black focus:outline-none focus:border-black placeholder-gray-400"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-resort-gold hover:bg-resort-gold/80 text-stone-950 text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 active:scale-98 mt-2"
+                className="w-full bg-black hover:bg-zinc-800 text-white text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 active:scale-95 mt-2"
               >
                 Log In
               </button>
@@ -341,45 +340,32 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   }
 
   return (
-    <div className="bg-[#121a28] min-h-screen text-slate-100 font-sans select-none flex flex-col">
+    <div className="bg-zinc-50 min-h-screen text-black font-sans select-none flex flex-col">
       
       {/* HEADER BAR */}
-      <header className="bg-[#0b121f] border-b border-slate-800 px-6 py-4 flex items-center justify-between shadow-md">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-resort-gold rounded-xl flex items-center justify-center text-stone-950 font-serif font-bold text-lg">
-            E
-          </div>
-          <div>
-            <h1 className="font-serif text-lg font-light tracking-wide text-white">Thabasiya Resorts</h1>
-            <span className="text-[9px] tracking-wider text-slate-500 font-bold uppercase">Admin Console</span>
-          </div>
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-4">
+          <img src={logoBlack} alt="Thabasiya" className="h-8 object-contain" />
+          <div className="h-6 w-px bg-gray-300"></div>
+          <span className="text-[10px] tracking-wider text-gray-500 font-bold uppercase">Admin Console</span>
         </div>
 
-        {/* Database Connection Status Indicator */}
+        {/* Controls */}
         <div className="flex items-center gap-4">
           <button 
             onClick={fetchAllData}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-black transition-colors"
             title="Refresh database records"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
-          
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-            dbConnected 
-              ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400' 
-              : 'bg-rose-500/10 border border-rose-500/30 text-rose-400'
-          }`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${dbConnected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
-            {dbConnected ? 'Database Connected' : 'Database Offline'}
-          </div>
 
           <button
             onClick={() => {
               setIsAuthenticated(false);
               sessionStorage.removeItem('admin_auth');
             }}
-            className="px-3.5 py-1.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-semibold transition-colors"
+            className="px-3.5 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-black text-xs font-semibold transition-colors"
           >
             Sign Out
           </button>
@@ -390,15 +376,15 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
       <div className="flex-1 flex flex-col lg:flex-row">
         
         {/* SIDEBAR TABS SELECTOR */}
-        <aside className="w-full lg:w-64 bg-[#0e1624] border-r border-slate-800 p-6 space-y-2">
-          <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4">RESERVATIONS</p>
+        <aside className="w-full lg:w-64 bg-white border-r border-gray-200 p-6 space-y-2">
+          <p className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-4">RESERVATIONS</p>
           
           <button
             onClick={() => setActiveTab('suites')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
               activeTab === 'suites' 
-                ? 'bg-resort-gold text-stone-950 font-bold' 
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                ? 'bg-black text-white' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
             }`}
           >
             <Shield className="w-4 h-4" /> Suite Bookings
@@ -408,8 +394,8 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             onClick={() => setActiveTab('tables')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
               activeTab === 'tables' 
-                ? 'bg-resort-gold text-stone-950 font-bold' 
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                ? 'bg-black text-white' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
             }`}
           >
             <Utensils className="w-4 h-4" /> Table Bookings
@@ -419,8 +405,8 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             onClick={() => setActiveTab('pools')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
               activeTab === 'pools' 
-                ? 'bg-resort-gold text-stone-950 font-bold' 
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                ? 'bg-black text-white' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
             }`}
           >
             <BookOpen className="w-4 h-4" /> Pool Access
@@ -430,8 +416,8 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             onClick={() => setActiveTab('lounges')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
               activeTab === 'lounges' 
-                ? 'bg-resort-gold text-stone-950 font-bold' 
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                ? 'bg-black text-white' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
             }`}
           >
             <Shield className="w-4 h-4" /> Lounge bookings
@@ -441,21 +427,21 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             onClick={() => setActiveTab('activities')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
               activeTab === 'activities' 
-                ? 'bg-resort-gold text-stone-950 font-bold' 
-                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                ? 'bg-black text-white' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-black'
             }`}
           >
             <BookOpen className="w-4 h-4" /> Activity Bookings
           </button>
 
           <div className="pt-6">
-            <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4 font-sans">FEEDBACK</p>
+            <p className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-4 font-sans">FEEDBACK</p>
             <button
               onClick={() => setActiveTab('inquiries')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
                 activeTab === 'inquiries' 
-                  ? 'bg-resort-gold text-stone-950 font-bold' 
-                  : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                  ? 'bg-black text-white' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
               }`}
             >
               <Send className="w-4 h-4" /> Inquiries & Queries
@@ -463,13 +449,13 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
           </div>
 
           <div className="pt-6">
-            <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4 font-sans">SETTINGS</p>
+            <p className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-4 font-sans">SETTINGS</p>
             <button
               onClick={() => setActiveTab('prices')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
                 activeTab === 'prices' 
-                  ? 'bg-resort-gold text-stone-950 font-bold' 
-                  : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                  ? 'bg-black text-white' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
               }`}
             >
               <RefreshCw className="w-4 h-4" /> Manage Catalog Prices
@@ -479,11 +465,22 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               onClick={() => setActiveTab('rooms')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 mt-2 ${
                 activeTab === 'rooms' 
-                  ? 'bg-resort-gold text-stone-950 font-bold' 
-                  : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                  ? 'bg-black text-white' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
               }`}
             >
               <Shield className="w-4 h-4" /> Manage Rooms &amp; Suites
+            </button>
+
+            <button
+              onClick={() => setActiveTab('barmenu')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 mt-2 ${
+                activeTab === 'barmenu' 
+                  ? 'bg-black text-white' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-black'
+              }`}
+            >
+              <Wine className="w-4 h-4" /> Manage Bar Menu
             </button>
           </div>
         </aside>
@@ -493,21 +490,21 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
           
           {/* STATS OVERVIEW CARDS */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-[#0e1624] border border-slate-800 rounded-2xl p-6">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Total Suite Bookings</span>
-              <p className="font-serif text-3xl font-light mt-2 text-white">{suiteBookings.length}</p>
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Total Suite Bookings</span>
+              <p className="font-serif text-3xl font-light mt-2 text-black">{suiteBookings.length}</p>
             </div>
-            <div className="bg-[#0e1624] border border-slate-800 rounded-2xl p-6">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Table Bookings</span>
-              <p className="font-serif text-3xl font-light mt-2 text-white">{tableReservations.length}</p>
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Table Bookings</span>
+              <p className="font-serif text-3xl font-light mt-2 text-black">{tableReservations.length}</p>
             </div>
-            <div className="bg-[#0e1624] border border-slate-800 rounded-2xl p-6">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Lounge bookings</span>
-              <p className="font-serif text-3xl font-light mt-2 text-white">{loungeReservations.length}</p>
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Lounge bookings</span>
+              <p className="font-serif text-3xl font-light mt-2 text-black">{loungeReservations.length}</p>
             </div>
-            <div className="bg-[#0e1624] border border-slate-800 rounded-2xl p-6">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Inquiries Received</span>
-              <p className="font-serif text-3xl font-light mt-2 text-white">{inquiries.length}</p>
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Inquiries Received</span>
+              <p className="font-serif text-3xl font-light mt-2 text-black">{inquiries.length}</p>
             </div>
           </div>
 
@@ -522,11 +519,11 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
           )}
 
           {/* DATA TABLES GRID CONTAINER */}
-          <div className="bg-[#0e1624] border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+          <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
             
             {/* Table title */}
-            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
-              <h2 className="font-serif text-base font-light text-white capitalize">
+            <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
+              <h2 className="font-serif text-base font-light text-black capitalize">
                 {activeTab === 'suites' && 'Suite Bookings Catalog'}
                 {activeTab === 'tables' && 'Dining Table Bookings'}
                 {activeTab === 'pools' && 'Pool Access Passes'}
@@ -543,7 +540,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 1. SUITES TABLE */}
               {activeTab === 'suites' && (
                 <table className="w-full text-xs text-left min-w-[700px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Guest Name</th>
                       <th className="px-6 py-4">Contact Details</th>
@@ -554,18 +551,18 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {suiteBookings.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
-                        <td className="px-6 py-4">
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
+                        <td className="px-6 py-4 text-gray-800">
                           <p>{item.email}</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{item.phone}</p>
+                          <p className="text-[10px] text-gray-500 mt-0.5">{item.phone}</p>
                         </td>
-                        <td className="px-6 py-4 font-mono text-[10px] uppercase text-resort-gold">{item.suiteId}</td>
-                        <td className="px-6 py-4 font-light">{new Date(item.checkInDate).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 font-light">{new Date(item.checkOutDate).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 font-light">{item.guests}</td>
+                        <td className="px-6 py-4 font-mono text-[10px] uppercase font-bold text-black">{item.suiteId}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{new Date(item.checkInDate).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{new Date(item.checkOutDate).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{item.guests}</td>
                         <td className="px-6 py-4 text-right space-x-2 whitespace-nowrap">
                           {item.status === 'Pending' && (
                             <button 
@@ -593,7 +590,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 2. DINING TABLES TABLE */}
               {activeTab === 'tables' && (
                 <table className="w-full text-xs text-left min-w-[600px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Guest Name</th>
                       <th className="px-6 py-4">Email</th>
@@ -603,14 +600,14 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {tableReservations.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
-                        <td className="px-6 py-4">{item.email}</td>
-                        <td className="px-6 py-4 font-light">{new Date(item.date).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 font-mono font-semibold text-resort-gold">{item.time}</td>
-                        <td className="px-6 py-4 font-light">{item.guests}</td>
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
+                        <td className="px-6 py-4 text-gray-800">{item.email}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{new Date(item.date).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 font-mono font-semibold text-black">{item.time}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{item.guests}</td>
                         <td className="px-6 py-4 text-right">
                           <button 
                             onClick={() => handleDeleteItem('tables', item.id)}
@@ -628,7 +625,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 3. POOL ACCESS TABLE */}
               {activeTab === 'pools' && (
                 <table className="w-full text-xs text-left min-w-[600px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Guest Name</th>
                       <th className="px-6 py-4">Email</th>
@@ -638,14 +635,14 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {poolBookings.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
-                        <td className="px-6 py-4">{item.email}</td>
-                        <td className="px-6 py-4 font-semibold text-resort-gold uppercase tracking-wider">{item.package}</td>
-                        <td className="px-6 py-4 font-light">{new Date(item.date).toLocaleDateString()}</td>
-                        <td className="px-6 py-4 font-mono">{item.timeSlot}</td>
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
+                        <td className="px-6 py-4 text-gray-800">{item.email}</td>
+                        <td className="px-6 py-4 font-semibold text-black uppercase tracking-wider">{item.package}</td>
+                        <td className="px-6 py-4 font-light text-gray-800">{new Date(item.date).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 font-mono text-gray-800">{item.timeSlot}</td>
                         <td className="px-6 py-4 text-right">
                           <button 
                             onClick={() => handleDeleteItem('pools', item.id)}
@@ -663,7 +660,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 4. LOUNGES TABLE */}
               {activeTab === 'lounges' && (
                 <table className="w-full text-xs text-left min-w-[700px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Guest Name</th>
                       <th className="px-6 py-4">Contacts</th>
@@ -674,21 +671,21 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {loungeReservations.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
-                        <td className="px-6 py-4">
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
+                        <td className="px-6 py-4 text-gray-800">
                           <p>{item.email}</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{item.phone}</p>
+                          <p className="text-[10px] text-gray-500 mt-0.5">{item.phone}</p>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-gray-800">
                           <p className="font-light">{new Date(item.date).toLocaleDateString()}</p>
-                          <p className="font-mono text-[10px] text-resort-gold mt-0.5">{item.time} | {item.guests} Guests</p>
+                          <p className="font-mono text-[10px] text-black font-semibold mt-0.5">{item.time} | {item.guests} Guests</p>
                         </td>
-                        <td className="px-6 py-4 font-light">{item.seatingPreference}</td>
-                        <td className="px-6 py-4 text-[10px] uppercase font-bold text-slate-400">{item.occasion}</td>
-                        <td className="px-6 py-4 text-slate-400 font-light max-w-[200px] truncate" title={item.specialRequest}>
+                        <td className="px-6 py-4 font-light text-gray-800">{item.seatingPreference}</td>
+                        <td className="px-6 py-4 text-[10px] uppercase font-bold text-gray-500">{item.occasion}</td>
+                        <td className="px-6 py-4 text-gray-500 font-light max-w-[200px] truncate" title={item.specialRequest}>
                           {item.specialRequest || 'None'}
                         </td>
                         <td className="px-6 py-4 text-right">
@@ -708,7 +705,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 5. INQUIRIES & CONTACTS TABLE */}
               {activeTab === 'inquiries' && (
                 <table className="w-full text-xs text-left min-w-[700px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Category</th>
                       <th className="px-6 py-4">Guest Name</th>
@@ -718,21 +715,21 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {inquiries.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4">
-                          <span className="bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase">
+                          <span className="bg-gray-100 border border-gray-200 text-gray-600 font-mono text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase">
                             {item.eventType || 'Contact Inquiry'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
-                        <td className="px-6 py-4">{item.email}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
+                        <td className="px-6 py-4 text-gray-800">{item.email}</td>
+                        <td className="px-6 py-4 text-gray-800">
                           <p>{item.guests}</p>
-                          {item.date && <p className="text-[10px] text-slate-500 mt-0.5">{new Date(item.date).toLocaleDateString()}</p>}
+                          {item.date && <p className="text-[10px] text-gray-500 mt-0.5">{new Date(item.date).toLocaleDateString()}</p>}
                         </td>
-                        <td className="px-6 py-4 text-slate-400 font-light max-w-sm whitespace-normal leading-relaxed">
+                        <td className="px-6 py-4 text-gray-600 font-light max-w-sm whitespace-normal leading-relaxed">
                           {item.message}
                         </td>
                         <td className="px-6 py-4 text-right">
@@ -752,7 +749,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
               {/* 6. CATALOG PRICES TABLE */}
               {activeTab === 'prices' && (
                 <table className="w-full text-xs text-left min-w-[600px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Category</th>
                       <th className="px-6 py-4">Item Name</th>
@@ -760,24 +757,24 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {catalogPrices.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4">
-                          <span className="bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase">
+                          <span className="bg-gray-100 border border-gray-200 text-gray-600 font-mono text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md uppercase">
                             {item.category}
                           </span>
                         </td>
-                        <td className="px-6 py-4 font-semibold text-white">
+                        <td className="px-6 py-4 font-semibold text-black">
                           <div className="flex items-center gap-3">
                             {item.imageUrl ? (
                               <img
                                 src={item.imageUrl}
                                 alt={item.displayName}
-                                className="w-8 h-8 rounded-md object-cover border border-slate-700"
+                                className="w-8 h-8 rounded-md object-cover border border-gray-200"
                               />
                             ) : (
-                              <div className="w-8 h-8 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-500 text-[10px]" title="Default Asset Image">
+                              <div className="w-8 h-8 rounded-md bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 text-[10px]" title="Default Asset Image">
                                 Img
                               </div>
                             )}
@@ -791,10 +788,10 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                 type="number"
                                 value={editPriceValue}
                                 onChange={(e) => setEditPriceValue(e.target.value)}
-                                className="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-resort-gold"
+                                className="bg-white border border-gray-300 text-black rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-black"
                               />
                               <div className="space-y-1 mt-1">
-                                <label className="text-[9px] text-slate-400 block font-semibold uppercase tracking-wider">Upload Item Image</label>
+                                <label className="text-[9px] text-gray-500 block font-semibold uppercase tracking-wider">Upload Item Image</label>
                                 <input
                                   type="file"
                                   accept="image/*"
@@ -808,15 +805,15 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                       reader.readAsDataURL(file);
                                     }
                                   }}
-                                  className="text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-850 file:text-slate-200 hover:file:bg-slate-750 cursor-pointer"
+                                  className="text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer"
                                 />
                                 {editPriceImage && (
                                   <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-[9px] text-emerald-400 font-semibold">Selected</span>
+                                    <span className="text-[9px] text-green-600 font-semibold">Selected</span>
                                     <button
                                       type="button"
                                       onClick={() => setEditPriceImage('')}
-                                      className="text-[9px] text-rose-400 hover:underline"
+                                      className="text-[9px] text-rose-500 hover:underline"
                                     >
                                       Remove
                                     </button>
@@ -825,7 +822,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                               </div>
                             </div>
                           ) : (
-                            <span className="font-mono text-resort-gold font-bold">₹{item.price.toLocaleString()}</span>
+                            <span className="font-mono text-black font-bold">₹{item.price.toLocaleString()}</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-right space-x-2">
@@ -833,7 +830,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                             <>
                               <button 
                                 onClick={() => handleSavePrice(item.itemKey)}
-                                className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-lg hover:bg-emerald-500 hover:text-white transition-colors"
+                                className="bg-green-50 border border-green-200 text-green-700 px-3 py-1 rounded-lg hover:bg-green-600 hover:text-white transition-colors"
                               >
                                 Save
                               </button>
@@ -842,7 +839,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                   setEditingKey(null);
                                   setEditPriceImage('');
                                 }}
-                                className="bg-slate-700 border border-slate-600 text-slate-300 px-3 py-1 rounded-lg hover:bg-slate-600 hover:text-white transition-colors"
+                                className="bg-gray-100 border border-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-200 transition-colors"
                               >
                                 Cancel
                               </button>
@@ -872,10 +869,10 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                   {catalogPrices.filter(item => item.category === 'Suites').map((room) => {
                     const isEditingThis = editingKey === room.itemKey;
                     return (
-                      <div key={room.id} className="bg-[#121b2a] border border-slate-800 rounded-3xl p-6 flex flex-col justify-between space-y-6">
+                      <div key={room.id} className="bg-white border border-gray-200 rounded-3xl p-6 flex flex-col justify-between space-y-6">
                         
                         {/* Image Preview */}
-                        <div className="relative h-48 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center">
+                        <div className="relative h-48 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center">
                           {(isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl) ? (
                             <img 
                               src={isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl} 
@@ -883,8 +880,8 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <div className="text-slate-500 text-xs text-center flex flex-col items-center gap-2">
-                              <Shield className="w-8 h-8 text-slate-650" />
+                            <div className="text-gray-400 text-xs text-center flex flex-col items-center gap-2">
+                              <Shield className="w-8 h-8 text-gray-300" />
                               No custom image uploaded. Using default system asset.
                             </div>
                           )}
@@ -893,56 +890,56 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                         {/* Form Fields */}
                         <div className="space-y-4">
                           <div>
-                            <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Room Title</label>
+                            <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Room Title</label>
                             {isEditingThis ? (
                               <input 
                                 type="text"
                                 value={editRoomTitle}
                                 onChange={(e) => setEditRoomTitle(e.target.value)}
-                                className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold"
+                                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black"
                               />
                             ) : (
-                              <h3 className="font-serif text-lg font-light text-white">{room.displayName}</h3>
+                              <h3 className="font-serif text-lg font-light text-black">{room.displayName}</h3>
                             )}
                           </div>
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Nightly Rate (INR)</label>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Nightly Rate (INR)</label>
                               {isEditingThis ? (
                                 <input 
                                   type="number"
                                   value={editPriceValue}
                                   onChange={(e) => setEditPriceValue(e.target.value)}
-                                  className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold"
+                                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black"
                                 />
                               ) : (
-                                <span className="font-mono text-resort-gold font-bold text-sm">₹{room.price.toLocaleString()}</span>
+                                <span className="font-mono text-black font-bold text-sm">₹{room.price.toLocaleString()}</span>
                               )}
                             </div>
                             <div>
-                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Category Key</label>
-                              <span className="font-mono text-xs text-slate-500 block py-2">{room.itemKey}</span>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Category Key</label>
+                              <span className="font-mono text-xs text-gray-400 block py-2">{room.itemKey}</span>
                             </div>
                           </div>
 
                           <div>
-                            <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Description</label>
+                            <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Description</label>
                             {isEditingThis ? (
                               <textarea
                                 rows={3}
                                 value={editRoomDesc}
                                 onChange={(e) => setEditRoomDesc(e.target.value)}
-                                className="w-full bg-[#182333] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-resort-gold resize-none"
+                                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black resize-none"
                               />
                             ) : (
-                              <p className="text-slate-400 text-xs font-light leading-relaxed">{room.description || 'No description configured.'}</p>
+                              <p className="text-gray-500 text-xs font-light leading-relaxed">{room.description || 'No description configured.'}</p>
                             )}
                           </div>
 
                           {isEditingThis && (
                             <div>
-                              <label className="text-[10px] text-slate-400 block font-semibold uppercase tracking-wider mb-2">Upload Custom Image</label>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Upload Custom Image</label>
                               <input
                                 type="file"
                                 accept="image/*"
@@ -956,19 +953,19 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                     reader.readAsDataURL(file);
                                   }
                                 }}
-                                className="text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer w-full"
+                                className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer w-full"
                               />
                             </div>
                           )}
                         </div>
 
                         {/* Actions */}
-                        <div className="pt-4 border-t border-slate-800/80 flex items-center justify-end gap-3">
+                        <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
                           {isEditingThis ? (
                             <>
                               <button 
                                 onClick={() => handleSaveRoomDetails(room.itemKey)}
-                                className="bg-emerald-500 hover:bg-emerald-600 text-stone-950 font-bold px-4 py-2 rounded-xl text-xs transition-colors"
+                                className="bg-black hover:bg-zinc-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors"
                               >
                                 Save Changes
                               </button>
@@ -977,7 +974,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                   setEditingKey(null);
                                   setEditPriceImage('');
                                 }}
-                                className="bg-slate-800 hover:bg-slate-750 text-slate-300 px-4 py-2 rounded-xl text-xs transition-colors"
+                                className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-xs transition-colors"
                               >
                                 Cancel
                               </button>
@@ -991,7 +988,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                 setEditRoomDesc(room.description || '');
                                 setEditPriceImage(room.imageUrl || '');
                               }}
-                              className="bg-resort-gold hover:bg-resort-gold/80 text-stone-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors"
+                              className="bg-black hover:bg-zinc-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors"
                             >
                               Edit Suite Details
                             </button>
@@ -1003,9 +1000,147 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                   })}
                 </div>
               )}
+
+              {/* 8. MANAGE BAR MENU (GRID OF EDITABLE CARDS) */}
+              {activeTab === 'barmenu' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                  {catalogPrices.filter(item => item.category === 'Bar').map((room) => {
+                    const isEditingThis = editingKey === room.itemKey;
+                    return (
+                      <div key={room.id} className="bg-white border border-gray-200 rounded-3xl p-6 flex flex-col justify-between space-y-6">
+                        
+                        {/* Image Preview */}
+                        <div className="relative h-48 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center">
+                          {(isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl) ? (
+                            <img 
+                              src={isEditingThis ? (editPriceImage || room.imageUrl) : room.imageUrl} 
+                              alt={room.displayName} 
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="text-gray-400 text-xs text-center flex flex-col items-center gap-2">
+                              <Wine className="w-8 h-8 text-gray-300" />
+                              No custom image uploaded. Using default system asset.
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Form Fields */}
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Item Title</label>
+                            {isEditingThis ? (
+                              <input 
+                                type="text"
+                                value={editRoomTitle}
+                                onChange={(e) => setEditRoomTitle(e.target.value)}
+                                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black"
+                              />
+                            ) : (
+                              <h3 className="font-serif text-lg font-light text-black">{room.displayName}</h3>
+                            )}
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Price (INR)</label>
+                              {isEditingThis ? (
+                                <input 
+                                  type="number"
+                                  value={editPriceValue}
+                                  onChange={(e) => setEditPriceValue(e.target.value)}
+                                  className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black"
+                                />
+                              ) : (
+                                <span className="font-mono text-black font-bold text-sm">₹{room.price.toLocaleString()}</span>
+                              )}
+                            </div>
+                            <div>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Category Key</label>
+                              <span className="font-mono text-xs text-gray-400 block py-2">{room.itemKey}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Description</label>
+                            {isEditingThis ? (
+                              <textarea
+                                rows={3}
+                                value={editRoomDesc}
+                                onChange={(e) => setEditRoomDesc(e.target.value)}
+                                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-xs text-black focus:outline-none focus:border-black resize-none"
+                              />
+                            ) : (
+                              <p className="text-gray-500 text-xs font-light leading-relaxed">{room.description || 'No description configured.'}</p>
+                            )}
+                          </div>
+
+                          {isEditingThis && (
+                            <div>
+                              <label className="text-[10px] text-gray-500 block font-semibold uppercase tracking-wider mb-2">Upload Custom Image</label>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                      setEditPriceImage(reader.result);
+                                    };
+                                    reader.readAsDataURL(file);
+                                  }
+                                }}
+                                className="text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer w-full"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+                          {isEditingThis ? (
+                            <>
+                              <button 
+                                onClick={() => handleSaveRoomDetails(room.itemKey)}
+                                className="bg-black hover:bg-zinc-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors"
+                              >
+                                Save Changes
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  setEditingKey(null);
+                                  setEditPriceImage('');
+                                }}
+                                className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-xs transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <button 
+                              onClick={() => {
+                                setEditingKey(room.itemKey);
+                                setEditPriceValue(room.price);
+                                setEditRoomTitle(room.displayName);
+                                setEditRoomDesc(room.description || '');
+                                setEditPriceImage(room.imageUrl || '');
+                              }}
+                              className="bg-black hover:bg-zinc-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors"
+                            >
+                              Edit Item Details
+                            </button>
+                          )}
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
               {activeTab === 'activities' && (
                 <table className="w-full text-xs text-left min-w-[700px]">
-                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                  <thead className="bg-gray-50 text-[10px] font-bold tracking-wider text-gray-500 uppercase border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-4">Guest Name</th>
                       <th className="px-6 py-4">Contact Details</th>
@@ -1016,28 +1151,28 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                       <th className="px-6 py-4">Special Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/40">
+                  <tbody className="divide-y divide-gray-100">
                     {activityBookings.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="px-6 py-10 text-center text-slate-500 font-light">
+                        <td colSpan={7} className="px-6 py-10 text-center text-gray-500 font-light">
                           No activity bookings logged in the database yet.
                         </td>
                       </tr>
                     ) : (
                       activityBookings.map((item) => (
-                        <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
-                          <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
+                        <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-6 py-4 font-semibold text-black">{item.fullName}</td>
                           <td className="px-6 py-4">
-                            <span className="block text-slate-300 font-medium">{item.email}</span>
-                            {item.phone && <span className="block text-[10px] text-slate-500 mt-0.5">{item.phone}</span>}
+                            <span className="block text-gray-800 font-medium">{item.email}</span>
+                            {item.phone && <span className="block text-[10px] text-gray-500 mt-0.5">{item.phone}</span>}
                           </td>
-                          <td className="px-6 py-4 font-semibold text-resort-gold">{item.activityName}</td>
-                          <td className="px-6 py-4 text-slate-300">{item.guests}</td>
-                          <td className="px-6 py-4 text-slate-300">
+                          <td className="px-6 py-4 font-semibold text-black">{item.activityName}</td>
+                          <td className="px-6 py-4 text-gray-800">{item.guests}</td>
+                          <td className="px-6 py-4 text-gray-800">
                             {new Date(item.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
                           </td>
-                          <td className="px-6 py-4 text-slate-400 font-medium">{item.timeSlot}</td>
-                          <td className="px-6 py-4 text-slate-400 max-w-xs truncate">{item.notes || '—'}</td>
+                          <td className="px-6 py-4 text-gray-500 font-medium">{item.timeSlot}</td>
+                          <td className="px-6 py-4 text-gray-500 max-w-xs truncate">{item.notes || '—'}</td>
                         </tr>
                       ))
                     )}
