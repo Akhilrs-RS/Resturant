@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Users, AlertCircle, X, Send, Calendar } from 'lucide-react';
+import { Clock, Users, AlertCircle, X, Send, Calendar, Star } from 'lucide-react';
 import Footer from './Footer';
 import heroBg from '../assets/m11.jpg';
 import pkg1 from '../assets/m1.jpg';
