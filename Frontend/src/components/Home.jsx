@@ -497,50 +497,25 @@ export default function Home({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Honeymoon Ocean Suite',
-                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
-                guests: '2 Guests',
-                image: m1,
-                price: '$720',
-                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
-              },
-              {
-                title: 'Private Pool Villa',
-                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
-                guests: '2 Guests',
-                image: m6,
-                price: '$890',
-                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
-              },
-              {
-                title: 'Ocean Premium Room',
-                desc: 'A Romantic Sanctuary With A Private Plunge Pool And Uninterrupted Ocean Vistas.',
-                guests: '2 Guests',
-                image: m7,
-                price: '$340',
-                tags: ['Plunge Pool', 'Ocean View', 'Romantic Setup']
-              }
-            ].map((room, idx) => (
+            {suitesList.map((room) => (
               <div 
-                key={idx}
+                key={room.id}
                 className="rounded-2xl overflow-hidden bg-white border border-stone-200/40 shadow-xl flex flex-col justify-between"
               >
                 <div>
                   <div className="h-64 overflow-hidden relative">
                     <img 
                       src={room.image} 
-                      alt={room.title} 
+                      alt={room.name} 
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                   </div>
                   <div className="p-6 md:p-8 space-y-4">
                     <h3 className="font-serif text-xl font-light text-stone-900 leading-snug">
-                      {room.title}
+                      {room.name}
                     </h3>
                     <p className="text-stone-500 text-xs md:text-sm font-light leading-relaxed">
-                      {room.desc}
+                      {room.view || 'Scenic View'} • {room.size || 'Spacious Suite'}
                     </p>
                     
                     {/* Metadata tags */}
@@ -557,9 +532,9 @@ export default function Home({
 
                     {/* Badge tags */}
                     <div className="flex flex-wrap gap-1.5 pt-2">
-                      {room.tags.map((tag, i) => (
+                      {(room.features || []).map((feature, i) => (
                         <span key={i} className="text-[9px] bg-[#f7f4eb] text-stone-600 px-2.5 py-1 rounded-md font-medium tracking-wide">
-                          {tag}
+                          {feature}
                         </span>
                       ))}
                     </div>
@@ -568,10 +543,10 @@ export default function Home({
 
                 <div className="p-6 md:p-8 pt-0 flex items-center justify-between mt-auto">
                   <span className="text-stone-950 font-semibold text-lg">
-                    {room.price} <span className="text-[10px] text-stone-400 font-light font-sans">/Night</span>
+                    ₹{room.price.toLocaleString()} <span className="text-[10px] text-stone-400 font-light font-sans">/Night</span>
                   </span>
                   <button 
-                    onClick={() => handleOpenBooking()}
+                    onClick={() => handleOpenBooking(room.id)}
                     className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-6 py-2.5 rounded-full transition-all duration-300 active:scale-95"
                   >
                     Book Now
@@ -636,7 +611,7 @@ export default function Home({
                 Two Infinity Pools, A Serene Lagoon And Dedicated Kids Pool — Book Your Private Slot.
               </p>
               <button 
-                onClick={() => handleOpenBooking()}
+                onClick={() => setCurrentPage('pool')}
                 className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
               >
                 Book Pool Access
@@ -748,7 +723,7 @@ export default function Home({
               Entirely To You.
             </p>
             <button 
-              onClick={() => handleOpenBooking()}
+              onClick={() => setCurrentPage('events')}
               className="bg-resort-gold hover:bg-resort-gold-hover text-stone-900 font-bold px-8 py-3.5 rounded-full text-xs tracking-widest uppercase transition-all duration-300 active:scale-95 inline-block"
             >
               Plan Your Events
