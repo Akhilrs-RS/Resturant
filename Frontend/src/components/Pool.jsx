@@ -58,7 +58,13 @@ export default function Pool({ handleScrollTo, setCurrentPage }) {
           const prices = await res.json();
           setPoolPackagesList(prev => prev.map(item => {
             const match = prices.find(p => p.itemKey === item.dbKey);
-            return match ? { ...item, price: `$${Number(match.price)}` } : item;
+            return match ? { 
+              ...item, 
+              price: `₹${Number(match.price).toLocaleString()}`,
+              imageUrl: match.imageUrl || null,
+              name: match.displayName || item.name,
+              desc: match.description || item.desc
+            } : item;
           }));
         }
       } catch (err) {
@@ -159,9 +165,18 @@ export default function Pool({ handleScrollTo, setCurrentPage }) {
                       : 'bg-white hover:bg-stone-50'
                   }`}
                 >
-                  <div>
-                    <p className="text-sm font-medium text-stone-900">{item.name}</p>
-                    <p className="text-xs text-stone-400 font-light mt-0.5">{item.desc}</p>
+                  <div className="flex items-center gap-4">
+                    {item.imageUrl && (
+                      <img 
+                        src={item.imageUrl} 
+                        alt={item.name} 
+                        className="w-12 h-12 rounded-lg object-cover border border-stone-200 shrink-0"
+                      />
+                    )}
+                    <div>
+                      <p className="text-sm font-medium text-stone-900">{item.name}</p>
+                      <p className="text-xs text-stone-400 font-light mt-0.5">{item.desc}</p>
+                    </div>
                   </div>
                   <span className="text-sm font-semibold text-stone-900 whitespace-nowrap ml-4">
                     {item.price}

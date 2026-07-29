@@ -5,28 +5,62 @@ import heroBg from '../assets/m8.jpg';
 
 const MENU_ITEMS = [
   {
-    name: 'Charred Ocean Catch',
+    dbKey: 'dining_pizza',
+    name: 'Cherish Pizza Catch',
     price: '$34',
-    desc: 'Line-caught fish, citrus beurre blanc'
+    desc: 'Line-caught seafood pizza, citrus beurre crust sauce',
+    image: null
   },
   {
-    name: 'Forest Truffle Risotto',
-    price: '$28',
-    desc: 'Wild mushroom, aged parmesan'
+    dbKey: 'dining_truffle',
+    name: 'Fresh Truffle Entree',
+    price: '$48',
+    desc: 'Wild mushroom risotto, fresh black truffle slice, aged parmesan',
+    image: null
   },
   {
-    name: 'Coconut Lemongrass Curry',
+    dbKey: 'dining_mousse',
+    name: 'Coconut Mousse on Pastry',
     price: '$24',
-    desc: 'Garden vegetables, jasmine rice'
+    desc: 'Light tropical whipped coconut dessert on flaky puff pastry',
+    image: null
   },
   {
-    name: 'Golden Hour Tasting',
-    price: '$95',
-    desc: "Seven-course chef's journey"
+    dbKey: 'dining_tea',
+    name: 'Spiced Fruit Tea Cup',
+    price: '$12',
+    desc: 'Signature warm herbal tea blend steeped with fresh garden spices',
+    image: null
   }
 ];
 
 export default function Dining({ handleScrollTo, setCurrentPage }) {
+  const [menuList, setMenuList] = useState(MENU_ITEMS);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setMenuList(prev => prev.map(item => {
+            const match = prices.find(p => p.itemKey === item.dbKey);
+            return match ? { 
+              ...item, 
+              price: `₹${Number(match.price).toLocaleString()}`, 
+              image: match.imageUrl || item.image,
+              name: match.displayName || item.name,
+              desc: match.description || item.desc
+            } : item;
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch dining menu prices:", err);
+      }
+    };
+    fetchPrices();
+  }, []);
+
   const [formData, setFormData] = useState({
     date: '',
     time: '19:00',
@@ -116,21 +150,30 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
               <span className="text-[11px] font-bold tracking-[0.2em] text-resort-gold uppercase block mb-8 border-b border-stone-200/50 pb-2">Today Special</span>
               
               <div className="space-y-8">
-                {MENU_ITEMS.map((item, idx) => (
-                  <div key={idx} className="space-y-2">
-                    <div className="flex items-end justify-between gap-4 font-serif">
-                      <span className="text-stone-950 font-normal text-base md:text-lg whitespace-nowrap">
-                        {item.name}
-                      </span>
-                      {/* Dotted Leader Line */}
-                      <div className="border-b border-dotted border-stone-300 flex-grow mb-1.5 min-w-[20px]" />
-                      <span className="text-stone-950 font-semibold text-base md:text-lg whitespace-nowrap">
-                        {item.price}
-                      </span>
+                {menuList.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    {item.image && (
+                      <img 
+                        src={item.image} 
+                        alt={item.name} 
+                        className="w-16 h-16 rounded-xl object-cover border border-stone-200 shrink-0 shadow-sm mt-1"
+                      />
+                    )}
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-end justify-between gap-4 font-serif">
+                        <span className="text-stone-950 font-normal text-base md:text-lg whitespace-nowrap">
+                          {item.name}
+                        </span>
+                        {/* Dotted Leader Line */}
+                        <div className="border-b border-dotted border-stone-300 flex-grow mb-1.5 min-w-[20px]" />
+                        <span className="text-stone-950 font-semibold text-base md:text-lg whitespace-nowrap">
+                          {item.price}
+                        </span>
+                      </div>
+                      <p className="text-stone-500 text-xs md:text-sm font-light leading-relaxed max-w-xl">
+                        {item.desc}
+                      </p>
                     </div>
-                    <p className="text-stone-500 text-xs md:text-sm font-light leading-relaxed max-w-xl">
-                      {item.desc}
-                    </p>
                   </div>
                 ))}
               </div>

@@ -60,6 +60,40 @@ const MENU_PREVIEWS = [
 const AMBIENCE_PREVIEWS = [amb1, amb2, amb3, amb4];
 
 export default function Lounge({ handleScrollTo, setCurrentPage }) {
+  const [menuPreviewsList, setMenuPreviewsList] = useState([
+    { dbKey: 'bar_cocktail_1', title: 'Signature Cocktails', desc: 'Handcrafted drinks prepared by expert mixologists.', image: menu1 },
+    { dbKey: 'bar_mocktail_1', title: 'Premium Mocktails', desc: 'Zero-proof creations bursting with flavor.', image: menu2 },
+    { dbKey: 'bar_wine_1', title: 'Wine Selection', desc: 'Curated vintages from renowned vineyards.', image: menu3 },
+    { dbKey: 'bar_spirits_1', title: 'Spirits', desc: 'Rare whiskeys, cognacs, and fine liqueurs.', image: menu4 },
+    { dbKey: 'bar_cocktail_2', title: 'Craft Brews', desc: 'Locally sourced artisanal craft beers.', image: menu5 },
+    { dbKey: 'bar_mocktail_2', title: 'Tropical Punch', desc: 'A refreshing mix of pineapple, mango, and passionfruit.', image: menu6 },
+    { dbKey: 'bar_wine_2', title: 'Champagne Select', desc: 'Premium sparkling champagnes imported directly from France.', image: menu7 },
+    { dbKey: 'bar_spirits_2', title: 'Rare Vintage Malt', desc: 'A selection of fine and rare single malt whiskeys.', image: menu8 },
+  ]);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setMenuPreviewsList(prev => prev.map(item => {
+            const match = prices.find(p => p.itemKey === item.dbKey);
+            return match ? { 
+              ...item, 
+              title: match.displayName || item.title,
+              desc: match.description || item.desc,
+              image: match.imageUrl || item.image
+            } : item;
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch bar preview prices:', err);
+      }
+    };
+    fetchPrices();
+  }, []);
+
   const [seatingPreference, setSeatingPreference] = useState('Indoor');
   const [formData, setFormData] = useState({
     name: '',
@@ -228,9 +262,10 @@ export default function Lounge({ handleScrollTo, setCurrentPage }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {MENU_PREVIEWS.map((card, idx) => (
+          {menuPreviewsList.map((card, idx) => (
             <div
               key={idx}
+              onClick={() => setCurrentPage('dining')}
               className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:-translate-y-0.5 transition-all duration-300"
             >
               <img

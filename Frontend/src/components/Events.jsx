@@ -45,6 +45,60 @@ const HALLS = [
 ];
 
 export default function Events({ handleScrollTo, setCurrentPage }) {
+  const [weddingPackages, setWeddingPackages] = useState([
+    {
+      dbKey: 'wedding_traditional',
+      name: 'Traditional Wedding',
+      price: 'FROM $8000',
+      bullets: ['Banquet Hall', 'Catering (200 pax)', 'Floral Decor', 'Photography'],
+      imageUrl: null
+    },
+    {
+      dbKey: 'wedding_beachfront',
+      name: 'Destination Wedding',
+      price: 'FROM $15000',
+      bullets: ['Beachfront Ceremony', 'Guest Accommodation', 'Bridal Suite', 'Videography'],
+      imageUrl: null
+    },
+    {
+      dbKey: 'wedding_rainforest',
+      name: 'Premium Wedding',
+      price: 'FROM $22000',
+      bullets: ['Grand Ballroom', 'Live Band & DJ', '5-course Dining', 'Full Planning'],
+      imageUrl: null
+    },
+    {
+      dbKey: 'wedding_luxury',
+      name: 'Luxury Wedding',
+      price: 'FROM $35000',
+      bullets: ['Private Venue Buyout', 'Celebrity Chef', 'Fireworks', 'Cinematography'],
+      imageUrl: null
+    }
+  ]);
+
+  React.useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch('http://localhost:5210/api/catalog/prices');
+        if (res.ok) {
+          const prices = await res.json();
+          setWeddingPackages(prev => prev.map(item => {
+            const match = prices.find(p => p.itemKey === item.dbKey);
+            return match ? { 
+              ...item, 
+              price: `FROM ₹${Number(match.price).toLocaleString()}`,
+              imageUrl: match.imageUrl || null,
+              name: match.displayName || item.name
+            } : item;
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch event prices:', err);
+      }
+    };
+    fetchPrices();
+  }, []);
+
   const [formData, setFormData] = useState({
     eventType: 'Wedding',
     date: '',
@@ -55,6 +109,7 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
   });
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const [inquiryLoading, setInquiryLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
@@ -124,34 +179,47 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {WEDDINGS.map((wedding, idx) => (
+          {weddingPackages.map((wedding, idx) => (
             <div 
               key={idx}
-              className="bg-white rounded-3xl p-8 border border-stone-100 shadow-[0_10px_35px_rgba(0,0,0,0.03)] flex flex-col justify-between h-96 hover:shadow-xl transition-shadow duration-300"
+              className="bg-white rounded-3xl overflow-hidden border border-stone-100 shadow-[0_10px_35px_rgba(0,0,0,0.03)] flex flex-col justify-between h-[28rem] hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="space-y-5">
-                <div className="space-y-2">
-                  <div className="text-resort-gold text-lg">🌾</div>
-                  <h3 className="font-serif text-lg font-normal text-stone-950">{wedding.name}</h3>
-                  <span className="text-xs text-stone-400 font-sans tracking-wide block uppercase">{wedding.price}</span>
+              <div>
+                {wedding.imageUrl ? (
+                  <div className="h-36 w-full overflow-hidden">
+                    <img src={wedding.imageUrl} alt={wedding.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="h-6"></div>
+                )}
+                <div className="px-8 pt-6 pb-2 space-y-5">
+                  <div className="space-y-2 text-left">
+                    <h3 className="font-serif text-lg font-normal text-stone-950">{wedding.name}</h3>
+                    <span className="text-xs text-stone-400 font-sans tracking-wide block uppercase">{wedding.price}</span>
+                  </div>
+                  
+                  <ul className="space-y-2 text-stone-500 text-xs font-light text-left">
+                    {wedding.bullets.map((bullet, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <span className="w-1 h-1 bg-stone-300 rounded-full" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                
-                <ul className="space-y-2 text-stone-500 text-xs font-light">
-                  {wedding.bullets.map((bullet, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                      <span className="w-1 h-1 bg-stone-300 rounded-full" />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
               </div>
 
-              <button 
-                onClick={() => handleScrollTo('quote-section')}
-                className="w-full bg-stone-50 hover:bg-stone-950 hover:text-white text-stone-600 border border-stone-200 font-bold py-3 rounded-md text-xs tracking-wider transition-all duration-300 uppercase mt-4"
-              >
-                Inquire
-              </button>
+              <div className="px-8 pb-8">
+                <button 
+                  onClick={() => {
+                    setFormData(prev => ({ ...prev, eventType: wedding.name }));
+                    setIsModalOpen(true);
+                  }}
+                  className="w-full bg-stone-50 hover:bg-stone-950 hover:text-white text-stone-600 border border-stone-200 font-bold py-3 rounded-md text-xs tracking-wider transition-all duration-300 uppercase cursor-pointer"
+                >
+                  Inquire
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -306,6 +374,135 @@ export default function Events({ handleScrollTo, setCurrentPage }) {
 
       {/* FOOTER */}
       <Footer handleScrollTo={handleScrollTo} setCurrentPage={setCurrentPage} />
+
+      {/* 5. MODAL POPUP FOR ENQUIRIES */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-stone-900/65 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full border border-stone-200 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => {
+                setIsModalOpen(false);
+                setInquirySubmitted(false);
+              }}
+              className="absolute top-5 right-5 text-stone-400 hover:text-stone-700 font-bold text-lg cursor-pointer"
+            >
+              ✕
+            </button>
+
+            {!inquirySubmitted ? (
+              <>
+                <h3 className="font-serif text-2xl font-normal text-stone-900 mb-6 text-left">
+                  Request a Quotation
+                </h3>
+                <form onSubmit={handleBookingSubmit} className="space-y-4">
+                  {/* Event Type & Date */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Event Type</label>
+                      <input 
+                        readOnly
+                        type="text"
+                        value={formData.eventType}
+                        className="w-full bg-stone-100 border border-stone-200 text-xs rounded-xl px-4 py-3.5 text-stone-600 focus:outline-none cursor-not-allowed"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Preferred Date</label>
+                      <input 
+                        required 
+                        type="date" 
+                        value={formData.date}
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3 text-stone-750 outline-none cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Guests Count */}
+                  <div>
+                    <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Number of Guests</label>
+                    <input 
+                      required 
+                      type="text" 
+                      placeholder="e.g. 150 guests"
+                      value={formData.guests}
+                      onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                      className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-stone-400 placeholder-stone-450 text-stone-700" 
+                    />
+                  </div>
+
+                  {/* Name & Email */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Full Name</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="Your name" 
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-stone-400 placeholder-stone-450 text-stone-700" 
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Email Address</label>
+                      <input 
+                        required 
+                        type="email" 
+                        placeholder="your@email.com" 
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-stone-400 placeholder-stone-450 text-stone-700" 
+                      />
+                    </div>
+                  </div>
+
+                  {/* Message Box */}
+                  <div>
+                    <label className="text-[10px] text-stone-450 font-bold tracking-wider uppercase block mb-1 text-left">Special Requests / Message</label>
+                    <textarea 
+                      rows={4}
+                      placeholder="Tell us about your dream event- catering, decoration, entertainment..." 
+                      value={formData.msg}
+                      onChange={(e) => setFormData({ ...formData, msg: e.target.value })}
+                      className="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl px-4 py-3.5 focus:outline-none focus:border-stone-400 placeholder-stone-450 text-stone-750 resize-none" 
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={inquiryLoading}
+                    className="w-full bg-black text-white text-[11px] font-bold tracking-widest uppercase py-4 rounded-xl hover:bg-resort-gold hover:text-stone-950 transition-all duration-300 mt-4 active:scale-95 shadow-md flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    {inquiryLoading ? 'Submitting Request...' : 'Send Inquiry'}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-resort-gold/15 border border-resort-gold/30 flex items-center justify-center text-resort-gold mb-6 animate-bounce">
+                  <svg className="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                </div>
+                <h4 className="font-serif text-2xl font-light text-stone-900 mb-2">Inquiry Submitted</h4>
+                <p className="text-xs text-stone-500 max-w-sm mb-6 leading-relaxed">
+                  Thank you, <strong>{formData.name}</strong>. We have received your inquiry for a custom quotation and will email you at <strong>{formData.email}</strong> shortly.
+                </p>
+                <button 
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setInquirySubmitted(false);
+                  }}
+                  className="w-full bg-black text-white text-[11px] font-bold tracking-widest uppercase py-3.5 rounded-xl hover:bg-resort-gold hover:text-stone-950 transition-all duration-300 cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

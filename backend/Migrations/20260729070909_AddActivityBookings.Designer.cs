@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729070909_AddActivityBookings")]
+    partial class AddActivityBookings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,78 +226,6 @@ namespace backend.Migrations
                             DisplayName = "Luxury Wedding",
                             ItemKey = "wedding_luxury",
                             Price = 450000m
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Category = "Bar",
-                            Description = "Handcrafted drinks prepared by expert mixologists.",
-                            DisplayName = "Signature Cocktails",
-                            ItemKey = "bar_cocktail_1",
-                            Price = 450m
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Category = "Bar",
-                            Description = "Zero-proof creations bursting with flavor.",
-                            DisplayName = "Premium Mocktails",
-                            ItemKey = "bar_mocktail_1",
-                            Price = 300m
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Category = "Bar",
-                            Description = "Curated vintages from renowned vineyards.",
-                            DisplayName = "Wine Selection",
-                            ItemKey = "bar_wine_1",
-                            Price = 950m
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Category = "Bar",
-                            Description = "Rare whiskeys, cognacs, and fine liqueurs.",
-                            DisplayName = "Spirits",
-                            ItemKey = "bar_spirits_1",
-                            Price = 1200m
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Category = "Bar",
-                            Description = "Locally sourced artisanal craft beers.",
-                            DisplayName = "Craft Brews",
-                            ItemKey = "bar_cocktail_2",
-                            Price = 380m
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Category = "Bar",
-                            Description = "A refreshing mix of pineapple, mango, and passionfruit.",
-                            DisplayName = "Tropical Punch",
-                            ItemKey = "bar_mocktail_2",
-                            Price = 280m
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Category = "Bar",
-                            Description = "Premium sparkling champagnes imported directly from France.",
-                            DisplayName = "Champagne Select",
-                            ItemKey = "bar_wine_2",
-                            Price = 1850m
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Category = "Bar",
-                            Description = "A selection of fine and rare single malt whiskeys.",
-                            DisplayName = "Rare Vintage Malt",
-                            ItemKey = "bar_spirits_2",
-                            Price = 2400m
                         });
                 });
 

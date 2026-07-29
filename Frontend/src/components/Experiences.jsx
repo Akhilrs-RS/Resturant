@@ -166,6 +166,16 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
     }
   };
 
+  const parseDateSafe = (dateStr) => {
+    if (!dateStr) return new Date().toISOString();
+    try {
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+    } catch (e) {
+      return new Date().toISOString();
+    }
+  };
+
   const handleOpenInquiry = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
@@ -184,30 +194,49 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5210/api/inquiries/events', {
+      const isActivity = selectedItem.type === 'activity';
+      const endpoint = isActivity 
+        ? 'http://localhost:5210/api/bookings/activities' 
+        : 'http://localhost:5210/api/inquiries/events';
+
+      const payload = isActivity 
+        ? {
+            activityName: selectedItem.name,
+            date: parseDateSafe(inquiryDate),
+            timeSlot: selectedItem.duration || 'All Day',
+            guests: numGuests.toString(),
+            fullName: guestName,
+            email: guestEmail,
+            phone: guestPhone,
+            notes: notes
+          }
+        : {
+            eventType: `Package: ${selectedItem.name}`,
+            guests: numGuests.toString(),
+            date: parseDateSafe(inquiryDate),
+            fullName: guestName,
+            email: guestEmail,
+            message: `Phone: ${guestPhone}\nNotes: ${notes}\nPrice: ${selectedItem.price}`
+          };
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          eventType: selectedItem.type === 'activity' ? `Activity: ${selectedItem.name}` : `Package: ${selectedItem.name}`,
-          guests: numGuests.toString(),
-          date: new Date(inquiryDate).toISOString(),
-          fullName: guestName,
-          email: guestEmail,
-          message: `Phone: ${guestPhone}\nNotes: ${notes}\nPrice: ${selectedItem.price}`
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
-        setInquiryRef(`ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
+        setInquiryRef(isActivity ? `BK-${Math.floor(10000 + Math.random() * 90000)}` : `ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
         setIsSubmitted(true);
       } else {
         alert("Submission failed. Please try again.");
       }
     } catch (err) {
       console.error(err);
-      setInquiryRef(`ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
+      const isActivity = selectedItem.type === 'activity';
+      setInquiryRef(isActivity ? `BK-${Math.floor(10000 + Math.random() * 90000)}` : `ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -555,7 +584,7 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
                     {selectedItem.type === 'activity' ? 'Booking Reference' : 'Inquiry Reference'}
                   </span>
                   <span className="text-sm font-mono font-bold text-stone-950 tracking-wider mt-1 block">
-                    {selectedItem.type === 'activity' ? inquiryRef.replace('ENQ', 'BK') : inquiryRef}
+                    {inquiryRef}
                   </span>
                 </div>
                 <button 

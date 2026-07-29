@@ -25,6 +25,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
   const [loungeReservations, setLoungeReservations] = useState([]);
   const [inquiries, setInquiries] = useState([]);
   const [catalogPrices, setCatalogPrices] = useState([]);
+  const [activityBookings, setActivityBookings] = useState([]);
   const [editingKey, setEditingKey] = useState(null);
   const [editPriceValue, setEditPriceValue] = useState('');
   const [editPriceImage, setEditPriceImage] = useState('');
@@ -109,6 +110,13 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
       if (resPrices.ok) {
         const data = await resPrices.json();
         setCatalogPrices(data || []);
+      }
+
+      // 7. Fetch Activity Bookings
+      const resActivities = await fetch(`${API_BASE_URL}/bookings/activities`);
+      if (resActivities.ok) {
+        const data = await resActivities.json();
+        setActivityBookings(data || []);
       }
 
       setDbConnected(true);
@@ -429,6 +437,17 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
             <Shield className="w-4 h-4" /> Lounge bookings
           </button>
 
+          <button
+            onClick={() => setActiveTab('activities')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider transition-all duration-300 ${
+              activeTab === 'activities' 
+                ? 'bg-resort-gold text-stone-950 font-bold' 
+                : 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" /> Activity Bookings
+          </button>
+
           <div className="pt-6">
             <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4 font-sans">FEEDBACK</p>
             <button
@@ -514,6 +533,7 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                 {activeTab === 'lounges' && 'Lounge Seating Catalog'}
                 {activeTab === 'inquiries' && 'Quotation Request Inquiries'}
                 {activeTab === 'prices' && 'Manage Catalog Rates'}
+                {activeTab === 'activities' && 'Activity Bookings Log'}
               </h2>
             </div>
 
@@ -773,38 +793,36 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                                 onChange={(e) => setEditPriceValue(e.target.value)}
                                 className="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 w-28 text-xs focus:outline-none focus:border-resort-gold"
                               />
-                              {item.category === "Suites" && (
-                                <div className="space-y-1">
-                                  <label className="text-[9px] text-slate-400 block font-semibold uppercase tracking-wider">Upload Suite Image</label>
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                      const file = e.target.files[0];
-                                      if (file) {
-                                        const reader = new FileReader();
-                                        reader.onloadend = () => {
-                                          setEditPriceImage(reader.result);
-                                        };
-                                        reader.readAsDataURL(file);
-                                      }
-                                    }}
-                                    className="text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-850 file:text-slate-200 hover:file:bg-slate-750 cursor-pointer"
-                                  />
-                                  {editPriceImage && (
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-[9px] text-emerald-400 font-semibold">Selected</span>
-                                      <button
-                                        type="button"
-                                        onClick={() => setEditPriceImage('')}
-                                        className="text-[9px] text-rose-400 hover:underline"
-                                      >
-                                        Remove
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
+                              <div className="space-y-1 mt-1">
+                                <label className="text-[9px] text-slate-400 block font-semibold uppercase tracking-wider">Upload Item Image</label>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                      const reader = new FileReader();
+                                      reader.onloadend = () => {
+                                        setEditPriceImage(reader.result);
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }
+                                  }}
+                                  className="text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-850 file:text-slate-200 hover:file:bg-slate-750 cursor-pointer"
+                                />
+                                {editPriceImage && (
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <span className="text-[9px] text-emerald-400 font-semibold">Selected</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => setEditPriceImage('')}
+                                      className="text-[9px] text-rose-400 hover:underline"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           ) : (
                             <span className="font-mono text-resort-gold font-bold">₹{item.price.toLocaleString()}</span>
@@ -984,6 +1002,47 @@ export default function Admin({ handleScrollTo, setCurrentPage }) {
                     );
                   })}
                 </div>
+              )}
+              {activeTab === 'activities' && (
+                <table className="w-full text-xs text-left min-w-[700px]">
+                  <thead className="bg-[#121b2a] text-[10px] font-bold tracking-wider text-slate-400 uppercase border-b border-slate-800">
+                    <tr>
+                      <th className="px-6 py-4">Guest Name</th>
+                      <th className="px-6 py-4">Contact Details</th>
+                      <th className="px-6 py-4">Activity</th>
+                      <th className="px-6 py-4">Guests</th>
+                      <th className="px-6 py-4">Preferred Date</th>
+                      <th className="px-6 py-4">Time Slot</th>
+                      <th className="px-6 py-4">Special Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {activityBookings.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="px-6 py-10 text-center text-slate-500 font-light">
+                          No activity bookings logged in the database yet.
+                        </td>
+                      </tr>
+                    ) : (
+                      activityBookings.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-800/20 transition-colors">
+                          <td className="px-6 py-4 font-semibold text-white">{item.fullName}</td>
+                          <td className="px-6 py-4">
+                            <span className="block text-slate-300 font-medium">{item.email}</span>
+                            {item.phone && <span className="block text-[10px] text-slate-500 mt-0.5">{item.phone}</span>}
+                          </td>
+                          <td className="px-6 py-4 font-semibold text-resort-gold">{item.activityName}</td>
+                          <td className="px-6 py-4 text-slate-300">{item.guests}</td>
+                          <td className="px-6 py-4 text-slate-300">
+                            {new Date(item.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                          </td>
+                          <td className="px-6 py-4 text-slate-400 font-medium">{item.timeSlot}</td>
+                          <td className="px-6 py-4 text-slate-400 max-w-xs truncate">{item.notes || '—'}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               )}
 
             </div>

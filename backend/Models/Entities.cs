@@ -83,4 +83,18 @@ namespace backend.Models
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
     }
+
+    public class ActivityBooking
+    {
+        public int Id { get; set; }
+        public string? ActivityName { get; set; }
+        public DateTime Date { get; set; }
+        public string? TimeSlot { get; set; }
+        public string? Guests { get; set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+        public string? Notes { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
 }
