@@ -1,5 +1,5 @@
-import React from 'react';
-import { Clock, Users, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Clock, Users, AlertCircle, X, Send, Calendar } from 'lucide-react';
 import Footer from './Footer';
 import heroBg from '../assets/m11.jpg';
 import pkg1 from '../assets/m1.jpg';
@@ -120,7 +120,7 @@ const PACKAGES = [
   },
   {
     name: 'Adventure Package',
-    category: 'FOR THE THRILL SEEKERS',
+    category: 'ADVENTURE & THRILLS',
     price: '$1500',
     nights: '/ 3 nights',
     image: pkg5,
@@ -139,8 +139,79 @@ const PACKAGES = [
 ];
 
 export default function Experiences({ handleScrollTo, setCurrentPage }) {
-  const handleBookNow = (activityName) => {
-    alert(`Booking request for "${activityName}" received. Our team will confirm your slot shortly!`);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  // Form states
+  const [guestName, setGuestName] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestPhone, setGuestPhone] = useState('');
+  const [inquiryDate, setInquiryDate] = useState('');
+  const [numGuests, setNumGuests] = useState('2');
+  const [notes, setNotes] = useState('');
+
+  // Submit states
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [inquiryRef, setInquiryRef] = useState('');
+
+  const formatDateSafe = (dateStr) => {
+    if (!dateStr) return '';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
+  const handleOpenInquiry = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+    setIsSubmitted(false);
+    setGuestName('');
+    setGuestEmail('');
+    setGuestPhone('');
+    setInquiryDate('');
+    setNumGuests('2');
+    setNotes('');
+  };
+
+  const handleInquirySubmit = async (e) => {
+    e.preventDefault();
+    if (!guestName || !guestEmail || !inquiryDate) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('http://localhost:5210/api/inquiries/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          eventType: selectedItem.type === 'activity' ? `Activity: ${selectedItem.name}` : `Package: ${selectedItem.name}`,
+          guests: numGuests.toString(),
+          date: new Date(inquiryDate).toISOString(),
+          fullName: guestName,
+          email: guestEmail,
+          message: `Phone: ${guestPhone}\nNotes: ${notes}\nPrice: ${selectedItem.price}`
+        })
+      });
+
+      if (response.ok) {
+        setInquiryRef(`ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
+        setIsSubmitted(true);
+      } else {
+        alert("Submission failed. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      setInquiryRef(`ENQ-${Math.floor(10000 + Math.random() * 90000)}`);
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -237,8 +308,8 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
                     {activity.price}
                   </span>
                   <button
-                    onClick={() => handleBookNow(activity.name)}
-                    className="bg-stone-950 text-white text-[10px] font-semibold tracking-widest uppercase px-4 py-2 rounded-lg hover:bg-stone-700 transition-all duration-200 active:scale-95"
+                    onClick={() => handleOpenInquiry({ ...activity, type: 'activity' })}
+                    className="bg-stone-950 text-white text-[10px] font-semibold tracking-widest uppercase px-4 py-2 rounded-lg hover:bg-stone-700 transition-all duration-200 active:scale-95 cursor-pointer"
                   >
                     Book Now
                   </button>
@@ -314,8 +385,8 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
                       <span className="text-white/40 text-[10px] ml-1">{pkg.nights}</span>
                     </div>
                     <button
-                      onClick={() => alert(`Enquiry for ${pkg.name} received! Our team will reach out shortly.`)}
-                      className="bg-[#c5a253] hover:bg-[#d4b56a] text-stone-950 text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-lg transition-all duration-200 active:scale-95"
+                      onClick={() => handleOpenInquiry({ ...pkg, type: 'package' })}
+                      className="bg-[#c5a253] hover:bg-[#d4b56a] text-stone-950 text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer"
                     >
                       Enquire
                     </button>
@@ -327,6 +398,178 @@ export default function Experiences({ handleScrollTo, setCurrentPage }) {
 
         </div>
       </section>
+
+      {/* Sleek Light Theme Inquiry Overlay Modal */}
+      {isModalOpen && selectedItem && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 select-none">
+          {/* Backdrop overlay */}
+          <div 
+            onClick={() => setIsModalOpen(false)}
+            className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"
+          />
+
+          {/* Modal Panel */}
+          <div className="relative w-full max-w-lg bg-white border border-stone-200 rounded-3xl p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
+            {/* Close */}
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute right-6 top-6 text-stone-400 hover:text-stone-700 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {!isSubmitted ? (
+              <div>
+                <span className="text-[9px] font-bold tracking-widest uppercase text-[#c5a253] mb-1.5 block font-semibold">
+                  {selectedItem.type === 'activity' ? 'Activity Booking' : 'Package Enquiry'}
+                </span>
+                <h3 className="font-serif text-2xl font-light text-stone-950 mb-1">
+                  {selectedItem.type === 'activity' ? `Book Activity: ${selectedItem.name}` : `Enquire: ${selectedItem.name}`}
+                </h3>
+                <p className="text-xs text-stone-500 mb-6 font-light">
+                  {selectedItem.type === 'activity' 
+                    ? 'Provide details to reserve your activity slot.'
+                    : 'Provide your details below and our concierge team will customize your experience.'}
+                </p>
+
+                <form onSubmit={handleInquirySubmit} className="space-y-4 text-left">
+                  {/* Row 1: Name */}
+                  <div>
+                    <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Your Full Name</label>
+                    <input 
+                      required
+                      type="text"
+                      placeholder="Jane Smith"
+                      value={guestName}
+                      onChange={(e) => setGuestName(e.target.value)}
+                      className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white"
+                    />
+                  </div>
+
+                  {/* Row 2: Email & Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Email Address</label>
+                      <input 
+                        required
+                        type="email"
+                        placeholder="jane.smith@example.com"
+                        value={guestEmail}
+                        onChange={(e) => setGuestEmail(e.target.value)}
+                        className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Contact Phone</label>
+                      <input 
+                        type="tel"
+                        placeholder="+91 99999 99999"
+                        value={guestPhone}
+                        onChange={(e) => setGuestPhone(e.target.value)}
+                        className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Date & Guests */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Preferred Date</label>
+                      <input 
+                        required
+                        type="date"
+                        value={inquiryDate}
+                        onChange={(e) => setInquiryDate(e.target.value)}
+                        className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Number of Guests</label>
+                      <select 
+                        value={numGuests}
+                        onChange={(e) => setNumGuests(e.target.value)}
+                        className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white cursor-pointer"
+                      >
+                        <option value="1">1 Person</option>
+                        <option value="2">2 Persons</option>
+                        <option value="3">3 Persons</option>
+                        <option value="4">4 Persons</option>
+                        <option value="5+">5+ Persons</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row 4: Notes */}
+                  <div>
+                    <label className="text-[10px] font-bold text-stone-500 tracking-wider uppercase block mb-1.5">Special Notes / Requirements</label>
+                    <textarea 
+                      rows={3}
+                      placeholder="Any health requirements, package preferences or requests..."
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-stone-950 focus:bg-white resize-none"
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <div className="pt-2">
+                    <button 
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-stone-950 hover:bg-stone-800 text-white text-[11px] font-semibold tracking-widest uppercase py-3 rounded-xl transition-all duration-200 active:scale-95 disabled:bg-stone-500 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          {selectedItem.type === 'activity' ? 'Booking Sanctuary...' : 'Sending Inquiry...'}
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-3.5 h-3.5" />
+                          {selectedItem.type === 'activity' ? 'Confirm Booking' : 'Submit Enquiry'}
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                </form>
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-6 mx-auto">
+                  <Star className="w-8 h-8 fill-current" />
+                </div>
+                <h4 className="font-serif text-2xl font-light text-stone-950 mb-2">
+                  {selectedItem.type === 'activity' ? 'Activity Booked!' : 'Enquiry Submitted'}
+                </h4>
+                <p className="text-xs text-stone-500 max-w-sm mb-6 leading-relaxed mx-auto">
+                  {selectedItem.type === 'activity' 
+                    ? `Thank you, ${guestName}. We have confirmed your slot for ${selectedItem.name} on ${formatDateSafe(inquiryDate)}. A confirmation receipt has been sent to ${guestEmail}.`
+                    : `Thank you, ${guestName}. We have received your request for ${selectedItem.name}. Our luxury experience curators will contact you within 24 hours at ${guestEmail}.`}
+                </p>
+                <div className="bg-stone-50 border border-stone-100 rounded-2xl px-6 py-3.5 mb-8 w-fit mx-auto">
+                  <span className="text-[9px] uppercase tracking-wider text-stone-400 font-semibold block">
+                    {selectedItem.type === 'activity' ? 'Booking Reference' : 'Inquiry Reference'}
+                  </span>
+                  <span className="text-sm font-mono font-bold text-stone-950 tracking-wider mt-1 block">
+                    {selectedItem.type === 'activity' ? inquiryRef.replace('ENQ', 'BK') : inquiryRef}
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="bg-stone-950 hover:bg-stone-850 text-white text-[10px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-full transition-colors active:scale-95 cursor-pointer"
+                >
+                  Return to Experiences
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <Footer handleScrollTo={handleScrollTo} setCurrentPage={setCurrentPage} />

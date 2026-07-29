@@ -64,7 +64,7 @@ const ROOMS_DATA = [
 
 const CATEGORIES = ['All', 'Deluxe', 'Premium', 'Family Suite', 'Villa', 'Honeymoon Suite'];
 
-export default function Accommodation({ handleOpenBooking, handleScrollTo, setCurrentPage }) {
+export default function Accommodation({ handleOpenBooking, handleScrollTo, setCurrentPage, suitesList }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [roomsList, setRoomsList] = useState(ROOMS_DATA);
 
@@ -96,6 +96,17 @@ export default function Accommodation({ handleOpenBooking, handleScrollTo, setCu
     };
     fetchPrices();
   }, []);
+
+  const handleBookRoom = (roomId) => {
+    let suiteId = 'oasis'; // Default fallback
+    if (roomId === 'ocean-premium') suiteId = 'oasis';
+    else if (roomId === 'canopy-family') suiteId = 'oasis';
+    else if (roomId === 'garden-deluxe') suiteId = 'oasis';
+    else if (roomId === 'private-pool') suiteId = 'oasis';
+    else if (roomId === 'honeymoon-ocean') suiteId = 'overwater';
+
+    handleOpenBooking(suiteId);
+  };
 
   const filteredRooms = activeCategory === 'All'
     ? roomsList
@@ -206,8 +217,8 @@ export default function Accommodation({ handleOpenBooking, handleScrollTo, setCu
                     {room.price} <span className="text-[10px] text-stone-400 font-light font-sans">/Night</span>
                   </span>
                   <button 
-                    onClick={() => handleOpenBooking()}
-                    className="bg-black hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-2.5 rounded-md text-xs tracking-wider transition-all duration-300 uppercase"
+                    onClick={() => handleBookRoom(room.id)}
+                    className="bg-black hover:bg-resort-gold text-white hover:text-stone-950 font-bold px-6 py-2.5 rounded-md text-xs tracking-wider transition-all duration-300 uppercase cursor-pointer"
                   >
                     Book Now
                   </button>
