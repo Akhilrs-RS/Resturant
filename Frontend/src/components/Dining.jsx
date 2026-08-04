@@ -140,7 +140,13 @@ export default function Dining({ handleScrollTo, setCurrentPage }) {
           {/* Left: Chef Specials Menu List */}
           <div className="lg:col-span-6 space-y-10 text-left">
             <div className="space-y-3">
-              <span className="text-[11px] font-bold tracking-[0.35em] text-resort-gold uppercase block">THE MENU</span>
+              <button 
+                onClick={() => handleScrollTo('menu')}
+                className="bg-black hover:bg-stone-800 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-6 py-3 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95 w-fit"
+              >
+                View all Menu
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
               <h2 className="font-serif text-3xl md:text-4xl font-light text-stone-955 leading-tight">
                 A taste of the horizon
               </h2>

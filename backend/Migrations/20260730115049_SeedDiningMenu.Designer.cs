@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260730115049_SeedDiningMenu")]
+    partial class SeedDiningMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -554,24 +557,6 @@ namespace backend.Migrations
                             DisplayName = "Falafel Plate",
                             ItemKey = "menu_arabic_6",
                             Price = 450m
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Category = "Home_Images",
-                            Description = "Image for the Dining section on the Home page.",
-                            DisplayName = "Home Dining Section Image",
-                            ItemKey = "home_dining",
-                            Price = 0m
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Category = "Home_Images",
-                            Description = "Image for the Pool section on the Home page.",
-                            DisplayName = "Home Pool Section Image",
-                            ItemKey = "home_pool",
-                            Price = 0m
                         });
                 });
 

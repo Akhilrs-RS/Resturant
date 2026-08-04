@@ -45,6 +45,10 @@ namespace backend.Controllers
             {
                 priceRecord.ImageUrl = updateData.ImageUrl;
             }
+            if (!string.IsNullOrEmpty(updateData.DietaryType))
+            {
+                priceRecord.DietaryType = updateData.DietaryType;
+            }
 
             await _context.SaveChangesAsync();
             return Ok(priceRecord);

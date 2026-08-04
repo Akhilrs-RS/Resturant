@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260730115002_AddDietaryType")]
+    partial class AddDietaryType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,244 +337,6 @@ namespace backend.Migrations
                             DisplayName = "Aged Single Malt",
                             ItemKey = "bar_spirits_1",
                             Price = 1800m
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Category = "Menu_Chef",
-                            Description = "Fresh Catch the day, lemon butter sauce, grilled vegetables.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Grilled Coastal Seafood Platter",
-                            ItemKey = "menu_chef_1",
-                            Price = 1450m
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Category = "Menu_Chef",
-                            Description = "Traditional coconut-based prawn curry served with steamed rice.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Special Prawn Curry",
-                            ItemKey = "menu_chef_2",
-                            Price = 950m
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Category = "Menu_Chef",
-                            Description = "Oven roasted chicken with herbs, mashed potato, and seasonal vegetables.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Herb Roasted Chicken",
-                            ItemKey = "menu_chef_3",
-                            Price = 850m
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Category = "Menu_Chef",
-                            Description = "A curated vegetarian thali with regional flavors and desserts.",
-                            DietaryType = "Veg",
-                            DisplayName = "Vegetarian Royal Thali",
-                            ItemKey = "menu_chef_4",
-                            Price = 750m
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Category = "Menu_Indian",
-                            Description = "Traditional rice meal with curries, vegetables, pickle, papad, and dessert.",
-                            DietaryType = "Veg",
-                            DisplayName = "Meals",
-                            ItemKey = "menu_indian_1",
-                            Price = 480m
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Category = "Menu_Indian",
-                            Description = "Aromatic rice cooked with chicken, spices, fried onions, and raita.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Chicken Biriyani",
-                            ItemKey = "menu_indian_2",
-                            Price = 620m
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Category = "Menu_Indian",
-                            Description = "Soft paneer cooked in rich creamy tomato gravy.",
-                            DietaryType = "Veg",
-                            DisplayName = "Paneer Butter Masala",
-                            ItemKey = "menu_indian_3",
-                            Price = 560m
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Category = "Menu_Indian",
-                            Description = "Creamy butter chicken served with soft naan.",
-                            DietaryType = "Veg",
-                            DisplayName = "Butter Chicken with Naan",
-                            ItemKey = "menu_indian_4",
-                            Price = 780m
-                        },
-                        new
-                        {
-                            Id = 37,
-                            Category = "Menu_Indian",
-                            Description = "Layered Kerala parotta served with spicy chicken curry.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Malabar Parotta with Chicken Curry",
-                            ItemKey = "menu_indian_5",
-                            Price = 520m
-                        },
-                        new
-                        {
-                            Id = 38,
-                            Category = "Menu_Indian",
-                            Description = "Layered Kerala parotta served with spicy chicken curry.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Malabar Parotta with Chicken Curry",
-                            ItemKey = "menu_indian_6",
-                            Price = 520m
-                        },
-                        new
-                        {
-                            Id = 39,
-                            Category = "Menu_Chinese",
-                            Description = "Wok tossed rice with chicken, vegetables, egg, and Chinese sauces.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Chicken Fried Rice",
-                            ItemKey = "menu_chinese_1",
-                            Price = 520m
-                        },
-                        new
-                        {
-                            Id = 40,
-                            Category = "Menu_Chinese",
-                            Description = "Stir fried noodles with fresh vegetables and soy garlic flavor.",
-                            DietaryType = "Veg",
-                            DisplayName = "Veg Hakka Noodles",
-                            ItemKey = "menu_chinese_2",
-                            Price = 480m
-                        },
-                        new
-                        {
-                            Id = 41,
-                            Category = "Menu_Chinese",
-                            Description = "Crispy chicken tossed in spicy Manchurian sauce.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Chicken Manchurian",
-                            ItemKey = "menu_chinese_3",
-                            Price = 580m
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Category = "Menu_Chinese",
-                            Description = "Paneer cubes tossed with bell peppers, onion, and chilli sauce.",
-                            DietaryType = "Veg",
-                            DisplayName = "Chilli Paneer",
-                            ItemKey = "menu_chinese_4",
-                            Price = 480m
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Category = "Menu_Chinese",
-                            Description = "Spicy Schezwan rice with vegetables and bold flavors.",
-                            DietaryType = "Veg",
-                            DisplayName = "Schezwan Fried Rice",
-                            ItemKey = "menu_chinese_5",
-                            Price = 480m
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Category = "Menu_Chinese",
-                            Description = "Crispy potato tossed in honey chilli glaze.",
-                            DietaryType = "Veg",
-                            DisplayName = "Honey Chilli Potato",
-                            ItemKey = "menu_chinese_6",
-                            Price = 420m
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Category = "Menu_Arabic",
-                            Description = "Slow-cooked Arabian rice with tender spiced chicken.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Chicken Mandi",
-                            ItemKey = "menu_arabic_1",
-                            Price = 850m
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Category = "Menu_Arabic",
-                            Description = "Charcoal grilled chicken served with garlic sauce and salad.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Al Faham Chicken",
-                            ItemKey = "menu_arabic_2",
-                            Price = 750m
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Category = "Menu_Arabic",
-                            Description = "Roasted chicken spiced with bell peppers, onion, and mint sauce.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Shawarma Platter",
-                            ItemKey = "menu_arabic_3",
-                            Price = 620m
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Category = "Menu_Arabic",
-                            Description = "Slow-cooked Arabian rice with tender spiced chicken.",
-                            DietaryType = "Non-Veg",
-                            DisplayName = "Chicken Mandi",
-                            ItemKey = "menu_arabic_4",
-                            Price = 850m
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Category = "Menu_Arabic",
-                            Description = "Crispy falafel served with tahini dip, salad, and pita.",
-                            DietaryType = "Veg",
-                            DisplayName = "Falafel Plate",
-                            ItemKey = "menu_arabic_5",
-                            Price = 450m
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Category = "Menu_Arabic",
-                            Description = "Crispy falafel served with tahini dip, salad, and pita.",
-                            DietaryType = "Veg",
-                            DisplayName = "Falafel Plate",
-                            ItemKey = "menu_arabic_6",
-                            Price = 450m
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Category = "Home_Images",
-                            Description = "Image for the Dining section on the Home page.",
-                            DisplayName = "Home Dining Section Image",
-                            ItemKey = "home_dining",
-                            Price = 0m
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Category = "Home_Images",
-                            Description = "Image for the Pool section on the Home page.",
-                            DisplayName = "Home Pool Section Image",
-                            ItemKey = "home_pool",
-                            Price = 0m
                         });
                 });
 

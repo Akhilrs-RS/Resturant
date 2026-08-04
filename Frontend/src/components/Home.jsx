@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Footer from './Footer';
 import m1 from '../assets/m1.jpg';
@@ -92,6 +92,31 @@ export default function Home({
   setCurrentPage,
   suitesList
 }) {
+  const [homeDiningImg, setHomeDiningImg] = useState(m8);
+  const [homePoolImg, setHomePoolImg] = useState(m9);
+
+  useEffect(() => {
+    const fetchHomeImages = async () => {
+      try {
+        const response = await fetch(`http://${window.location.hostname}:5210/api/catalog/prices`);
+        if (response.ok) {
+          const data = await response.json();
+          const diningEntry = data.find(item => item.itemKey === 'home_dining');
+          if (diningEntry && diningEntry.imageUrl) {
+            setHomeDiningImg(diningEntry.imageUrl);
+          }
+          const poolEntry = data.find(item => item.itemKey === 'home_pool');
+          if (poolEntry && poolEntry.imageUrl) {
+            setHomePoolImg(poolEntry.imageUrl);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch home images:", err);
+      }
+    };
+    fetchHomeImages();
+  }, []);
+
   return (
     <div>
       {/* 1. HERO FOLD (EXACT MATCH FOR FIGMA SCREENSHOT) */}
@@ -480,7 +505,7 @@ export default function Home({
             <div className="relative">
               <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-lg group relative">
                 <img 
-                  src={m8} 
+                  src={homeDiningImg} 
                   alt="Culinary Journeys At Sunset" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -498,13 +523,22 @@ export default function Home({
               <p className="text-stone-600 text-xs md:text-sm font-light leading-relaxed max-w-md">
                 Ocean-To-Table Cuisine Crafted By Award-Winning Chefs Across Three Signature Restaurants.
               </p>
-              <button 
-                onClick={() => handleScrollTo('dining')}
-                className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
-              >
-                Reserve A Table
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-              </button>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => handleScrollTo('dining')}
+                  className="bg-black hover:bg-resort-gold hover:text-stone-950 text-white font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
+                >
+                  Reserve A Table
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                </button>
+                <button 
+                  onClick={() => handleScrollTo('menu')}
+                  className="bg-transparent border border-stone-800 text-stone-900 hover:bg-stone-100 font-sans text-[11px] font-bold tracking-[0.15em] uppercase px-7 py-3.5 rounded-full flex items-center gap-2 group transition-all duration-300 active:scale-95"
+                >
+                  View all Menu
+                  <ArrowRight className="w-3.5 h-3.5 text-[#C5A267] group-hover:translate-x-1 transition-transform duration-300" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -534,7 +568,7 @@ export default function Home({
             <div className="relative order-1 lg:order-2">
               <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-lg group relative border-4 border-indigo-500/0">
                 <img 
-                  src={m9} 
+                  src={homePoolImg} 
                   alt="Where The Water Meets The Sky" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

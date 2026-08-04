@@ -13,6 +13,7 @@ import Lounge from './components/Lounge';
 import Admin from './components/Admin';
 import BookingModal from './components/BookingModal';
 import BarMenu from './components/BarMenu';
+import Menu from './components/Menu';
 
 const IMAGES = {
   villaOasis: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=800&q=80',
@@ -141,6 +142,11 @@ export default function App() {
     }
     if (id === 'events') {
       setCurrentPage('events');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (id === 'menu') {
+      setCurrentPage('menu');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -291,7 +297,13 @@ export default function App() {
       {currentPage === 'barmenu' && (
         <BarMenu 
           setCurrentPage={setCurrentPage}
-          backendUrl="http://localhost:5210"
+          backendUrl={`http://${window.location.hostname}:5210`}
+        />
+      )}
+
+      {currentPage === 'menu' && (
+        <Menu 
+          setCurrentPage={setCurrentPage}
         />
       )}
 

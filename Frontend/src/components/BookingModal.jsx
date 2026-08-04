@@ -112,14 +112,14 @@ export default function BookingModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.93, y: 10 }}
             transition={{ type: "spring", damping: 30, stiffness: 350 }}
-            className="relative w-full max-w-2xl bg-[#0b121f] rounded-2xl border border-white/10 shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[90vh] md:max-h-none overflow-y-auto md:overflow-y-visible"
+            className="relative w-full max-w-4xl bg-[#0b121f] rounded-2xl border border-white/10 shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[90vh] md:max-h-none overflow-y-auto md:overflow-y-visible font-sans"
           >
             
             {/* Left Side: Room Summary */}
             <div className="w-full md:w-5/12 bg-[#0e1624] p-6 md:p-8 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between text-left">
               <div>
-                <span className="text-[8px] font-bold tracking-[0.35em] text-resort-gold uppercase">YOUR SELECTION</span>
-                <h3 className="font-serif text-xl font-light text-white mt-1 mb-4">
+                <span className="text-xs font-bold tracking-[0.35em] text-resort-gold uppercase">YOUR SELECTION</span>
+                <h3 className="font-serif text-3xl font-light text-white mt-2 mb-6">
                   {suitesList.find(s => s.id === selectedSuiteId)?.name || suitesList.find(s => s.id === selectedSuiteId)?.displayName || 'Thabasiya Sanctuary'}
                 </h3>
                 <div className="rounded-xl overflow-hidden aspect-[16/9] mb-4 bg-slate-950/20">
@@ -129,26 +129,26 @@ export default function BookingModal({
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="space-y-2.5 text-xs text-white/70 font-light">
-                  <p className="flex justify-between"><span>Rate per Night:</span> <span className="font-semibold text-white">₹{suitesList.find(s => s.id === selectedSuiteId)?.price.toLocaleString('en-IN')}</span></p>
-                  <p className="flex justify-between"><span>Inclusions:</span> <span className="text-resort-gold">Luxury breakfast, airport pickup</span></p>
+                <div className="space-y-3 text-sm text-white/70 font-light mt-6">
+                  <p className="flex justify-between"><span>Rate per Night:</span> <span className="font-semibold text-white text-base">₹{suitesList.find(s => s.id === selectedSuiteId)?.price.toLocaleString('en-IN')}</span></p>
+                  <p className="flex justify-between"><span>Inclusions:</span> <span className="text-resort-gold text-base">Luxury breakfast, airport pickup</span></p>
                 </div>
               </div>
 
               {/* Pricing Summary (Live update) */}
               {checkIn && checkOut && (
-                <div className="mt-6 pt-4 border-t border-white/10 space-y-2">
-                  <div className="flex justify-between text-[11px] text-white/50">
+                <div className="mt-8 pt-6 border-t border-white/10 space-y-3">
+                  <div className="flex justify-between text-sm text-white/50">
                     <span>Stay Duration:</span>
-                    <span className="font-medium text-white">{costDetails.days} Nights</span>
+                    <span className="font-medium text-white text-base">{costDetails.days} Nights</span>
                   </div>
-                  <div className="flex justify-between text-[11px] text-white/50">
+                  <div className="flex justify-between text-sm text-white/50">
                     <span>Luxury Tax (12%):</span>
-                    <span className="font-medium text-white">₹{costDetails.tax.toLocaleString('en-IN')}</span>
+                    <span className="font-medium text-white text-base">₹{costDetails.tax.toLocaleString('en-IN')}</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm pt-1 border-t border-white/5">
+                  <div className="flex justify-between items-center text-base pt-3 border-t border-white/5 mt-3">
                     <span className="font-semibold text-resort-gold">Estimated Total:</span>
-                    <span className="font-serif font-bold text-white text-base">₹{costDetails.total.toLocaleString('en-IN')}</span>
+                    <span className="font-serif font-bold text-white text-2xl">₹{costDetails.total.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               )}
@@ -173,18 +173,18 @@ export default function BookingModal({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <h4 className="font-serif text-lg font-light text-white mb-1">Reserve Sanctuary</h4>
-                    <p className="text-[10px] text-white/40 tracking-wider mb-6 uppercase">Provide details to check suite availability</p>
+                    <h4 className="font-serif text-3xl font-light text-white mb-2">Reserve Sanctuary</h4>
+                    <p className="text-xs text-white/40 tracking-wider mb-8 uppercase font-medium">Provide details to check suite availability</p>
 
                     <form onSubmit={handleBookingSubmit} className="space-y-4">
                       
                       {/* Select Suite Dropdown */}
                       <div>
-                        <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Suite Preference</label>
+                        <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Suite Preference</label>
                         <select 
                           value={selectedSuiteId} 
                           onChange={(e) => setSelectedSuiteId(e.target.value)}
-                          className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 w-full text-xs focus:outline-none focus:border-resort-gold cursor-pointer"
+                          className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 w-full text-sm focus:outline-none focus:border-resort-gold cursor-pointer"
                           style={{ colorScheme: 'dark' }}
                         >
                           {suitesList.map((suite) => (
@@ -196,24 +196,24 @@ export default function BookingModal({
                       {/* Stay Dates */}
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Check-In</label>
+                          <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Check-In</label>
                           <input 
                             required 
                             type="date" 
                             value={checkIn}
                             onChange={(e) => setCheckIn(e.target.value)}
-                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-resort-gold" 
+                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:border-resort-gold" 
                             style={{ colorScheme: 'dark' }}
                           />
                         </div>
                         <div>
-                          <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Check-Out</label>
+                          <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Check-Out</label>
                           <input 
                             required 
                             type="date" 
                             value={checkOut}
                             onChange={(e) => setCheckOut(e.target.value)}
-                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-resort-gold" 
+                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:border-resort-gold" 
                             style={{ colorScheme: 'dark' }}
                           />
                         </div>
@@ -222,22 +222,22 @@ export default function BookingModal({
                       {/* Guest and Name */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="sm:col-span-2">
-                          <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Guest Full Name</label>
+                          <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Guest Full Name</label>
                           <input 
                             required 
                             type="text" 
                             placeholder="Jane Smith"
                             value={guestName}
                             onChange={(e) => setGuestName(e.target.value)}
-                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-resort-gold placeholder-slate-550" 
+                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:border-resort-gold placeholder-slate-550" 
                           />
                         </div>
                         <div>
-                          <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Guests</label>
+                          <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Guests</label>
                           <select 
                             value={guests}
                             onChange={(e) => setGuests(e.target.value)}
-                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-resort-gold cursor-pointer"
+                            className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:border-resort-gold cursor-pointer"
                             style={{ colorScheme: 'dark' }}
                           >
                             <option value="1">1 Adult</option>
@@ -251,14 +251,14 @@ export default function BookingModal({
 
                       {/* Email Address */}
                       <div>
-                        <label className="text-[9px] tracking-wider uppercase text-white/50 font-bold block mb-1.5">Email for confirmation</label>
+                        <label className="text-xs tracking-wider uppercase text-white/50 font-bold block mb-2">Email for confirmation</label>
                         <input 
                           required 
                           type="email" 
                           placeholder="jane.smith@example.com"
                           value={guestEmail}
                           onChange={(e) => setGuestEmail(e.target.value)}
-                          className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-resort-gold placeholder-slate-550" 
+                          className="w-full bg-[#182333] border border-slate-700 text-white rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:border-resort-gold placeholder-slate-550" 
                         />
                       </div>
 
@@ -267,11 +267,11 @@ export default function BookingModal({
                         <button 
                           type="submit" 
                           disabled={bookingLoading}
-                          className="w-full bg-resort-gold text-stone-950 text-[11px] font-bold tracking-[0.2em] uppercase py-4 rounded-xl hover:bg-resort-gold-hover transition-all duration-300 disabled:bg-resort-gold/50 flex items-center justify-center gap-3 relative shadow-lg shadow-resort-gold/5 active:scale-95 cursor-pointer"
+                          className="w-full bg-resort-gold text-stone-950 text-sm font-bold tracking-[0.2em] uppercase py-5 mt-4 rounded-xl hover:bg-resort-gold-hover transition-all duration-300 disabled:bg-resort-gold/50 flex items-center justify-center gap-3 relative shadow-lg shadow-resort-gold/5 active:scale-95 cursor-pointer"
                         >
                           {bookingLoading ? (
                             <>
-                              <svg className="animate-spin h-4.5 w-4.5 text-stone-950" viewBox="0 0 24 24" fill="none">
+                              <svg className="animate-spin h-5 w-5 text-stone-950" viewBox="0 0 24 24" fill="none">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                               </svg>
@@ -292,16 +292,17 @@ export default function BookingModal({
                     exit={{ opacity: 0 }}
                     className="flex flex-col items-center justify-center text-center py-8 px-4"
                   >
-                    <div className="w-16 h-16 rounded-full bg-resort-gold/15 border border-resort-gold/30 flex items-center justify-center text-resort-gold mb-6 animate-pulse">
-                      <Star className="w-8 h-8 fill-current" />
+                    <div className="w-20 h-20 rounded-full bg-resort-gold/15 border border-resort-gold/30 flex items-center justify-center text-resort-gold mb-8 animate-pulse">
+                      <Star className="w-10 h-10 fill-current" />
                     </div>
-                    <h4 className="font-serif text-2xl font-light text-white mb-2">Sanctuary Reserved</h4>
-                    <p className="text-xs text-white/60 max-w-sm mb-6 leading-relaxed">
+                    <h4 className="font-serif text-4xl font-light text-white mb-4">Sanctuary Reserved</h4>
+                    <p className="text-sm text-white/60 max-w-md mb-8 leading-relaxed">
                       Thank you, {guestName}. We have secured your stay at the **{suitesList.find(s => s.id === selectedSuiteId)?.name || suitesList.find(s => s.id === selectedSuiteId)?.displayName}**. A luxury booking receipt has been sent to **{guestEmail}**.
                     </p>
-                    <div className="bg-white/[0.03] border border-white/5 rounded-xl px-6 py-3.5 mb-8">
-                      <span className="text-[10px] uppercase tracking-wider text-white/40 font-semibold block">Booking Reference</span>
-                      <span className="text-base font-mono font-bold text-resort-gold tracking-widest mt-1 block">{bookingRef}</span>
+                    
+                    <div className="bg-[#182333] border border-slate-700/50 rounded-xl p-5 mb-8 w-full max-w-sm flex items-center justify-between">
+                      <span className="text-xs text-white/50 tracking-wider uppercase font-medium">Reservation Code</span>
+                      <span className="font-mono text-resort-gold text-lg tracking-widest">{bookingRef}</span>
                     </div>
                     <button 
                       onClick={() => setBookingOpen(false)}
